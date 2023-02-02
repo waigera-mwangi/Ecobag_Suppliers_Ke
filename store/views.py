@@ -10,12 +10,12 @@ from accounts.models import Customer
 from utils.utils import generate_key
 from .filter import OrderFilter
 from .forms import ProductForm, DeliveryForm, OrderForm, OrderPaymentForm
-# # from users.models import User
+from django.shortcuts import get_object_or_404, render
 
 
 from .models import (
     # Product,
-    Order, Product, Delivery, OrderItem
+    Order, Product, Delivery, OrderItem,Category
 )
 
 
@@ -127,8 +127,8 @@ def view_product(request):
     return render(request, 'store/view-products.html', {'products': products})
 
 def product_detail(request):
-    products =Product.objects.all()
-    return render(request, 'store/product-detail.html',{'products': product})
+    product = get_object_or_404(Product)
+    return render(request, 'store/product-detail.html',{'product': product})
 
 def product(request):
     product = Product.objects.all()
@@ -376,3 +376,8 @@ def order_list(request):
     order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
     data['order'] = order
     return render(request, 'store/checkout.html', data)
+
+def categories(request):
+    return{
+        'categories':Category.objects.all()
+    }

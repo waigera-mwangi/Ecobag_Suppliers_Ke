@@ -16,7 +16,7 @@
 							<li class="breadcrumb-item active" aria-current="page">Product</li>
 						</ol>
 					</nav>
-					<h2 class="breadcrumb-title">Ksh.{{product.name}}</h2>
+					<h2 class="breadcrumb-title">{{product.name}}</h2>
 				
 				</div>
 			</div>
@@ -26,39 +26,24 @@
 
 	<!-- Page Content -->
 	<div class="content">
-		<div class="container-fluid">
-
+		<div class="container">
 			<div class="row">
-
 				<div class="col-md-12 col-lg-12 col-xl-12">
 					<!-- Product Widget -->
 					<div class="card">
 						<div class="card-body">
 							<div class="doctor-widget">
-								<div class="doc-info-left">
-									<div class="doctor-img">
-										<a href="doctor-profile.html">
-											<img src="{{object.image.url}}" class="img-fluid" alt="{{object.name}}" style="height: 200px; object-fit: cover;">
-										</a>
+								<div class="center">
+									<div class="img">
+											<img src="{{product.image.url}}" class="img-fluid" alt="{{product.name}}" style="height: 300px; width: 300px; object-fit: cover;">
+									</a>
 									</div>
 									<div class="doc-info-cont">
-										<h4 class="doc-name"><a href="doctor-profile.html">{{object.name}}</a></h4>
-										<p class="doc-speciality">{{object.description}}</p>
-										<div class="clinic-details">
-											<ul class="clinic-gallery">
-												{% for object in object.gallery_set.all %}
-												<li>
-													<a href="{{object.image.url}}" data-fancybox="gallery">
-														<img src="{{object.image.url}}" alt="Feature">
-													</a>
-												</li>
-												{% endfor %}
-											</ul>
-										</div>
+										<h4 class="doc-name">{{product.name}}</a></h4>
+										<p class="doc-speciality">{{product.description}}</p>
+										<p class="card-text">Ksh.{{ product.price }}</p>
 									</div>
 								</div>
-
-
 
 								<div class="doc-info-right">
 									<div class="clinic-booking">

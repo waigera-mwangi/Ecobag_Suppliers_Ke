@@ -17,7 +17,7 @@ class OrderAdmin(admin.ModelAdmin):
     list_display = ('customer', 'completed','is_active', 'is_archived', 'created_date', 'updated')
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name','')
+    list_display = ('name','slug')
 
 
 # admin.site.register(Customer, CustomerAdmin)

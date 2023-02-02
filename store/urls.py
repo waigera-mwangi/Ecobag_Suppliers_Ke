@@ -29,7 +29,7 @@ urlpatterns = [
     path('order-list/', OrderListView.as_view(), name='order-list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     path('view-products/', view_product, name='view-product'),
-    path('product_detail/', product_detail, name='product_detail'),
+    path('product_detail/', views.product_detail, name='product_detail'),
     path('user/', views.userPage, name="user-page"),
 
     path('products/', product, name='products'),
