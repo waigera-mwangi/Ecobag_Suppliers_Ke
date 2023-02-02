@@ -22,10 +22,21 @@ from accounts.models import User, Customer
 #     def __str__(self):
 #         return self.name
 
+class Category(models.Model):
+    name =  models.CharField(max_length=255, db_index=True)
+    slug =  models.SlugField(max_length=255, unique=True)
+    
+    def _str_(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = 'Categories'
+    
+
 
 class Product(models.Model):
+    category = models.ForeignKey(Category, related_name = 'product', on_delete=models.CASCADE,null = True,default='Gift_bag')
     name = models.CharField(max_length=120, unique=True)
-    # sortno = models.PositiveIntegerField(null=True)
     price = models.IntegerField(null=True)
     quantity = models.IntegerField(null=True)
     image = models.ImageField(default='non')
