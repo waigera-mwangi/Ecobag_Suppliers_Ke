@@ -1,0 +1,29 @@
+{% extends 'layouts/customer-base.html' %}
+
+{% block title %}view-products{% endblock title %}
+
+{% block content %}
+    <h1 style="text-align: center;">Products and Categories </h1>
+    <div class="row">
+        {% for product in products %}
+        <div class="col">
+            <div class="card" style="width: 18rem;">
+                <img src="{{ product.image.url }}" class="card-img-top" alt="..."  class="btn view-btn add-to-cart-btn" >
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Ksh.{{ product.price }}</p>
+                    <p class="card-text">{{ product.description }}</p>
+                    <div class="row row-sm">
+								<div class="col-6">
+									 <a href="#" class="btn btn-primary">Add to cart</a>
+								</div>
+								<div class="col-6">
+									<a href="{% url 'store:product_detail' %}" class="btn btn-primary">View product</a>
+								</div>
+							</div>
+                </div>
+            </div>
+        </div>
+     {% endfor %}
+    </div>
+{% endblock %}

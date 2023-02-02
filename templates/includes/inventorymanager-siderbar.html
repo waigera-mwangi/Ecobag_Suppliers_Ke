@@ -1,0 +1,100 @@
+<aside id="sidebar" class="sidebar"  >
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'store:SM-dashboard' %}" >
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
+      </li><!-- End Dashboard Nav -->
+
+      <li class="nav-item" >
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+       <i class="bi bi-cart"></i></i><span >Orders</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'store:order-list' %}">
+             <i class="bi bi-cart" style="font-size: large"></i><span>Order-list</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <i class="bi bi-people" style="font-size: large"></i><span>Customers</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End Orders Nav -->
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#" >
+        <i class="bi bi-shop"></i></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'store:add-product' %}">
+              <i class="bi bi-plus" style="font-size: large"></i></i><span>Add product</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'store:product-list' %}">
+                   <i class="fa fa-product-hunt" style="font-size: large"></i><span>Manage product</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- end of products-->
+
+
+        <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+        <i class="bi bi-truck"></i></i><span>Delivery</span><i class="bi bi-chevron-down ms-auto"></i>
+        </a>
+        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          <li>
+            <a href="{% url 'store:create-delivery' %}">
+             <i class="bi bi-box-arrow-in-right" style="font-size: large"></i><span>Create delivery</span>
+            </a>
+          </li>
+          <li>
+            <a href="{% url 'store:delivery-list' %}">
+                <i class="bi bi-text-indent-left" style="font-size: large"></i><span>View delivery</span>
+            </a>
+          </li>
+        </ul>
+      </li><!-- End deliveries Nav -->
+
+{#        <li class="nav-item">#}
+{#        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">#}
+{#          <i class="bi bi-layout-text-window-reverse"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>#}
+{#        </a>#}
+{#        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">#}
+{#          <li>#}
+{#            <a href="#">#}
+{#              <i class="bi bi-circle"></i><span>General Tables</span>#}
+{#            </a>#}
+{#          </li>#}
+{#          <li>#}
+{#            <a href="#">#}
+{#              <i class="bi bi-circle"></i><span>Data Tables</span>#}
+{#            </a>#}
+{#          </li>#}
+{#        </ul>#}
+{#      </li><!-- End of reports -->#}
+
+
+
+      <li class="nav-heading">Pages</li>
+        
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="pages-faq.html">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
+      </li><!-- End F.A.Q Page Nav -->
+
+
+    </ul>
+
+  </aside><!-- End Sidebar-->
