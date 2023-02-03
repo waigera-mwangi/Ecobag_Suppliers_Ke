@@ -1,5 +1,6 @@
 from django.db import models
 # from pkg_resources import _
+from django.urls import reverse
 
 from accounts.models import User, Customer
 
@@ -28,6 +29,9 @@ class Category(models.Model):
     
     def _str_(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('store:category_list', args=[self.slug])
 
     class Meta:
         verbose_name_plural = 'Categories'

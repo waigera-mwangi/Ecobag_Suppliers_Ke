@@ -10,7 +10,7 @@ from .views import (
     DeliveryListView,
     invoice,
     view_product, product_detail, product, customer, updateOrder, deleteOrder, add_to_cart, cart_list, order_list, checkout_pay,
-    checkout, clear_cart, increase_quantity, decrease_quantity, remove_from_cart,
+    checkout, clear_cart, increase_quantity, decrease_quantity, remove_from_cart,category_list
 )
 
 app_name = "store"
@@ -30,6 +30,7 @@ urlpatterns = [
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     path('view-products/', view_product, name='view-product'),
     path('product_detail/', views.product_detail, name='product_detail'),
+    path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
     path('user/', views.userPage, name="user-page"),
 
     path('products/', product, name='products'),

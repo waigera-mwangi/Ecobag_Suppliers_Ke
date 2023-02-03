@@ -130,6 +130,11 @@ def product_detail(request):
     product = get_object_or_404(Product)
     return render(request, 'store/product-detail.html',{'product': product})
 
+def category_list(request, category_slug):
+    category = get_object_or_404(Category, slug= category_slug)
+    products = Product.objects.filter(category = category)
+    return render(request,'store/category.html',{'category':Category,'products':Product})
+
 def product(request):
     product = Product.objects.all()
     return render(request, 'store/products.html', {'products': product})
