@@ -47,6 +47,10 @@ class Product(models.Model):
     created_date = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
     description = models.CharField(max_length=100, null=True)
+    slug = models.SlugField(max_length=255, null = True)
+
+    def get_absolute_url(self):
+        return reverse('store:product_detail', args=[self.slug])
 
     def __str__(self):
         return self.name

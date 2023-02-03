@@ -3,7 +3,7 @@
 {% block title %}view-category{% endblock title %}
 
 {% block content %}
-<h1 style="text-align: center;">Products and Categories </h1>
+<h1 style="text-align: center;">{{ category.name }} </h1>
     <div class="row">
         {% for product in product %}
         <div class="col">

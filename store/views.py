@@ -126,18 +126,18 @@ def view_product(request):
     products = Product.objects.all()
     return render(request, 'store/view-products.html', {'products': products})
 
-def product_detail(request):
-    product = get_object_or_404(Product)
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     return render(request, 'store/product-detail.html',{'product': product})
 
 def category_list(request, category_slug):
     category = get_object_or_404(Category, slug= category_slug)
     products = Product.objects.filter(category = category)
-    return render(request,'store/category.html',{'category':Category,'products':Product})
+    return render(request,'store/category.html',{'category':category,'product': products})
 
 def product(request):
     product = Product.objects.all()
-    return render(request, 'store/products.html', {'products': product})
+    return render(request, 'store/products.html', {'product': product})
 
 
 def customer(request, pk_test):
