@@ -41,13 +41,15 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name = 'product', on_delete=models.CASCADE,null = True,default='Gift_bag')
     name = models.CharField(max_length=120, unique=True)
+    slug = models.SlugField(max_length=255, null = True)
     price = models.IntegerField(null=True)
     quantity = models.IntegerField(null=True)
     image = models.ImageField(default='non')
     created_date = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
     description = models.CharField(max_length=100, null=True)
-    slug = models.SlugField(max_length=255, null = True)
+    is_active = models.BooleanField(default = True)
+    in_stock = models.BooleanField(default = True)
 
     def get_absolute_url(self):
         return reverse('store:product_detail', args=[self.slug])
