@@ -6,10 +6,14 @@ from django.views.generic import TemplateView
 from accounts.decorators import required_access
 from Ecobag_Suppliers_ke import settings
 from django.contrib.auth import views as auth_views
+
+app_name = 'basket'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', required_access(function=TemplateView.as_view(template_name="index.html"), login_url=reverse_lazy('accounts:login'), user_type="CM"), name="index"),
     path('', include('accounts.urls')),
+    path('basket/', include('basket.urls', namespace = 'basket')),
     path('', include('store.urls')),
     path('', include('loans.urls')),
 
