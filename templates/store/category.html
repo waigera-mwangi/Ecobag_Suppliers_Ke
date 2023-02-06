@@ -3,7 +3,7 @@
 {% block title %}view-category{% endblock title %}
 
 {% block content %}
-<h1 style="text-align: center;">{{ category.name }} </h1>
+<h1 style="text-align: center;">{{category.name|title}} </h1>
     <div class="row">
         {% for product in product %}
         <div class="col">
@@ -18,7 +18,7 @@
 									 <a href="#" class="btn btn-primary">Add to cart</a>
 								</div>
 								<div class="col-6">
-									<a href="{% url 'store:product_detail' %}" class="btn btn-primary">View product</a>
+									<a href="{{ product.get_absolute_url }}" class="btn btn-primary">View product</a>
 								</div>
 							</div>
                 </div>

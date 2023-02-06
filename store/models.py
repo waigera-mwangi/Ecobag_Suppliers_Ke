@@ -26,18 +26,16 @@ from accounts.models import User, Customer
 class Category(models.Model):
     name =  models.CharField(max_length=255, db_index=True)
     slug =  models.SlugField(max_length=255, unique=True)
-    
-    def _str_(self):
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('store:category_list', args=[self.slug])
 
     class Meta:
         verbose_name_plural = 'Categories'
+
+    def get_absolute_url(self):
+        return reverse('store:category_list', args=[self.slug])
     
-
-
+    def _str_(self):
+        return self.name
+    
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name = 'product', on_delete=models.CASCADE,null = True,default='Gift_bag')
     name = models.CharField(max_length=120, unique=True)
