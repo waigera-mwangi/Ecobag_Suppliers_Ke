@@ -127,7 +127,7 @@ def view_product(request):
     return render(request, 'store/view-products.html', {'products': products})
 
 def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug)
+    product = get_object_or_404(Product, slug=slug, in_stock = True)
     return render(request, 'store/product-detail.html',{'product': product})
 
 def category_list(request, category_slug):
