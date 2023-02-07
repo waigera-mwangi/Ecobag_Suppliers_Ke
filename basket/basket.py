@@ -32,3 +32,6 @@ class Basket ():
 
     def __len__(self):
         return sum(item['qty'] for item in self.basket.values())
+
+    def get_total_price(self):
+        return sum(Decimal(item['price']) * item['qty'] for item in self.basket.values())

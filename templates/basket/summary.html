@@ -59,7 +59,7 @@
                                         <div class="border">
                                             <div class="col border-bottom">
                                                 <div class="row-p3">
-                                                    <div>Your products</div>
+                                                    
                                                     <div class="col-6 text-end"><span class="h6 fw-bold">Ksh{{ item.total_price }}</span></div>
                                                 </div>
                                             </div>
@@ -91,7 +91,7 @@
                                         </div>
 
                                         <div class="col-12">
-                                            <button type="button" id="add-button" value="{{product.id}}" class="btn-outline-primary btn-sm">Add to cart</button>
+                                            <button type="button" id="add-button" value="{{ product.id }}" class="btn-outline-primary btn-sm">Add to cart</button>
                                         </div>
 
                                     </div>
@@ -114,7 +114,7 @@
         {% endfor %}
         <div class="col-12 text-end">
             <div class="h6 fw-bold">
-                Sub Total: Ksh<span id="subtotal">{{ basket.get_total_price }}</span>
+                Sub Total: Ksh<span id="subtotal">{{basket.get_total_price}}</span>
             </div>
         </div>
     </div>
