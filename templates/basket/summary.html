@@ -64,17 +64,17 @@
                                                 <div class="row pe-3">
                                                     <div class="col-6">
                                                         <label for="select">Qty</label>
-                                                        <select id = "select">
-                                                            <option selected></option>
+                                                        <select id = "select{{product.id}}">
+                                                            <option selected>
                                                                 {{item.qty}}
                                                             </option>
-                                                            <option>1</option>
-                                                            <option>2</option>
-                                                            <option>3</option>
-                                                            <option>4</option>
-                                                            <option>5</option>
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="4">5</option>
                                                         </select>
-                                                        <button type="button" id="add-button" value="{{product.id}}" class="btn btn-outline-primary btn-sm">
+                                                        <button type="button" id="update-button"  data-index="{{product.id}}" class="btn btn-outline-primary btn-sm update-button">
                                                             Update
                                                         </button>
                                                         <button type="button" id="delete-button" data-index="{{product.id}}" class="btn btn-outline-primary btn-sm delete-button">
@@ -106,6 +106,7 @@
 </main>
 
 <script>
+    //delete item
 	$(document).on('click','.delete-button', function(e){
 		e.preventDefault();
         var prodid = $(this).data('index');
@@ -114,12 +115,33 @@
 			url: '{% url "basket:basket_delete" %}',
 			data: {
 				productid: $(this).data('index'),
-				productqty: $('select option:selected').text(),
 				csrfmiddlewaretoken: "{{csrf_token}}",
 				action: 'post'
 			},
 			success: function(json){
                 $('.product-item[data-index="'+ prodid +'"]').remove();				
+			},
+			error: function (xhr, errmsg, err){
+
+			}
+		});
+	})
+
+    //update item
+	$(document).on('click','.update-button', function(e){
+		e.preventDefault();
+        var prodid = $(this).data('index');
+		$.ajax({
+			type: 'POST',
+			url: '{% url "basket:basket_update" %}',
+			data: {
+				productid: $(this).data('index'),
+				productqty: $('#select' + prodid +' option:selected').text(),
+				csrfmiddlewaretoken: "{{csrf_token}}",
+				action: 'post'
+			},
+			success: function(json){
+                		
 			},
 			error: function (xhr, errmsg, err){
 
