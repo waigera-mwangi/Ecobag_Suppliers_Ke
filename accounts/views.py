@@ -167,7 +167,7 @@ def profile(request):
         form.save()
         messages.success(request, 'Profile updated successfully')
     # order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
-    context = {
+    context = {+
         'p_form': p_form,
         'form': form,
         # 'order': order

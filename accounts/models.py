@@ -1,9 +1,9 @@
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
-class User(AbstractUser):
+class User(AbstractUser, PermissionsMixin):
     class UserTypes(models.TextChoices):
         DRIVER = 'DR', _('Driver')
         FINANCE_MANAGER = 'FM', _('Finance Manager')
@@ -54,15 +54,6 @@ class UserProfileManager(BaseUserManager):
         user.save(using=self._db)
 
         return user
-
-    # def create_superuser(self, email, username, password):
-    #     """Creates and saves a new superuser with given details."""
-    #
-    #     user = self.create_user(email=email, username=username, password=password)
-    #
-    #     user.is_superuser = True
-    #     user.is_staff = True
-    #     user.save(using=self._db)
 
 
 class Profile(models.Model):

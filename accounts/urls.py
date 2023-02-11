@@ -30,9 +30,9 @@ urlpatterns = [
     path('dispatch-manager/', views.dispatch_manager, name='dispatch-manager'),
     path('finance-manager/', views.finance_manager, name='finance-manager'),
     path('driver/', views.driver, name='driver'),
-    path('profile', profile, name='customer'),
+    # path('profile', views.profile, name='customer'),
     path('change-password', password_change, name='change-password'),
-    path('profile', profile, name='profile'),
+    path('profile', views.profile, name='profile'),
     path('supplier/', required_access(function=TemplateView.as_view(template_name="Supplier.html"),
                                    login_url=reverse_lazy('accounts:Supplier-login'), user_type="RD"), name="index"),
 ]
