@@ -9,7 +9,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost']
 
 # Application definition
 
@@ -24,6 +24,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'basket.apps.BasketConfig',
     'store.apps.StoreConfig',
+    'orders.apps.OrdersConfig',
     'loans.apps.LoansConfig',
     'payment.apps.PaymentConfig',
     'widget_tweaks',
@@ -125,3 +126,5 @@ AUTH_USER_MODEL = 'accounts.User'
 # EMAIL_USE_TLS = True
 # EMAIL_HOST_USER = 'waigeram019@gmail.com'
 # EMAIL_HOST_PASSWORD = '###@@@###'
+
+STRIPE_ENDPOINT_SECRET = 'whsec_myIuLuukACB4Mo9HQH)ZyqgOeEc4yYov'

@@ -14,7 +14,10 @@ from accounts.forms import CustomerSignUpForm, CustomerAuthenticationForm, Suppl
 from accounts.models import User, CustomerProfile, Profile
 from django.urls import reverse_lazy
 
-from store.models import Order
+from orders.models import Order
+
+from orders.views import user_orders
+
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):

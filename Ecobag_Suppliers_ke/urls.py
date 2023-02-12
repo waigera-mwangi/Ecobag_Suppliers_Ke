@@ -16,6 +16,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('basket/', include('basket.urls', namespace = 'basket')),
     path('payment/', include('payment.urls', namespace = 'payment')),
+    path('orders/', include('orders.urls', namespace = 'orders')),
     path('', include('store.urls')),
     path('', include('loans.urls')),
 
