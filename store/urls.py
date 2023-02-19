@@ -9,8 +9,7 @@ from .views import (
     OrderListView,
     DeliveryListView,
     invoice,
-    view_product, product_detail, product, customer, updateOrder, deleteOrder, add_to_cart, cart_list, order_list, checkout_pay,
-    checkout, clear_cart, increase_quantity, decrease_quantity, remove_from_cart,category_list
+    view_product, product_detail, product,category_list
 )
 
 app_name = "store"
@@ -31,25 +30,24 @@ urlpatterns = [
     path('view-products/', view_product, name='view-product'),
     path('product_detail/<slug:slug>/', views.product_detail, name='product_detail'),
     path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
-    path('user/', views.userPage, name="user-page"),
+    # path('user/', views.userPage, name="user-page"),
 
     path('products/', product, name='products'),
-    path('customer/<str:pk_test>/', customer, name="customer"),
+    # path('customer/<str:pk_test>/', customer, name="customer"),
 
-    path('update_order/<str:pk>/', updateOrder, name="update_order"),
-    path('delete_order/<str:pk>/', deleteOrder, name="delete_order"),
+    # path('update_order/<str:pk>/', updateOrder, name="update_order"),
+    # path('delete_order/<str:pk>/', deleteOrder, name="delete_order"),
 
 
 
     # cart
-    path('order_list/', order_list, name="order_list"),
-    path('checkout_pay/', checkout_pay, name="checkout_pay"),
-    path('checkout/', checkout, name="checkout"),
-    path('clear_cart/', clear_cart, name="clear_cart"),
-    path('increase_quantity/<slug>/', increase_quantity, name="increase_quantity"),
-    path('decrease_quantity/<slug>/', decrease_quantity, name="decrease_quantity"),
-    path('remove_from_cart/<slug>/', remove_from_cart, name="remove_from_cart"),
-    path('cart_list/', cart_list, name="cart_list"),
-    path('add_to_cart/', add_to_cart, name="add_to_cart"),
+    # path('order_list/', order_list, name="order_list"),
+    # path('checkout_pay/', checkout_pay, name="checkout_pay"),
+    # path('clear_cart/', clear_cart, name="clear_cart"),
+    # path('increase_quantity/<slug>/', increase_quantity, name="increase_quantity"),
+    # path('decrease_quantity/<slug>/', decrease_quantity, name="decrease_quantity"),
+    # path('remove_from_cart/<slug>/', remove_from_cart, name="remove_from_cart"),
+    # path('cart_list/', cart_list, name="cart_list"),
+    # path('add_to_cart/', add_to_cart, name="add_to_cart"),
     # path('order_list/', customer_required(views.OrderListView.as_view()), name="order_list"),
 ]

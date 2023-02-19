@@ -15,7 +15,7 @@
                     <p class="card-text">{{ product.description }}</p>
                     <div class="row row-sm">
 								<div class="col-6">
-									 <a href="{% url 'store:add_to_cart' %}}" class="btn btn-primary" value ="{{product.id}}" >Add to cart</a>
+									 <a href="{{% url 'store:add_to_cart' %}}" class="btn btn-primary" value ="{{product.id}}" >Add to cart</a>
 								</div>
 								<div class="col-6">
 									<a href="{{ product.get_absolute_url }}" class="btn btn-primary">View product</a>

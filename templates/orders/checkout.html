@@ -1,0 +1,103 @@
+{% extends 'layouts/customer-base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+
+{% load static %}
+{% block styles %}
+{% block title %}Shipping Details {% endblock %}
+{% endblock styles %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">  
+</script> 
+
+<!-- my checkout -->
+<div class="container-fluid mt-3">
+    <form action="{% url 'orders:placeorder' %}" method="POST" >
+    {% csrf_token %}
+    <div class="row">
+
+        <div class="col-md-7">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="card-title">Persona Information</h4>
+                    <hr>
+                    <div class="row checkoutform">
+                        <div class="col-md-6">
+                            <label>First Name:</label>
+                            <input type="text" class="form-control" name="fname" placeholder="Enter First name">                       
+                         </div>
+                         <div class="col-md-6">
+                            <label>Last Name:</label>
+                            <input type="text" class="form-control" name="lname" placeholder="Enter First name">                       
+                         </div>                        
+                          <div class="col-md-6">
+                            <label>Email:</label>
+                            <input type="text" class="form-control" name="email" placeholder="Enter Email">                       
+                         </div>
+                         <div class="col-md-6">
+                            <label>Phone:</label>
+                            <input type="number" class="form-control" name="phone" placeholder="Enter Phone Number">                       
+                         </div>
+                         <div class="col-md-6">
+                            <label>County:</label>
+                            <input type="text" class="form-control"  name="county" placeholder="Enter County">                       
+                         </div>
+                         <div class="col-md-6">
+                            <label>Town:</label>
+                            <input type="text" class="form-control" name="town" placeholder="Enter Town">                       
+                         </div>
+                         
+                    </div>
+                    
+                </div>
+                
+            </div>   
+        </div>
+        <div class="col-md-5">
+            <div class="card shadow">
+                <div class="card-body">
+                
+                    <div class="payment-widget">
+
+                    <h4 class="card-title">Mpesa Payment</h4>
+                   <hr>
+                    <div class="payment-list">
+                        <label class="payment-radio credit-card-option">
+                          <h4>  PayBill: 877877 </h4>
+                        </label>
+                        <div class="row">
+
+                            <div class="col-md-12">
+                                <div class="form-group card-label">
+                                    <p> <h5><b>Amount required:</b> Ksh.{{basket.get_total_price|floatformat:2|intcomma}}</p></h5>
+                                </div>	
+                            </div>
+
+                            <div class="col-md-6">
+                                <label><h5> Mpesa Code:</h5></label>
+                                <input type="text" class="form-control" name="mpesa_code" name="payment_mode" placeholder="e.g MKDIR54ERW">                       
+                            </div>		
+
+                         </div>
+                    </div>
+                </div>
+             </div>  
+
+           </div>
+    </div>
+ </div>
+        <button id="submit" class="btn btn-primary w-100 fw-bold">Confirm and Pay</button>
+    </div>
+    </form>
+    
+</div>
+
+
+</div>
+<script>
+    var CSRF_TOKEN = '{{ csrf_token}}'
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'assets/js/payment-index.js' %}" data-rel-js></script>
+{% endblock content %}

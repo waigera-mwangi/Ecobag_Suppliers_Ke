@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Product, Delivery, Order
+from .models import Product
 
 
 class ProductForm(forms.ModelForm):
@@ -30,13 +30,13 @@ class ProductForm(forms.ModelForm):
 
 class OrderForm(ModelForm):
     class Meta:
-        model = Order
+        # model = Order
         fields = '__all__'
 
 
 class DeliveryForm(forms.ModelForm):
     class Meta:
-        model = Delivery
+        # model = Delivery
         fields = '__all__'
 
         widgets = {
@@ -50,7 +50,7 @@ class DeliveryForm(forms.ModelForm):
 
 from django.forms import ModelForm
 
-from store.models import Product,  OrderItem, OrderPayment
+from store.models import Product
 
 
 class ProductForm(ModelForm):
@@ -62,11 +62,11 @@ class ProductForm(ModelForm):
 
 class OrderItemForm(ModelForm):
     class Meta:
-        model = OrderItem
+        # model = OrderItem
         fields = ['product', 'quantity']
 
 
 class OrderPaymentForm(ModelForm):
     class Meta:
-        model = OrderPayment
+        # model = OrderPayment
         fields = ['mpesa', 'phone', 'amount']

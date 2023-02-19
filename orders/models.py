@@ -6,15 +6,25 @@ from store.models import Product
 
 class Order(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='order_user')
-    full_name = models.CharField(max_length=50)
-    address1 = models.CharField(max_length=250)
-    address2 = models.CharField(max_length=250)
-    city = models.CharField(max_length=50)
-    phone = models.CharField(max_length=10)
+    fname = models.CharField(max_length=20)
+    lname  = models.CharField(max_length=20)
+    phone = models.IntegerField(default=0)
+    email = models.CharField(max_length=50, null=True)
+    county = models.CharField(max_length=20)
+    town = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    order_key = models.CharField(max_length=50)
-    billing_status = models.BooleanField(default=False)
+    oid = models.CharField(max_length=50, blank=True)
+   
+    status = (
+        ('Pending','Pending'),
+        ('Out for shipping','Out for shipping'),
+        ('Completed','completed'),
+    )
+    orderstatus = models.CharField(max_length=50, choices=status, default='Pending')
+    mpesa_code = models.CharField(max_length=8, null=True)
+    amount_paid = models.CharField(max_length=250)
+    
 
     class Meta:
         ordering = ('-created',)
@@ -35,4 +45,15 @@ class OrderItem(models.Model):
     def __str__(self):
         return str(self.id)
 
-        
+
+    @property
+    def get_cart_total(self):
+        order_items = self.orderitem_set.all()
+        total = (sum([item.get_total for item in order_items]))
+        return total
+
+    @property
+    def get_cart_items(self):
+        order_items = self.orderitem_set.all()
+        total = (sum([item.quantity for item in order_items]))
+        return total

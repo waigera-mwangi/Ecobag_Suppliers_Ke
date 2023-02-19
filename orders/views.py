@@ -1,35 +1,66 @@
-from django.shortcuts import render
-
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
-
+from django.http import HttpResponse
 from basket.basket import Basket
 from .models import Order, OrderItem
-
-def add(request):
-    basket = Basket(request)
-    if request.POST.get('action') == 'post':
-        
-        user_id = request.user.id
-        order_key = request.POST.get('order_key')
-        baskettotal = basket.get_total_price()
-
-        if Order.objects.filter(order_key=order_key).exists():
-            pass 
-        else:
-            order = Order.objects.create(user_id=user_id, full_name='name',
-            address1='add1', address2='add2', total_paid=baskettotal, order_key=order_key)
-
-            order_id = order.pk
-            for item in basket:
-                OrderItem.objects.create(order_id=order_id, product=item['product'],price=item['price'],quantity=item['qty'])
-        response = JsonResponse({'success': 'Return something'})
-        return response
-
-def payment_confirmation(data):
-    Order.objects.filter(order_key=data).update(billing_status=True)
-
-def user_orders(request):
-    user_id = request.user.id
-    orders = Order.objects.filter(user_id=user_id).filter(billing_status=True)
-    return orders
+from store.models import Product
     
+# new views
+
+def placeorder(request):
+    basket = Basket(request)
+    if request.method == 'POST':
+        neworder = Order()
+        neworder.user = request.user
+        neworder.fname = request.POST.get('fname')
+        neworder.lname = request.POST.get('lname')
+        neworder.email = request.POST.get('email')
+        neworder.phone = request.POST.get('phone')
+        neworder.county = request.POST.get('county')
+        neworder.town = request.POST.get('town')
+        neworder.mpesa_code = request.POST.get('mpesa_code')
+
+        neworder.amount_paid = basket.get_total_price()
+
+        neworder.save()
+        # decrease product qty
+       
+        # clear cart
+       
+        return HttpResponse("Order successful")
+
+    return redirect('/')
+
+# my views
+def checkout(request):
+    data = {}
+    try:
+        customer = request.user.customer
+        order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
+       
+        products = []
+        for item in order.orderitem_set.all():
+            product = {
+                'quantity': item.quantity,
+                'name': item.product.name,
+                'slug': item.product.slug,
+            }
+            products.append(product)
+        print(products)
+        for item in products:
+            product = Product.objects.filter(slug=item['slug']).first()
+            if product.quantity >= item['quantity']:
+                print(f"{product.quantity} >= {item['quantity']}")
+                print("Everything is fine products exists")
+            else:
+                instance = OrderItem.objects.get(order=order, product=product)
+                if product.quantity > 0:
+                    instance.quantity = product.quantity
+                    instance.save()
+                else:
+                    instance.delete()
+    except AttributeError:
+        pass
+    return render(request, 'orders/checkout.html')
+

@@ -16,7 +16,7 @@ from django.urls import reverse_lazy
 
 from orders.models import Order
 
-from orders.views import user_orders
+# from orders.views import user_orders
 
 
 

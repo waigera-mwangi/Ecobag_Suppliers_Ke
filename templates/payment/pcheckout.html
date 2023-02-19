@@ -1,4 +1,4 @@
-{% extends 'customer/layouts/base.html' %}
+{% extends 'layouts/customer-base.html' %}
 {% load static %}
 {% load humanize %}
 {% load widget_tweaks %}
@@ -11,7 +11,7 @@
 				<div class="col-md-12 col-12">
 					<nav aria-label="breadcrumb" class="page-breadcrumb">
 						<ol class="breadcrumb">
-							<li class="breadcrumb-item"><a href="{% url 'home:index' %}">Home</a></li>
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
 							<li class="breadcrumb-item active" aria-current="page">Checkout</li>
 						</ol>
 					</nav>
@@ -32,7 +32,7 @@
 						<div class="card-body">
 
 							<!-- Checkout Form -->
-							<form action="{% url 'customer:checkout_pay' %}" method="post" id="checkout">
+							<form action="#" method="post" id="checkout">
 								{% csrf_token %}
 								<div class="payment-widget">
 									<h4 class="card-title">Mpesa Payment</h4>
