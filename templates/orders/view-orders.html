@@ -1,0 +1,37 @@
+{% extends 'layouts/customer-base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+{% block styles %}
+{% block title %}View orders {% endblock %}
+{% endblock styles %}
+
+<div class="container">
+
+    <table class="table table-info table-striped">
+        <thead>
+            <tr>
+                <th>Order Id</th>
+                <th>Products</th>
+                <th>Amount Paid</th>
+                <th>Status</th>
+                <th>phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for i in items %}
+            <tr>
+                <th scope="row">{{i.id}}</th>
+                <th>{{i.items_json}</th>
+                <th>{{i.status}}</th>
+                <th>{{i.phone}}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+
+{% endblock content %}

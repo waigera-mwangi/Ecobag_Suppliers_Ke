@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from basket.basket import Basket
 from .models import Order, OrderItem
 from store.models import Product
-    
+from django.contrib import messages
 # new views
 
 def placeorder(request):
@@ -27,8 +27,10 @@ def placeorder(request):
         # decrease product qty
        
         # clear cart
-       
-        return HttpResponse("Order successful")
+        basket.clear()
+        # return HttpResponse("Order successful")
+        messages.success(request, 'Order placed Successfully.')
+
 
     return redirect('/')
 
@@ -63,4 +65,14 @@ def checkout(request):
     except AttributeError:
         pass
     return render(request, 'orders/checkout.html')
+
+# view orders
+def view_orders(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    currentuser=request.user.username
+    items = Order.objects.filter(email=currentuser)
+    status=Order.objects.filter()
+    context = {"items":items, "status":status}
+    return render(request,"orders/view-orders.html",context)
 
