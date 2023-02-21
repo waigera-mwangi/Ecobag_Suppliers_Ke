@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from django.http import HttpResponse
 from basket.basket import Basket
-from .models import Order, OrderItem
+from .models import Order,OrderItem
 from store.models import Product
 from django.contrib import messages
 # new views
@@ -29,7 +29,7 @@ def placeorder(request):
         # clear cart
         basket.clear()
         # return HttpResponse("Order successful")
-        messages.success(request, 'Order placed Successfully.')
+        messages.success(request, 'Order placed Successfully. ')
 
 
     return redirect('/')
@@ -71,8 +71,11 @@ def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
     currentuser=request.user.username
-    items = Order.objects.filter(email=currentuser)
+    items = Order.objects.filter()
+    for i in items:
+        print(i.amount_paid)
     status=Order.objects.filter()
     context = {"items":items, "status":status}
+    print(i.orderstatus)
     return render(request,"orders/view-orders.html",context)
 

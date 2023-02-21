@@ -25,6 +25,8 @@ class Order(models.Model):
     mpesa_code = models.CharField(max_length=8, null=True)
     amount_paid = models.CharField(max_length=250)
     
+    product = models.ForeignKey(Product, related_name='order_items',
+    on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ('-created',)
@@ -36,8 +38,7 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order,related_name='items',
     on_delete=models.CASCADE)
 
-    product = models.ForeignKey(Product, related_name='order_items',
-    on_delete=models.CASCADE)
+    
 
     price = models.DecimalField(max_digits=20, decimal_places=2)
     quantity = models.PositiveBigIntegerField(default=1)

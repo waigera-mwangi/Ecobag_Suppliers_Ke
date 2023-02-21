@@ -16,18 +16,21 @@
                 <th>Order Id</th>
                 <th>Products</th>
                 <th>Amount Paid</th>
-                <th>Status</th>
                 <th>phone</th>
+                <th>Status</th>
             </tr>
         </thead>
         <tbody>
             {% for i in items %}
-            <tr>
-                <th scope="row">{{i.id}}</th>
-                <th>{{i.items_json}</th>
-                <th>{{i.status}}</th>
-                <th>{{i.phone}}</th>
-            </tr>
+            
+                <tr>
+                    <th scope="row">{{i.id}}</th>
+                    <td>{{i.product}}</td>
+                    <td>{{i.amount_paid}}</td>
+                    <td>{{i.phone}}</td>
+                    <td>{{i.orderstatus}}</td>
+                </tr>
+            
             {% endfor %}
         </tbody>
     </table>
