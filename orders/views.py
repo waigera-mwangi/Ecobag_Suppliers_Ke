@@ -24,7 +24,6 @@ def placeorder(request):
         trackno = 'order'+str(random.randint(1111111,9999999))
         while Order.objects.filter(tracking_no=trackno) is None:
             trackno = 'order'+str(random.randint(1111111,9999999))
-        
         neworder.tracking_no = trackno
         neworder.save()
         
@@ -36,14 +35,15 @@ def placeorder(request):
                 price=item.product.price,
                 quantity=item.product_qty
             )
+        print("Hello")
         # decrease product qty from stock 
         # orderproduct = Product.objects.filter(id=item.product_id).first()
         # orderproduct.quantity = orderproduct.quantity - item.product_qty
         # orderproduct.save()
-        # clear cart
-        Basket.clear()
-        messages.success(request, 'Order placed Successfully. ')
 
+        # clear cart
+        basket.clear()
+        messages.success(request, 'Order placed Successfully. ')
 
     return redirect('/')
 
@@ -83,11 +83,9 @@ def checkout(request):
 def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    currentuser=request.user.username
-    items = Order.objects.filter(email=currentuser)
-    for i in items:
-        print(i.amount_paid)
+    currentuser=request.user.email
+    orders = Order.objects.filter(email=currentuser)
     status=Order.objects.filter()
-    context = {"items":items, "status":status}
+    context = {"orders":orders, "status":status}
     return render(request,"orders/view-orders.html",context)
 

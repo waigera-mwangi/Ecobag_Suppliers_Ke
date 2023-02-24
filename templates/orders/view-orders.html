@@ -5,28 +5,48 @@
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %}View orders {% endblock %}
+{% block title %} <p><h3>View orders</h3></p> {% endblock %}
 {% endblock styles %}
 
 <div class="container">
+    
+    <style type="text/css">
+		body
+		{
+		    counter-reset: Serial;          
+		}
+
+		table
+		{
+		    border-collapse: separate;
+		}
+
+		tr td:first-child:before
+		{
+		  counter-increment: Serial;      
+		  content: counter(Serial); 
+		}
+	</style>
 
     <table class="table table-info table-striped">
         <thead>
             <tr>
-                <th>Order Id</th>
+                <th>Num</th>
+                <th>Track No</th>
+                <th>Amount</th>
                 <th>Products</th>
-                <th>Amount Paid</th>
                 <th>phone</th>
                 <th>Status</th>
             </tr>
         </thead>
         <tbody>
-            {% for i in items %}
+            {% for i in orders %}
             
                 <tr>
-                    <th scope="row">{{i.items_json}}</th>
-                    <td>{{i.product}}</td>
+                    <td></td>
+                    <td scope="row">{{i.tracking_no}}</td>
                     <td>{{i.amount_paid}}</td>
+                    <td>{{i.email}}</td>
                     <td>{{i.phone}}</td>
                     <td>{{i.orderstatus}}</td>
                 </tr>
