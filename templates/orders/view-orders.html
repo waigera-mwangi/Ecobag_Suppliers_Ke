@@ -5,11 +5,11 @@
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %} <p><h3>View orders</h3></p> {% endblock %}
+{% block title %} <p><h3>My orders</h3></p> {% endblock %}
 {% endblock styles %}
 
 <div class="container">
-    
+
     <style type="text/css">
 		body
 		{
@@ -34,9 +34,11 @@
                 <th>Num</th>
                 <th>Track No</th>
                 <th>Amount</th>
-                <th>Products</th>
+                <th>Date</th>
+                <th>Email</th>
                 <th>phone</th>
                 <th>Status</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -44,11 +46,15 @@
             
                 <tr>
                     <td></td>
-                    <td scope="row">{{i.tracking_no}}</td>
+                    <td>{{i.tracking_no}}</td>
                     <td>{{i.amount_paid}}</td>
+                    <td></td>
                     <td>{{i.email}}</td>
                     <td>{{i.phone}}</td>
                     <td>{{i.orderstatus}}</td>
+                    <td>
+                        <a href="#" class="btn btn-primary">View</a>
+                    </td>
                 </tr>
             
             {% endfor %}
