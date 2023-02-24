@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'basket.apps.BasketConfig',
     'store.apps.StoreConfig',
     'orders.apps.OrdersConfig',
-    'loans.apps.LoansConfig',
     'payment.apps.PaymentConfig',
     'widget_tweaks',
 ]

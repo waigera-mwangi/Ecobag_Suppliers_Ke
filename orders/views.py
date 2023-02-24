@@ -1,11 +1,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-from django.http.response import JsonResponse
-from django.http import HttpResponse
 from basket.basket import Basket
 from .models import Order,OrderItem
 from store.models import Product
 from django.contrib import messages
+import random
 # new views
 
 def placeorder(request):
@@ -20,15 +19,29 @@ def placeorder(request):
         neworder.county = request.POST.get('county')
         neworder.town = request.POST.get('town')
         neworder.mpesa_code = request.POST.get('mpesa_code')
-
         neworder.amount_paid = basket.get_total_price()
-
+        
+        trackno = 'order'+str(random.randint(1111111,9999999))
+        while Order.objects.filter(tracking_no=trackno) is None:
+            trackno = 'order'+str(random.randint(1111111,9999999))
+        
+        neworder.tracking_no = trackno
         neworder.save()
-        # decrease product qty
-       
+        
+        neworderitems = Basket.objects.filter()
+        for item in neworderitems:
+            OrderItem.objects.create(
+                order=neworder,
+                product = item.product,
+                price=item.product.price,
+                quantity=item.product_qty
+            )
+        # decrease product qty from stock 
+        # orderproduct = Product.objects.filter(id=item.product_id).first()
+        # orderproduct.quantity = orderproduct.quantity - item.product_qty
+        # orderproduct.save()
         # clear cart
-        basket.clear()
-        # return HttpResponse("Order successful")
+        Basket.clear()
         messages.success(request, 'Order placed Successfully. ')
 
 
@@ -71,11 +84,10 @@ def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
     currentuser=request.user.username
-    items = Order.objects.filter()
+    items = Order.objects.filter(email=currentuser)
     for i in items:
         print(i.amount_paid)
     status=Order.objects.filter()
     context = {"items":items, "status":status}
-    print(i.orderstatus)
     return render(request,"orders/view-orders.html",context)
 

@@ -9,24 +9,20 @@ class Order(models.Model):
     fname = models.CharField(max_length=20)
     lname  = models.CharField(max_length=20)
     phone = models.IntegerField(default=0)
-    email = models.CharField(max_length=50, null=True)
+    email = models.CharField(max_length=50)
     county = models.CharField(max_length=20)
     town = models.CharField(max_length=20)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
-    oid = models.CharField(max_length=50, blank=True)
-   
+    mpesa_code = models.CharField(max_length=8,)
+    amount_paid = models.CharField(max_length=250)
+    tracking_no = models.CharField(max_length=150)
     status = (
         ('Pending','Pending'),
         ('Out for shipping','Out for shipping'),
         ('Completed','completed'),
     )
     orderstatus = models.CharField(max_length=50, choices=status, default='Pending')
-    mpesa_code = models.CharField(max_length=8, null=True)
-    amount_paid = models.CharField(max_length=250)
-    
-    product = models.ForeignKey(Product, related_name='order_items',
-    on_delete=models.CASCADE, null=True)
 
     class Meta:
         ordering = ('-created',)
@@ -38,10 +34,11 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order,related_name='items',
     on_delete=models.CASCADE)
 
-    
-
     price = models.DecimalField(max_digits=20, decimal_places=2)
     quantity = models.PositiveBigIntegerField(default=1)
+
+    product = models.ForeignKey(Product, related_name='order_items',
+    on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return str(self.id)

@@ -13,14 +13,12 @@
 
 <!-- my checkout -->
 <div class="container-fluid mt-3">
-    <form action="{% url 'orders:placeorder' %}" method="POST" >
-    {% csrf_token %}
+    <form action="{% url 'orders:placeorder' %}" method="POST" >{% csrf_token %}
     <div class="row">
-
         <div class="col-md-7">
             <div class="card shadow">
                 <div class="card-body">
-                    <h4 class="card-title">Persona Information</h4>
+                    <h4 class="card-title">Personal Information</h4>
                     <hr>
                     <div class="row checkoutform">
                         <div class="col-md-6">

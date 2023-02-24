@@ -1,7 +1,9 @@
 from store.models import Product
 from decimal import Decimal
+from django.db import models
+from django.conf import settings
 
-class Basket ():
+class Basket(models.Model):
 
     def __init__(self, request):
         self.session = request.session
