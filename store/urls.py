@@ -33,6 +33,9 @@ urlpatterns = [
     # path('user/', views.userPage, name="user-page"),
 
     path('products/', product, name='products'),
+    # search products
+    path('product-search-list/', views.productlistAjax, name='product-search-list'),
+    path('searchproduct', views.searchproduct, name='searchproduct'),
     # path('customer/<str:pk_test>/', customer, name="customer"),
 
     # path('update_order/<str:pk>/', updateOrder, name="update_order"),

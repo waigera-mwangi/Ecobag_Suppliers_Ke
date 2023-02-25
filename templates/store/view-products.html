@@ -3,6 +3,9 @@
 {% block title %}view-products{% endblock title %}
 
 {% block content %}
+<!-- Jquery autocomplete -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
     <h1 style="text-align: center;">Products and Categories </h1>
     <div class="row">
         {% for product in products %}
@@ -13,10 +16,7 @@
                     <h5 class="card-title">{{ product.name }}</h5>
                     <p class="card-text">Ksh.{{ product.price }}</p>
                     <p class="card-text">{{ product.description }}</p>
-                    <div class="row row-sm">
-								<div class="col-6">
-									 <a href="{{% url 'store:add_to_cart' %}}" class="btn btn-primary" value ="{{product.id}}" >Add to cart</a>
-								</div>
+                    <div class="row row-sm float-end">
 								<div class="col-6">
 									<a href="{{ product.get_absolute_url }}" class="btn btn-primary">View product</a>
 								</div>
@@ -26,4 +26,26 @@
         </div>
      {% endfor %}
     </div>
+    <!-- Jquery autocomplete -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+        var availableTags = [];
+
+        $.ajax({
+            method: 'GET',
+            url: "/product-search-list",
+            success:function(response){
+                startAutocomplete(response);
+            }
+        });
+
+    function startAutocomplete(availableTags)
+    {
+        $( "#searchproducts" ).autocomplete({
+            source: availableTags
+        });
+    }
+    
+    </script>
 {% endblock %}

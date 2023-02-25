@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
+from django.contrib import messages
 
 from accounts.decorators import required_access
 from accounts.models import Customer
@@ -145,3 +146,24 @@ def categories(request):
     }
 
 
+def productlistAjax(request):
+    products= Product.objects.filter(is_active=True).values_list('name', flat=True)
+    productsList = list(products)
+
+    return JsonResponse(productsList, safe=False)
+
+def searchproduct(request):
+    if request.method == 'POST':
+        searchedterm = request.POST.get('productsearch')
+        if searchedterm == "":
+             return redirect(request.META.get('HTTP_REFRER'))
+        else:
+            product = Product.objects.filter(name__contains=searchedterm).first()
+
+            if product:
+                return redirect('product_detail/'+product.slug)
+            else:
+                messages.info(request,"No matched product")
+                return redirect(request.META.get('HTTP_REFRER'))
+
+    return redirect(request.META.get('HTTP_REFRER'))
