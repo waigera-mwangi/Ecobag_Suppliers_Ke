@@ -1,56 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 
-<head>
-  <meta charset="utf-8">
-  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Ecobag Suppliers ke / {% block title %}{% endblock %}</title>
+    <meta content="" name="description" />
+    <meta content="" name="keywords" />
 
-  <title>Ecobag Suppliers ke / {% block title %}{% endblock %}</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
-  {% load static %}
-  {% include 'includes/styles.html' %}
-</head>
+    <!-- alertfyjs CSS
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+ Default theme 
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/> -->
+    --> {% load static %} {% include 'includes/styles.html' %}
+  </head>
 
-<body>
+  <body>
+    <main>
+      <div class="container">
+        <section
+          class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4"
+        >
+          <div class="container">
+            <div class="row justify-content-center">
+              <div
+                class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center"
+              >
+                <div class="d-flex justify-content-center py-4">
+                  <a
+                    href="{% url 'index' %}"
+                    class="logo d-flex align-items-center w-auto"
+                  >
+                    {# <img src="{% static 'assets/img/logo.png' %}" alt="" />#}
+                    <span class="d-none d-lg-block">Ecobag Suppliers ke</span>
+                  </a>
+                </div>
+                <!-- End Logo -->
 
-  <main>
-    <div class="container">
-
-      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
-        <div class="container">
-          <div class="row justify-content-center">
-            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
-
-              <div class="d-flex justify-content-center py-4">
-                <a href="{% url 'index' %}" class="logo d-flex align-items-center w-auto">
-{#                  <img src="{% static 'assets/img/logo.png' %}" alt="">#}
-                  <span class="d-none d-lg-block">Ecobag Suppliers ke</span>
-                </a>
-              </div><!-- End Logo -->
-
-              <div class="card mb-3">
-                {% include 'components/messages.html' %}
-                {% block content %} {% endblock %}
-              </div>
-              <!--
+                <div class="card mb-3">
+                  {% include 'components/messages.html' %} {% block content %}
+                  {% endblock %}
+                </div>
+                <!--
               <div class="credits">
                 Designed by <a href="#">Jeff</a>
               </div> -->
-
+              </div>
             </div>
           </div>
-        </div>
+        </section>
+      </div>
+    </main>
+    <!-- End #main -->
 
-      </section>
+    <a
+      href="#"
+      class="back-to-top d-flex align-items-center justify-content-center"
+      ><i class="bi bi-arrow-up-short"></i
+    ></a>
 
-    </div>
-  </main><!-- End #main -->
+    {% include 'includes/scripts.html' %}
 
-  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
-      class="bi bi-arrow-up-short"></i></a>
+    <!-- alertifyJs -->
+    <!-- <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
 
-  {% include 'includes/scripts.html' %}
-</body>
-
+  <script>
+    alertify.set('notifier','position', 'top-right');
+    {% for msg in messages %}
+      alertify.success('{{ msg }}');
+    {% endfor %}
+    
+  </script> -->
+  </body>
 </html>
