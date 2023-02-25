@@ -27,14 +27,17 @@ def placeorder(request):
         neworder.tracking_no = trackno
         neworder.save()
         
-        neworderitems = Basket.objects.filter()
-        for item in neworderitems:
+       
+
+        for item in basket:
             OrderItem.objects.create(
                 order=neworder,
-                product = item.product,
-                price=item.product.price,
-                quantity=item.product_qty
+                product=item['product'],
+                price=item['price'],
+                quantity=item['qty']
             )
+        
+            
         print("Hello")
         # decrease product qty from stock 
         # orderproduct = Product.objects.filter(id=item.product_id).first()
@@ -79,7 +82,7 @@ def checkout(request):
         pass
     return render(request, 'orders/checkout.html')
 
-# view orders
+# view orders in table
 def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -89,3 +92,9 @@ def view_orders(request):
     context = {"orders":orders, "status":status}
     return render(request,"orders/view-orders.html",context)
 
+# view single order
+def order_view(request, t_no):
+    order = Order.objects.filter(tracking_no=t_no).filter(user=request.user).first()
+    orderitems = OrderItem.objects.filter(order=order)
+    context = {'order':order, 'orderitems':orderitems}
+    return render(request,"orders/orderview.html", context)

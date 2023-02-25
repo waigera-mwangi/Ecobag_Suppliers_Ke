@@ -24,34 +24,29 @@ class Order(models.Model):
     )
     orderstatus = models.CharField(max_length=50, choices=status, default='Pending')
 
-    class Meta:
-        ordering = ('-created',)
+    # class Meta:
+    #     ordering = ('-created',)
 
     def __str__(self):
-        return str(self.created)
+        return '{} - {}'.format(self.id,self.tracking_no)
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,related_name='items',
-    on_delete=models.CASCADE)
-
-    price = models.DecimalField(max_digits=20, decimal_places=2)
+    order = models.ForeignKey(Order,on_delete=models.CASCADE)
+    price = models.DecimalField(max_digits=20, decimal_places=2, null=False)
     quantity = models.PositiveBigIntegerField(default=1)
-
-    product = models.ForeignKey(Product, related_name='order_items',
-    on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Product,on_delete=models.CASCADE, null=True)
 
     def __str__(self):
-        return str(self.id)
+        return '{} {}'.format(self.order.id,self.order.tracking_no)
 
+    # @property
+    # def get_cart_total(self):
+    #     order_items = self.orderitem_set.all()
+    #     total = (sum([item.get_total for item in order_items]))
+    #     return total
 
-    @property
-    def get_cart_total(self):
-        order_items = self.orderitem_set.all()
-        total = (sum([item.get_total for item in order_items]))
-        return total
-
-    @property
-    def get_cart_items(self):
-        order_items = self.orderitem_set.all()
-        total = (sum([item.quantity for item in order_items]))
-        return total
+    # @property
+    # def get_cart_items(self):
+    #     order_items = self.orderitem_set.all()
+    #     total = (sum([item.quantity for item in order_items]))
+    #     return total

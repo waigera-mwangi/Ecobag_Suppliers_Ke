@@ -5,7 +5,7 @@
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %} <p><h3>My orders</h3></p> {% endblock %}
+{% block title %} <p><h3 class="mb-0">My orders</h3></p> {% endblock %}
 {% endblock styles %}
 
 <div class="container">
@@ -28,38 +28,36 @@
 		}
 	</style>
 
-    <table class="table table-info table-striped">
-        <thead>
-            <tr>
-                <th>Num</th>
-                <th>Track No</th>
-                <th>Amount</th>
-                <th>Date</th>
-                <th>Email</th>
-                <th>phone</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for i in orders %}
-            
+    <div class="card-body">
+        <table class="table table-info table-striped">
+            <thead>
                 <tr>
-                    <td></td>
-                    <td>{{i.tracking_no}}</td>
-                    <td>{{i.amount_paid}}</td>
-                    <td></td>
-                    <td>{{i.email}}</td>
-                    <td>{{i.phone}}</td>
-                    <td>{{i.orderstatus}}</td>
-                    <td>
-                        <a href="#" class="btn btn-primary">View</a>
-                    </td>
+                    <th>Num</th>
+                    <th>Date</th>
+                    <th>Track No</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Action</th>
                 </tr>
-            
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for i in orders %}
+                
+                    <tr>
+                        <td></td>
+                        <td>{{i.created}}</td>
+                        <td>{{i.tracking_no}}</td>
+                        <td>{{i.amount_paid}}</td>
+                        <td>{{i.orderstatus}}</td>
+                        <td>
+                            <a href="{% url 'orders:orderview' i.tracking_no %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 

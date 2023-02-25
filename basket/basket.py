@@ -4,7 +4,6 @@ from django.db import models
 from django.conf import settings
 
 class Basket(models.Model):
-
     def __init__(self, request):
         self.session = request.session
         basket = self.session.get('skey')
