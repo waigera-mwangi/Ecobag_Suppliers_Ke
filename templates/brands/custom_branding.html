@@ -1,0 +1,61 @@
+{% extends 'layouts/customer-base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+
+{% load static %}
+{% block styles %}
+{% endblock styles %}
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">  
+</script> 
+
+<!-- my branding  -->
+<div class="container-fluid mt-3">
+    <form action="{% url 'brands:branding' %}" method="POST" >{% csrf_token %}
+    <div class="row">
+        <div class="col-md">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h4 class="card-title">Custom Branding</h4>
+                    <hr>
+                    <p><a><h4>
+                        Enter Brand name and logo to be used for the branding of your order.
+                    </h4></a></p>
+                    <hr>
+                    <div class="row checkoutform">
+                        <div class="col-md-6">
+                            <label>Order Tracking No:</label>
+                            <input type="text" class="form-control" name="t_no" placeholder="Enter order tracking ID:">                       
+                         </div>
+                         <div class="col-md-6">
+                            <label>Brand name:</label>
+                            <input type="text" class="form-control" name="brand_name"  placeholder="Enter brand name">                       
+                         </div>                        
+                          <div class="col-md-6">
+                            <label>Brand image(logo):</label>
+                            <input type="file" accept="image/*" class="form-control" name="brand_logo" />                       
+                         </div>
+                         
+                    </div>
+                    
+                </div>
+                
+            </div>   
+        </div>
+        
+ </div>
+        <button id="submit" class="btn btn-primary w-100 fw-bold">Submit</button>
+    </div>
+    </form>
+    
+</div>
+
+
+</div>
+<script>
+    var CSRF_TOKEN = '{{ csrf_token}}'
+</script>
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{% static 'assets/js/payment-index.js' %}" data-rel-js></script>
+{% endblock content %}

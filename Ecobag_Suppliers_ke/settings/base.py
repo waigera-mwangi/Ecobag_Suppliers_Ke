@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'store.apps.StoreConfig',
     'orders.apps.OrdersConfig',
     'payment.apps.PaymentConfig',
+    'brands.apps.BrandsConfig',
     'widget_tweaks',
 ]
 

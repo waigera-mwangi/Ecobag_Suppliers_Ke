@@ -5,6 +5,7 @@ from .models import Order,OrderItem
 from store.models import Product
 from django.contrib import messages
 import random
+from .forms import OrderForm
 # new views
 
 def placeorder(request):
@@ -37,8 +38,7 @@ def placeorder(request):
                 quantity=item['qty']
             )
         
-            
-        print("Hello")
+        
         # decrease product qty from stock 
         # orderproduct = Product.objects.filter(id=item.product_id).first()
         # orderproduct.quantity = orderproduct.quantity - item.product_qty
@@ -50,7 +50,7 @@ def placeorder(request):
 
     return redirect('/')
 
-# my views
+# checking if the product exists before making orders 
 def checkout(request):
     data = {}
     try:
@@ -70,7 +70,6 @@ def checkout(request):
             product = Product.objects.filter(slug=item['slug']).first()
             if product.quantity >= item['quantity']:
                 print(f"{product.quantity} >= {item['quantity']}")
-                print("Everything is fine products exists")
             else:
                 instance = OrderItem.objects.get(order=order, product=product)
                 if product.quantity > 0:
@@ -82,7 +81,7 @@ def checkout(request):
         pass
     return render(request, 'orders/checkout.html')
 
-# view orders in table
+# customer to view ordersin table
 def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -92,9 +91,60 @@ def view_orders(request):
     context = {"orders":orders, "status":status}
     return render(request,"orders/view-orders.html",context)
 
-# view single order
+# view single order by customer
 def order_view(request, t_no):
     order = Order.objects.filter(tracking_no=t_no).filter(user=request.user).first()
     orderitems = OrderItem.objects.filter(order=order)
     context = {'order':order, 'orderitems':orderitems}
     return render(request,"orders/orderview.html", context)
+
+
+# staff to view ordersin table
+def orders_list(request):
+    if not request.user.is_authenticated:
+        return redirect('staff-login')
+    orders = Order.objects.filter()
+    status=Order.objects.filter()
+    context = {"orders":orders, "status":status}
+    return render(request,"orders/orders_list.html",context)
+
+
+# create order
+def create_order(request):
+
+    form =  OrderForm()
+    if request.method == 'POST':
+        form =  OrderForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Order updated successfully")
+            return redirect('/order_list/')
+        else:
+            messages.warning(request, "Error updating order")
+    context ={"form":form}
+    return render(request, 'orders/create_order.html',context)
+
+# update order
+def update_order(request, pk):
+    form = OrderForm(request.POST)
+    order = Order.objects.get(id=pk)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Order updated successfully")
+            return redirect('/')
+        else:
+            messages.warning(request, "Error updating order")
+    context = {"form":form}
+    return render(request, 'orders/create_order.html',context)
+
+# delete order
+def delete_order(request, pk):
+    order = Order.objects.get(id=pk)
+    if request.method == 'POST':
+        order.delete()
+        return redirect('/')
+    context = {"order":order}
+    return render(request, 'orders/delete_order.html', context)

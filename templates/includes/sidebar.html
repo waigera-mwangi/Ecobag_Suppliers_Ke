@@ -26,26 +26,29 @@
         {% endfor %}
         </ul>
       </li><!-- End Categories Nav -->
-
+        
+      <li class="nav-item">
+        <a class="nav-link " href="{% url 'orders:view_orders' %}">
+          <i class="fa fa-truck"></i>
+          <span>My Orders</span>
+        </a>
+      </li><!-- End Orders-->
 
       <li class="nav-item">
-        <a class="nav-link " href="#">
-          <i class="bi bi-grid"></i>
+        <a class="nav-link " href="{% url 'brands:custom_branding' %}">
+          <i class="fa fa-pencil-square-o"></i>
           <span>Custom Branding</span>
         </a>
-      </li><!-- End Custom Nav -->
+      </li>
+      <!-- End Custom Nav -->
       
 
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-           <i class="bi bi-cart"></i><span>My orders</span><i class="bi bi-chevron-down ms-auto"></i>
+           <i class="bi bi-cart"></i><span>My brands</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-            <i class="bi bi-cart" style="font-size: large"></i><span>Cart</span>
-            </a>
-          </li>
+          
           <li>
             <a href="{% url 'store:invoice' %}">
              <i class="bi bi-receipt" style="font-size: large"></i><span>Invoice</span>

@@ -10,84 +10,12 @@
       </li><!-- End Dashboard Nav -->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-       <i class="bi bi-cart"></i></i><span>Payments</span><i class="bi bi-chevron-down ms-auto"></i>
+        <a class="nav-link " href="{% url 'orders:orders_list' %}">
+          <i class="fa fa-pencil-square-o"></i>
+          <span>Orders</span>
         </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>General Tables</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End payments Nav -->
-
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-shop"></i></i><span>Loans</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-bank" style="font-size: large" ></i><span>Loan Applications</span>
-            </a>
-          </li>
-
-              <li>
-            <a href="#">
-                <i class="bi bi-people" style="font-size: large"></i><span>Borrowers</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <i class="bi bi-credit-card" style="font-size: large"></i><span>Payment</span>
-            </a>
-          </li>
-
-              <li>
-            <a href="#">
-            <i class="bi bi-receipt" style="font-size: large"></i><span>Invoice</span>
-            </a>
-          </li>
-
-              <li>
-            <a href="#">
-              <i class="bi bi-piggy-bank" style="font-size: large"></i><span>Deposit</span>
-            </a>
-          </li>
-
-              <li>
-            <a href="#">
-                <i class="bi bi-credit-card" style="font-size: large"></i><span>Loan Repayment</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- end of loans-->
-
-
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-truck"></i></i><span>Delivery</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>General Tables</span>
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              <i class="bi bi-circle"></i><span>Data Tables</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End deliveries Nav -->
+      </li>
+      <!-- End Custom Nav -->
 
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
