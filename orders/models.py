@@ -19,6 +19,8 @@ class Order(models.Model):
     tracking_no = models.CharField(max_length=150)
     status = (
         ('Pending','Pending'),
+        ('Approved','Approved'),
+        ('Rejected','Rejected'),
         ('Out for shipping','Out for shipping'),
         ('Completed','completed'),
     )

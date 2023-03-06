@@ -15,7 +15,7 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{% url 'store:order-list' %}">
+            <a href="{% url 'orders:orders_list' %}">
              <i class="bi bi-cart" style="font-size: large"></i><span>Order-list</span>
             </a>
           </li>
@@ -26,25 +26,6 @@
           </li>
         </ul>
       </li><!-- End Orders Nav -->
-
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#" >
-        <i class="bi bi-shop"></i></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{% url 'store:add-product' %}">
-              <i class="bi bi-plus" style="font-size: large"></i></i><span>Add product</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'store:product-list' %}">
-                   <i class="fa fa-product-hunt" style="font-size: large"></i><span>Manage product</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- end of products-->
-
 
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -63,25 +44,6 @@
           </li>
         </ul>
       </li><!-- End deliveries Nav -->
-
-{#        <li class="nav-item">#}
-{#        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">#}
-{#          <i class="bi bi-layout-text-window-reverse"></i><span>Reports</span><i class="bi bi-chevron-down ms-auto"></i>#}
-{#        </a>#}
-{#        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">#}
-{#          <li>#}
-{#            <a href="#">#}
-{#              <i class="bi bi-circle"></i><span>General Tables</span>#}
-{#            </a>#}
-{#          </li>#}
-{#          <li>#}
-{#            <a href="#">#}
-{#              <i class="bi bi-circle"></i><span>Data Tables</span>#}
-{#            </a>#}
-{#          </li>#}
-{#        </ul>#}
-{#      </li><!-- End of reports -->#}
-
 
 
       <li class="nav-heading">Pages</li>

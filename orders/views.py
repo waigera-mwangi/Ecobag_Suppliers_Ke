@@ -126,15 +126,15 @@ def create_order(request):
 
 # update order
 def update_order(request, pk):
-    form = OrderForm(request.POST)
     order = Order.objects.get(id=pk)
+    form = OrderForm(instance=order)
 
     if request.method == 'POST':
         form = OrderForm(request.POST, instance=order)
         if form.is_valid():
             form.save()
             messages.success(request, "Order updated successfully")
-            return redirect('/')
+            # return redirect('/')
         else:
             messages.warning(request, "Error updating order")
     context = {"form":form}

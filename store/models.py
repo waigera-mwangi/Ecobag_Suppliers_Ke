@@ -37,30 +37,6 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
-
-# class Order(models.Model):
-#     transaction_id = models.CharField(max_length=250, default=False)
-#     customer = models.ForeignKey(User, on_delete=models.CASCADE,)
-#     completed = models.BooleanField(('Completed'), default=False)
-#     is_active = models.BooleanField(('Active'), default=False)  # true means complete
-#     is_archived = models.BooleanField(('Archived'), default=False,
-#                                       help_text=('Means the oder has been cancelled.'))  # order cancelled
-#     created_date = models.DateTimeField(('Created'), auto_now_add=True, null=True)
-#     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
-
-    # @property
-    # def get_cart_total(self):
-    #     order_items = self.orderitem_set.all()
-    #     total = (sum([item.get_total for item in order_items]))
-    #     return total
-
-    # @property
-    # def get_cart_items(self):
-    #     order_items = self.orderitem_set.all()
-    #     total = (sum([item.quantity for item in order_items]))
-    #     return total
-
-
 # class Delivery(models.Model):
 #     order = models.ForeignKey(Order, on_delete=models.CASCADE)
 #     driver_name = models.CharField(max_length=120)
@@ -69,23 +45,6 @@ class Product(models.Model):
 #     def __str__(self):
 #         return self.driver_name
 
-
-# class OrderItem(models.Model):
-#     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-#     quantity = models.IntegerField(default=0)
-#     created = models.DateTimeField(('Created'), auto_now_add=True, null=True)
-#     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
-
-#     @property
-#     def get_price(self):
-#         price = self.product.price * self.product.discount
-#         return price
-
-#     @property
-#     def get_total(self):
-#         total = self.get_price * self.quantity
-#         return total
 
 
 # #
