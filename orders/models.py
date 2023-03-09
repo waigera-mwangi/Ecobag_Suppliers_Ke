@@ -22,7 +22,7 @@ class Order(models.Model):
         ('Approved','Approved'),
         ('Rejected','Rejected'),
         ('Out for shipping','Out for shipping'),
-        ('Completed','completed'),
+        ('Completed','Completed'),
     )
     orderstatus = models.CharField(max_length=50, choices=status, default='Pending')
 

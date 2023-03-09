@@ -31,6 +31,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
 class CustomerLoginView(SuccessMessageMixin, LoginView):
     template_name = 'accounts/customer-login.html'
     authentication_form = CustomerAuthenticationForm
+    
     success_url = reverse_lazy('index')
     success_message = "You've logged in successfully"
 
@@ -106,8 +107,23 @@ def inventory_manager(request):
 
 @required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="FM")
 def finance_manager(request):
-    return render(request, 'finance-manager.html')
+    orders = Order.objects.all()
+    total_orders = orders.count()
+    pending = orders.filter(orderstatus='Pending').count()
+    approved = orders.filter(orderstatus='Approved').count()
+    rejected = orders.filter(orderstatus='Rejected').count()
+    out_for_shipping = orders.filter(orderstatus='Out for shipping').count()
+    completed = orders.filter(orderstatus='Completed').count()
 
+    context = {'orders':orders,
+              'total_orders':total_orders,
+              'pending':pending,
+              'approved':approved,
+              'rejected':rejected,
+              'out_for_shipping':out_for_shipping,
+              'completed':completed}
+    
+    return render(request, 'finance-manager.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="DR")
 def driver(request):
