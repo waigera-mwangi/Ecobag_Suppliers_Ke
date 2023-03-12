@@ -4,6 +4,7 @@
 {% block styles %}
 {% include 'home/includes/styles.html' %}
 {% endblock styles %}
+
 {% block content %}
 	<!-- Breadcrumb -->
 	<div class="breadcrumb-bar">
@@ -76,10 +77,10 @@
 
 		</div>
 
-	</div>
+	
 	<!-- /Page Content -->
-
-<script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script type="text/javascript">
 	$(document).on('click','#add-button', function(e){
 		e.preventDefault();
 		$.ajax({
@@ -100,6 +101,8 @@
 		});
 	})
 </script>
+
+</div>
 {% endblock content %}
 {% block scripts %}
 {% include 'home/includes/scripts.html' %}
