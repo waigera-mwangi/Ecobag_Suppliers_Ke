@@ -29,7 +29,7 @@ from .models import (
 
 # Create your views here.
 # dashboard views
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="SM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def SM_dashboard(request):
     return render(request, 'dashboard/inventorymanager-dashboard.html')
 

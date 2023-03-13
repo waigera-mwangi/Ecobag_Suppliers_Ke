@@ -12,7 +12,6 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', required_access(function=TemplateView.as_view(template_name="index.html"), login_url=reverse_lazy('accounts:login'), user_type="CM"), name="index"),
     path('', include('accounts.urls')),
     path('basket/', include('basket.urls', namespace = 'basket')),
     path('payment/', include('payment.urls', namespace = 'payment')),

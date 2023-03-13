@@ -10,7 +10,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 
 from accounts.decorators import required_access
 from accounts.forms import CustomerSignUpForm, CustomerAuthenticationForm, SupplierSignUpForm, SupplierAuthenticationForm, \
-    StaffLoginForm, CustomerProfileForm, CustomerForm
+    LoginForm, CustomerProfileForm, CustomerForm
 from accounts.models import User, CustomerProfile, Profile
 from django.urls import reverse_lazy
 
@@ -26,14 +26,6 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     model = User
     success_message = "You've registered successfully"
     success_url = reverse_lazy('index')
-
-
-class CustomerLoginView(SuccessMessageMixin, LoginView):
-    template_name = 'accounts/customer-login.html'
-    authentication_form = CustomerAuthenticationForm
-    
-    success_url = reverse_lazy('index')
-    success_message = "You've logged in successfully"
 
 
 class LogoutView(View):
@@ -59,8 +51,8 @@ class SupplierLoginView(SuccessMessageMixin, LoginView):
     success_message = "You've logged in successfully"
 
 
-def staff_login_view(request):
-    loginform = StaffLoginForm(request.POST or None)
+def loginView(request):
+    loginform = LoginForm(request.POST or None)
     msg = ''
 
     if request.method == 'POST':
@@ -68,7 +60,7 @@ def staff_login_view(request):
             username = loginform.cleaned_data.get('username')
             password = loginform.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
-
+            
             if user is not None and user.user_type == "FM":
                 login(request, user)
                 return redirect('accounts:finance-manager')
@@ -76,6 +68,10 @@ def staff_login_view(request):
             elif user is not None and user.user_type == "SM":
                 login(request, user)
                 return redirect('accounts:inventory-manager')
+
+            elif user is not None and user.user_type == "CM":
+                login(request, user)
+                return redirect('accounts:customer')
 
             elif user is not None and user.user_type == "DR":
                 login(request, user)
@@ -97,15 +93,19 @@ def staff_login_view(request):
                 msg = 'Invalid login credentials'
         else:
             msg = 'error validating form'
-    return render(request, 'accounts/staff-login.html', {'form': loginform, 'msg': msg})
+    return render(request, 'accounts/login.html', {'form': loginform, 'msg': msg})
 
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="SM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="CM")
+def customer(request):
+    return render(request, 'index.html')
+
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory_manager(request):
     return render(request, 'inventory-manager.html')
 
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="FM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="FM")
 def finance_manager(request):
     orders = Order.objects.all()
     total_orders = orders.count()
@@ -125,19 +125,19 @@ def finance_manager(request):
     
     return render(request, 'finance-manager.html', context)
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="DR")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):
     return render(request, 'driver.html')
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="MN")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="MN")
 def manager(request):
     return render(request, 'manager.html')
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="BR")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="BR")
 def brander(request):
     return render(request, 'brander.html')
 
-@required_access(login_url=reverse_lazy('accounts:staff-login'), user_type="DM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="DM")
 def dispatch_manager(request):
     return render(request, 'dispatch-manager.html')
 

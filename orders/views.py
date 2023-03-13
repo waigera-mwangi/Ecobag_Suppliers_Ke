@@ -102,7 +102,7 @@ def order_view(request, t_no):
 # staff to view ordersin table
 def orders_list(request):
     if not request.user.is_authenticated:
-        return redirect('staff-login')
+        return redirect('login')
     orders = Order.objects.filter()
     status=Order.objects.filter()
     context = {"orders":orders, "status":status}
