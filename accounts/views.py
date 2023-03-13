@@ -25,7 +25,7 @@ class UserCreateView(SuccessMessageMixin, CreateView):
     form_class = CustomerSignUpForm
     model = User
     success_message = "You've registered successfully"
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('accounts:login')
 
 
 class LogoutView(View):
@@ -33,7 +33,7 @@ class LogoutView(View):
     def get(self, *args, **kwargs):
         logout(self.request)
         messages.info(self.request, "You've logged out successfully.")
-        return redirect('index')
+        return redirect('/')
 
 
 class SupplierCreateView(SuccessMessageMixin, CreateView):
@@ -42,6 +42,7 @@ class SupplierCreateView(SuccessMessageMixin, CreateView):
     model = User
     success_message = "You've registered successfully"
     success_url = reverse_lazy('Supplier')
+    
 
 
 class SupplierLoginView(SuccessMessageMixin, LoginView):
@@ -93,7 +94,7 @@ def loginView(request):
                 msg = 'Invalid login credentials'
         else:
             msg = 'error validating form'
-    return render(request, 'accounts/login.html', {'form': loginform, 'msg': msg})
+    return render(request, 'accounts/user-login.html', {'form': loginform, 'msg': msg})
 
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="CM")
