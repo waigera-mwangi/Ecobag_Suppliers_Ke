@@ -4,26 +4,19 @@ from django.contrib.auth import views as auth_views
 
 from accounts import views
 from accounts.decorators import required_access
-from accounts.views import (SupplierCreateView,
-                            CustomerLoginView,
-                            LogoutView,
-                            SupplierLoginView,
-                            UserCreateView,
-                            password_change,
-                            staff_login_view, profile,
-                            )
+from accounts.views import *
 
 app_name = "accounts"
 
 urlpatterns = [
     path('register/', UserCreateView.as_view(), name="register"),
     path('supplier-register/', SupplierCreateView.as_view(), name="Supplier-register"),
-    path('login/', CustomerLoginView.as_view(), name="login"),
     path('supplier-login/', SupplierLoginView.as_view(), name="Supplier-login"),
     path('logout/', LogoutView.as_view(), name="logout"),
 
     # staff urls
-    path('staff-login/', views.staff_login_view, name='staff-login'),
+    path('', views.loginView, name='login'),
+    path('customer/', views.customer, name='customer'),
     path('inventory-manager/', views.inventory_manager, name='inventory-manager'),
     path('manager/', views.manager, name='manager'),
     path('brander/', views.brander, name='brander'),

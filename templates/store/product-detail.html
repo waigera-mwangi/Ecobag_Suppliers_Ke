@@ -33,7 +33,7 @@
 					<!-- Product Widget -->
 					<div class="card">
 						<div class="card-body">
-							<div class="doctor-widget">
+							<div class="card-shadow">
 								<div class="center">
 									<div class="img">
 											<img src="{{product.image.url}}" class="img-fluid" alt="{{product.name}}" style="height: 300px; width: 300px; object-fit: cover;">
@@ -68,18 +68,15 @@
 							</div>
 						</div>
 					</div>
-					<!-- /Product Widget -->
-<!--					<div class="load-more text-center">-->
-<!--						<a class="btn btn-primary btn-sm" href="javascript:void(0);">Load More</a>-->
-<!--					</div>-->
-				</div>
 			</div>
 
 		</div>
+	</div>
+</div>
+			<!-- /Page Content -->
 
-	
-	<!-- /Page Content -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
 <script type="text/javascript">
 	$(document).on('click','#add-button', function(e){
 		e.preventDefault();
@@ -102,7 +99,7 @@
 	})
 </script>
 
-</div>
+
 {% endblock content %}
 {% block scripts %}
 {% include 'home/includes/scripts.html' %}

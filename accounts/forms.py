@@ -123,7 +123,7 @@ class DriverAuthenticationForm(AuthenticationForm):
             raise forms.ValidationError('Invalid username or password ', code='invalid login')
 
 
-class StaffLoginForm(forms.Form):
+class LoginForm(forms.Form):
     username = forms.CharField(
         widget=forms.TextInput(
             attrs={
