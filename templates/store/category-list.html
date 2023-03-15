@@ -18,7 +18,7 @@
                     <div class="page-title">
                         <ol class="breadcrumb text-right">
                             <li><a href="#">Dashboard</a></li>
-                            <li><a href="#">Product</a></li>
+                            <li><a href="#">Category</a></li>
                             <li class="active">List</li>
                         </ol>
                     </div>
@@ -34,42 +34,38 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="box-title">Product List </h4>
+                <h4 class="box-title">Category List </h4>
             </div>
             <div class="card-body--">
                 <div class="table-stats order-table ov-h">
                     <table class="table ">
                         <thead>
                             <tr style="background:  #80ff80">
-                                <th class="serial">#</th>
+                                <th class="serial">Num</th>
                                 <th>Name</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Date</th>
+                                <th>Slug</th>                                
                                 <th>Update</th>
                                 <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% if product %}
-                            {% for product in product %}
+                            {% if category %}
+                            {% for category in category %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ product.name }}</td>
+                                <td>{{ category.name }}</td>
                                 <!-- <td>{{ product.sortno }}</td> -->
-                                <td>{{ product.price}}</td>
-                                <td>{{ product.quantity }}</td>
-                                <td>{{ product.created_date }}</td>
+                                <td>{{ category.slug}}</td>
                                 <td>
-                                    <a href="{% url 'store:update_product' product.id %}" class="btn btn-primary">Update</a>
+                                    <a href="{% url 'store:update_category' category.id %}" class="btn btn-primary">Update</a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'store:delete_product' product.id %}" class="btn btn-danger">Delete</a>
+                                    <a href="{% url 'store:delete_category' category.id %}" class="btn btn-danger">Delete</a>
                                 </td>
                             </tr>
                             {% endfor %}
                             {% else %}
-                                <tr><td>No Product Data</td></tr>
+                                <tr><td>No Category</td></tr>
                             {% endif %}
                         </tbody>
                     </table>
