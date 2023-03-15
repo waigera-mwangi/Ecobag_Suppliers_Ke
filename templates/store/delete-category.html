@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <p>
                             <h4>
-                                Are you sure you want to delete Category "{{category}}" ?
+                                Are you sure you want to delete Category "{{category.name}}" ?
                             </h4>
                         </p>
                         <hr>
@@ -28,10 +28,8 @@
             </div>
         <div>
             <a  href="{% url 'store:category_list' %}" class="btn btn-warning  fw-bold float-left">Cancel</a>
-        </div>
 
-        <div>
-            <input type="submit" class="btn btn-danger float-right name="confirm">
+            <input type="submit" class="btn btn-danger float-right" name="confirm">
         </div>
 
        </div>
