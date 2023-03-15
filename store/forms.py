@@ -1,31 +1,31 @@
 from django import forms
 from django.forms import ModelForm
 
-from .models import Product
+from .models import *
 
 
-class ProductForm(forms.ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'image', 'price', 'quantity']
-        widgets = {
-            'name': forms.TextInput(attrs={
-                'class': 'form-control', 'id': 'name'
-            }),
-            # 'sortno': forms.NumberInput(attrs={
-            #     'class': 'form-control', 'id': 'sortno'
-            # }),
-            'image': forms.FileInput(attrs={
-                'class': 'form-control', 'id': 'image'
-            }),
-            'price': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'price'
-            }),
+# class ProductForm(forms.ModelForm):
+#     class Meta:
+#         model = Product
+#         fields = ['name', 'image', 'price', 'quantity']
+#         widgets = {
+#             'name': forms.TextInput(attrs={
+#                 'class': 'form-control', 'id': 'name'
+#             }),
+#             # 'sortno': forms.NumberInput(attrs={
+#             #     'class': 'form-control', 'id': 'sortno'
+#             # }),
+#             'image': forms.FileInput(attrs={
+#                 'class': 'form-control', 'id': 'image'
+#             }),
+#             'price': forms.NumberInput(attrs={
+#                 'class': 'form-control', 'id': 'price'
+#             }),
 
-            'quantity': forms.NumberInput(attrs={
-                'class': 'form-control', 'id': 'quantity'
-            }),
-        }
+#             'quantity': forms.NumberInput(attrs={
+#                 'class': 'form-control', 'id': 'quantity'
+#             }),
+#         }
 
 
 class OrderForm(ModelForm):
@@ -53,13 +53,6 @@ from django.forms import ModelForm
 from store.models import Product
 
 
-class ProductForm(ModelForm):
-    class Meta:
-        model = Product
-        fields = ['name', 'price', 'image', 'description', 'quantity']
-
-
-
 class OrderItemForm(ModelForm):
     class Meta:
         # model = OrderItem
@@ -70,3 +63,13 @@ class OrderPaymentForm(ModelForm):
     class Meta:
         # model = OrderPayment
         fields = ['mpesa', 'phone', 'amount']
+
+class ProductForm(ModelForm):
+    class Meta:
+        model = Product
+        fields = '__all__'
+
+class CategoryForm(ModelForm):
+    class Meta:
+        model = Category
+        fields = '__all__'

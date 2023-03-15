@@ -3,29 +3,28 @@
     <ul class="sidebar-nav" id="sidebar-nav">
 
       <li class="nav-item">
-        <a class="nav-link " href="{% url 'store:SM-dashboard' %}" >
+        <a class="nav-link " href="#" >
           <i class="bi bi-grid"></i>
           <span>Dashboard</span>
         </a>
       </li><!-- End Dashboard Nav -->
-
-      <li class="nav-item" >
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-       <i class="bi bi-cart"></i></i><span >Orders</span><i class="bi bi-chevron-down ms-auto"></i>
+      <li class="nav-item">
+        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#" >
+        <i class="bi bi-shop"></i></i><span>Category</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{% url 'store:order-list' %}">
-             <i class="bi bi-cart" style="font-size: large"></i><span>Order-list</span>
+            <a href="{% url 'store:create_category' %}">
+              <i class="bi bi-plus" style="font-size: large"></i></i><span>Add category</span>
             </a>
           </li>
           <li>
-            <a href="#">
-              <i class="bi bi-people" style="font-size: large"></i><span>Customers</span>
+            <a href="{% url 'store:category_list' %}">
+                   <i class="fa fa-list" style="font-size: large"></i><span>Categories</span>
             </a>
           </li>
         </ul>
-      </li><!-- End Orders Nav -->
+      </li><!-- end of products-->
 
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#" >
@@ -33,13 +32,13 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{% url 'store:add-product' %}">
+            <a href="{% url 'store:create_product' %}">
               <i class="bi bi-plus" style="font-size: large"></i></i><span>Add product</span>
             </a>
           </li>
           <li>
             <a href="{% url 'store:product-list' %}">
-                   <i class="fa fa-product-hunt" style="font-size: large"></i><span>Manage product</span>
+                   <i class="fa fa-product-hunt" style="font-size: large"></i><span>Product List</span>
             </a>
           </li>
         </ul>

@@ -11,7 +11,7 @@ from accounts.models import Customer
 from utils.utils import generate_key
 # from .filter import OrderFilter
 from orders.models import Order
-from .forms import ProductForm, DeliveryForm, OrderForm, OrderPaymentForm
+from .forms import *
 from django.shortcuts import get_object_or_404, render
 
 
@@ -41,52 +41,23 @@ def SM_dashboard(request):
 
 
 # #Product views
-def create_product(request):
-    forms = ProductForm()
-    if request.method == 'POST':
-        forms = ProductForm(request.POST, request.FILES)
-        if forms.is_valid():
-            forms.save()
-            return redirect('store:product-list')
-    context = {
-        'form': forms
-    }
-    return render(request, 'store/add-product.html', context)
+# def create_product(request):
+#     forms = ProductForm()
+#     if request.method == 'POST':
+#         forms = ProductForm(request.POST, request.FILES)
+#         if forms.is_valid():
+#             forms.save()
+#             return redirect('store:product-list')
+#     context = {
+#         'form': forms
+#     }
+#     return render(request, 'store/add-product.html', context)
 
 
 class ProductListView(ListView):
     model = Product
     template_name = 'store/product-list.html'
     context_object_name = 'product'
-
-
-# Order views
-# @login_required(login_url='login')
-# def create_order(request):
-#     forms = OrderForm()
-#     if request.method == 'POST':
-#         forms = OrderForm(request.POST)
-#         if forms.is_valid():
-#             supplier = forms.cleaned_data['supplier']
-#             product = forms.cleaned_data['product']
-#             design = forms.cleaned_data['design']
-#             color = forms.cleaned_data['color']
-#             buyer = forms.cleaned_data['buyer']
-#             season = forms.cleaned_data['season']
-#             drop = forms.cleaned_data['drop']
-#             Order.objects.create(
-#                 customer=customer,
-#                 product=product,
-#                 design=design,
-#                 color=color,
-#                 status='pending'
-#             )
-#             return redirect('order-list')
-#     context = {
-#         'form': forms
-#     }
-#     return render(request, 'store/create_order.html', context)
-
 
 class OrderListView(ListView):
     # model = Order
@@ -167,3 +138,90 @@ def searchproduct(request):
                 return redirect(request.META.get('HTTP_REFRER'))
 
     return redirect(request.META.get('HTTP_REFRER'))
+
+# create product by inventory manager
+def create_product(request):
+    form = ProductForm()
+    if request.method == 'POST':
+        form = ProductForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Product created successfully")
+            return redirect('store:product-list')
+        else:
+            messages.warning(request, "Error creating Product")
+    context = {'form': form}
+    return render(request, 'store/add-product.html', context)
+
+
+# update product by inventory manager
+def update_product(request, pk):
+    product = Product.objects.get(id=pk)
+    form = ProductForm(instance=product)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Product updated successfully")
+            return redirect('store:product-list')
+        else:
+            messages.warning(request, "Error updating Product")
+    context = {'form': form}
+    return render(request, 'store/add-product.html', context)
+
+# delete product
+def delete_product(request, pk):
+    product = Product.objects.get(id=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('store:product-list')
+        messages.success(request, "Product deleted successfully")
+
+    context = {"product":product}
+    return render(request, 'store/delete-product.html', context)
+
+# create category by inventory manager
+def create_category(request):
+    form  = CategoryForm()
+    if request.method == 'POST':
+        form = CategoryForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Category created successfully")
+            return redirect('store:product-list')
+        else:
+            messages.warning(request, "Error creating Category")
+    context = {'form': form}
+    return render(request, 'store/add-category.html', context)
+
+# update category
+def update_category(request, pk):
+    category = Category.objects.get(id=pk)
+    form = CategoryForm(instance=category)
+
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Product updated successfully")
+            return redirect('store:category_list')
+        else:
+            messages.warning(request, "Error updating Product")
+    context = {'form': form}
+    return render(request, 'store/add-category.html', context)
+
+
+# delete category
+def delete_category(request, pk):
+    category = Category.objects.get(id=pk)
+    if request.method == 'POST':
+        category.delete()
+        return redirect('store:category_list')
+    context = {"category":category}
+    return render(request, 'store/delete-category.html', context)
+
+def category_list(request):
+    category = Category.objects.filter()
+    context = {"category":category}
+    return render(request, "store/category-list.html", context)

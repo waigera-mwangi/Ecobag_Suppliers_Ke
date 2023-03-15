@@ -2,15 +2,7 @@ from store import views
 
 from django.urls import path
 
-from .views import (
-    create_product,
-    create_delivery,
-    ProductListView,
-    OrderListView,
-    DeliveryListView,
-    invoice,
-    view_product, product_detail, product,category_list
-)
+from .views import *
 
 app_name = "store"
 
@@ -19,13 +11,13 @@ urlpatterns = [
 
     # path('create-buyer/', create_buyer, name='create-buyer'),
     # path('create-drop/', create_drop, name='create-drop'),
-    path('add-product/', create_product, name='add-product'),
     path('invoice/', invoice, name='invoice'),
     path('create-delivery/', create_delivery, name='create-delivery'),
 
     # path('customer-list/', CustomerListView.as_view(), name='customer-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),
-    path('order-list/', OrderListView.as_view(), name='order-list'),
+    # path('order-list/', OrderListView.as_view(), name='order-list'),
+    path('category_list/', views.category_list, name='category_list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     path('view-products/', view_product, name='view-product'),
     path('product_detail/<slug:slug>/', views.product_detail, name='product_detail'),
@@ -36,21 +28,16 @@ urlpatterns = [
     # search products
     path('product-search-list/', views.productlistAjax, name='product-search-list'),
     path('searchproduct', views.searchproduct, name='searchproduct'),
-    # path('customer/<str:pk_test>/', customer, name="customer"),
+   
+#    update stock by inventory
+    path('create_category/', views.create_category, name='create_category'),
+    path('create_product/', views.create_product, name='create_product'),
+    path('update_category/<str:pk>/', views.update_category, name='update_category'),
+    path('update_product/<str:pk>/', views.update_product, name='update_product'),
+    path('delete_category/<str:pk>/', views.delete_category, name='delete_category'),
+    path('delete_product/<str:pk>/', views.delete_product, name='delete_product'),
+    
 
-    # path('update_order/<str:pk>/', updateOrder, name="update_order"),
-    # path('delete_order/<str:pk>/', deleteOrder, name="delete_order"),
 
-
-
-    # cart
-    # path('order_list/', order_list, name="order_list"),
-    # path('checkout_pay/', checkout_pay, name="checkout_pay"),
-    # path('clear_cart/', clear_cart, name="clear_cart"),
-    # path('increase_quantity/<slug>/', increase_quantity, name="increase_quantity"),
-    # path('decrease_quantity/<slug>/', decrease_quantity, name="decrease_quantity"),
-    # path('remove_from_cart/<slug>/', remove_from_cart, name="remove_from_cart"),
-    # path('cart_list/', cart_list, name="cart_list"),
-    # path('add_to_cart/', add_to_cart, name="add_to_cart"),
-    # path('order_list/', customer_required(views.OrderListView.as_view()), name="order_list"),
+   
 ]
