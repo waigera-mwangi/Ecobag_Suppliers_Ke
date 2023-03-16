@@ -29,7 +29,7 @@ def create_supply(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Supply made successfully")
-            return redirect('store:product-list')
+            return redirect('supply:supply_request_list')
         else:
             messages.warning(request, "Error making supply")
     context = {'form': form}
