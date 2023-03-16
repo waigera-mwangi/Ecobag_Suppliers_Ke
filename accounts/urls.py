@@ -10,8 +10,6 @@ app_name = "accounts"
 
 urlpatterns = [
     path('register/', UserCreateView.as_view(), name="register"),
-    path('supplier-register/', SupplierCreateView.as_view(), name="Supplier-register"),
-    path('supplier-login/', SupplierLoginView.as_view(), name="Supplier-login"),
     path('logout/', LogoutView.as_view(), name="logout"),
 
     # staff urls
@@ -23,6 +21,7 @@ urlpatterns = [
     path('dispatch-manager/', views.dispatch_manager, name='dispatch-manager'),
     path('finance-manager/', views.finance_manager, name='finance-manager'),
     path('driver/', views.driver, name='driver'),
+    path('supplier/', views.supplier, name='supplier'),
     # path('profile', views.profile, name='customer'),
     path('change-password', password_change, name='change-password'),
     path('profile', views.profile, name='profile'),

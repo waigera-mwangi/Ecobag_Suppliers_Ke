@@ -1,4 +1,4 @@
-{% extends 'layouts/inventorymanager-base.html' %}
+{% extends 'layouts/supplier-base.html' %}
 
 {% block title %}{% endblock title %}
 
@@ -34,7 +34,7 @@
     <div class="col-xl-12">
         <div class="card">
             <div class="card-body">
-                <h4 class="box-title">Supply request List </h4>
+                <h4 class="box-title"></h4>
             </div>
             <div class="card-body--">
                 <div class="table-stats order-table ov-h">
@@ -42,32 +42,29 @@
                         <thead>
                             <tr style="background:  #80ff80">
                                 <th class="serial">Num</th>
-                                <th>Name</th>
+                                <th>Item</th>
                                 <th>Quantity</th>                                
-                                <th>Date</th>                                
-                                <th>Update</th>
-                                <th>Remove</th>
+                                <th>Price (Ksh)</th>                                
+                                <th>Date</th>                                                                
+                                <th>Status</th>                                                                
                             </tr>
                         </thead>
                         <tbody>
-                            {% if tender %}
-                            {% for tender in tender %}
+                            {% if supply %}
+                            {% for supply in supply %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ tender.item }}</td>
+                                <td>{{ supply.item }}</td>
                                 <!-- <td>{{ product.sortno }}</td> -->
-                                <td>{{ tender.quantity }}</td>
-                                <td>{{ tender.created_date }}</td>
-                                <td>
-                                    <a href="{% url 'supply:update_supply_request' tender.id%}" class="btn btn-primary">Update</a>
-                                </td>
-                                <td>
-                                    <a href="{% url 'supply:delete_supply_request' tender.id%}" class="btn btn-danger">Delete</a>
-                                </td>
+                                <td>{{ supply.quantity }}</td>
+                                <td>{{ supply.price }}</td>
+                                <td>{{ supply.created_date }}</td>
+                                <td>{{ supply.supply_status }}</td>
+                                
                             </tr>
                             {% endfor %}
                             {% else %}
-                                <tr><td>No Requests</td></tr>
+                                <tr><td>No Supplies</td></tr>
                             {% endif %}
                         </tbody>
                     </table>
