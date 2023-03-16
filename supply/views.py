@@ -16,7 +16,7 @@ def create_supplyTender(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Supply request made successfully")
-            return redirect('store:product-list')
+            return redirect('supply:supply_request_list')
         else:
             messages.warning(request, "Error making request")
     context = {'form': form}
