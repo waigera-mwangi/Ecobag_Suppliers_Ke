@@ -1,4 +1,4 @@
-{% extends 'layouts/inventorymanager-base.html' %}
+{% extends 'layouts/supplier-base.html' %}
 
 {% block title %}{% endblock title %}
 
@@ -45,8 +45,6 @@
                                 <th>Name</th>
                                 <th>Quantity</th>                                
                                 <th>Date</th>                                
-                                <th>Update</th>
-                                <th>Remove</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,11 +57,6 @@
                                 <td>{{ tender.quantity }}</td>
                                 <td>{{ tender.created_date }}</td>
                                 <td>
-                                    <a href="{% url 'supply:update_supply_request' tender.id%}" class="btn btn-primary">Update</a>
-                                </td>
-                                <td>
-                                    <a href="{% url 'supply:delete_supply_request' tender.id%}" class="btn btn-danger">Delete</a>
-                                </td>
                             </tr>
                             {% endfor %}
                             {% else %}

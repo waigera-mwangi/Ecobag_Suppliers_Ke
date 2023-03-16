@@ -7,7 +7,7 @@ class ProductSupply(models.Model):
     item = models.CharField(max_length=255)
     quantity = models.IntegerField()
     created_date = models.DateField(auto_now=True)
-
+    price = models.IntegerField(default=500)
     status = (
         ('Pending','Pending'),
         ('Complete','Complete'),

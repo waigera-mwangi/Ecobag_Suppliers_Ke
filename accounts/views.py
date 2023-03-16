@@ -35,22 +35,6 @@ class LogoutView(View):
         return redirect('/')
 
 
-class SupplierCreateView(SuccessMessageMixin, CreateView):
-    template_name = "accounts/Supplier-registration.html"
-    form_class = SupplierSignUpForm
-    model = User
-    success_message = "You've registered successfully"
-    success_url = reverse_lazy('Supplier')
-    
-
-
-class SupplierLoginView(SuccessMessageMixin, LoginView):
-    template_name = 'accounts/Supplier-login.html'
-    authentication_form = SupplierAuthenticationForm
-    success_url = reverse_lazy('Supplier')
-    success_message = "You've logged in successfully"
-
-
 def loginView(request):
     loginform = LoginForm(request.POST or None)
     msg = ''
@@ -76,6 +60,10 @@ def loginView(request):
             elif user is not None and user.user_type == "DR":
                 login(request, user)
                 return redirect('accounts:driver')
+            
+            elif user is not None and user.user_type == "RD":
+                login(request, user)
+                return redirect('accounts:supplier')
 
             elif user is not None and user.user_type == "MN":
                 login(request, user)
@@ -145,6 +133,10 @@ def finance_manager(request):
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):
     return render(request, 'driver.html')
+
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
+def supplier(request):
+    return render(request, 'supplier.html')
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="MN")
 def manager(request):
