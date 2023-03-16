@@ -9,13 +9,12 @@ from django.views.generic import CreateView
 from django.contrib.messages.views import SuccessMessageMixin
 
 from accounts.decorators import required_access
-from accounts.forms import CustomerSignUpForm, CustomerAuthenticationForm, SupplierSignUpForm, SupplierAuthenticationForm, \
-    LoginForm, CustomerProfileForm, CustomerForm
+from accounts.forms import *
 from accounts.models import User, CustomerProfile, Profile
 from django.urls import reverse_lazy
 
 from orders.models import Order
-
+from store.models import *
 # from orders.views import user_orders
 
 
@@ -99,11 +98,28 @@ def loginView(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="CM")
 def customer(request):
-    return render(request, 'index.html')
+    return redirect('store:view-product')
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory_manager(request):
-    return render(request, 'inventory-manager.html')
+    products = Product.objects.all()
+    total_products = products.count()
+    inStock = products.filter(in_stock=True)
+    isActive = products.filter(is_active=True)
+    total_isActive = isActive.count()
+    total_inStock = inStock.count()
+    category  = Category.objects.all()
+    total_categories = category.count()
+
+    context = {'products':products,
+               'total_products':total_products,
+               'total_categories':total_categories,
+               'total_inStock':total_inStock,
+               'total_isActive':total_isActive,
+    }
+
+
+    return render(request, 'inventory-manager.html',context)
 
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="FM")

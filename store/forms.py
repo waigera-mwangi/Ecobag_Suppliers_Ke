@@ -3,31 +3,6 @@ from django.forms import ModelForm
 
 from .models import *
 
-
-# class ProductForm(forms.ModelForm):
-#     class Meta:
-#         model = Product
-#         fields = ['name', 'image', 'price', 'quantity']
-#         widgets = {
-#             'name': forms.TextInput(attrs={
-#                 'class': 'form-control', 'id': 'name'
-#             }),
-#             # 'sortno': forms.NumberInput(attrs={
-#             #     'class': 'form-control', 'id': 'sortno'
-#             # }),
-#             'image': forms.FileInput(attrs={
-#                 'class': 'form-control', 'id': 'image'
-#             }),
-#             'price': forms.NumberInput(attrs={
-#                 'class': 'form-control', 'id': 'price'
-#             }),
-
-#             'quantity': forms.NumberInput(attrs={
-#                 'class': 'form-control', 'id': 'quantity'
-#             }),
-#         }
-
-
 class OrderForm(ModelForm):
     class Meta:
         # model = Order

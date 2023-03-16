@@ -100,6 +100,7 @@ def order_view(request, t_no):
 
 
 # staff to view ordersin table
+
 def orders_list(request):
     if not request.user.is_authenticated:
         return redirect('login')
