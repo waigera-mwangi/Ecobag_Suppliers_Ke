@@ -11,29 +11,12 @@
 <div class="container">
     <p><h3 class="mb-0">My orders</h3></p> 
 
-    <style type="text/css">
-		body
-		{
-		    counter-reset: Serial;          
-		}
-
-		table
-		{
-		    border-collapse: separate;
-		}
-
-		tr td:first-child:before
-		{
-		  counter-increment: Serial;      
-		  content: counter(Serial); 
-		}
-	</style>
 
     <div class="card-body">
         <table class="table table-info table-striped">
             <thead>
                 <tr>
-                    <th>Num</th>
+                    <th class="serial">Num</th>
                     <th>Date</th>
                     <th>Track No</th>
                     <th>Amount</th>
@@ -42,10 +25,11 @@
                 </tr>
             </thead>
             <tbody>
+                {% if orders %}
+
                 {% for i in orders %}
-                
                     <tr>
-                        <td></td>
+                        <td class="serial">{{ forloop.counter }}</td>
                         <td>{{i.created}}</td>
                         <td>{{i.tracking_no}}</td>
                         <td>{{i.amount_paid}}</td>
@@ -54,8 +38,12 @@
                             <a href="{% url 'orders:orderview' i.tracking_no %}" class="btn btn-primary">View</a>
                         </td>
                     </tr>
-                
                 {% endfor %}
+
+                {% else %}
+                <tr><td>No recent orders</td></tr>
+
+                {% endif %}
             </tbody>
         </table>
     </div>
