@@ -81,7 +81,7 @@ def checkout(request):
         pass
     return render(request, 'orders/checkout.html')
 
-# customer to view ordersin table
+# customer to view orders in table
 def view_orders(request):
     if not request.user.is_authenticated:
         return redirect('login')
