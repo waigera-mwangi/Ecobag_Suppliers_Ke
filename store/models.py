@@ -24,7 +24,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=255, null = True)
     price = models.IntegerField(null=True)
     quantity = models.IntegerField(null=True)
-    image = models.ImageField(default='non')
+    image = models.ImageField()
     created_date = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
     description = models.CharField(max_length=100, null=True)
