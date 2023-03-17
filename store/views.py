@@ -153,7 +153,7 @@ def create_product(request):
     context = {'form': form}
     return render(request, 'store/add-product.html', context)
 
-
+    
 # update product by inventory manager
 def update_product(request, pk):
     product = Product.objects.get(id=pk)
