@@ -48,7 +48,7 @@ def placeorder(request):
         basket.clear()
         messages.success(request, 'Order placed Successfully. ')
 
-    return redirect('/')
+    return redirect('store:view-product')
 
 # checking if the product exists before making orders 
 def checkout(request):
@@ -104,9 +104,8 @@ def order_view(request, t_no):
 def orders_list(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    orders = Order.objects.filter()
-    status=Order.objects.filter()
-    context = {"orders":orders, "status":status}
+    list_orders = Order.objects.filter()
+    context = {"list_orders":list_orders}
     return render(request,"orders/orders_list.html",context)
 
 

@@ -189,7 +189,7 @@ def create_category(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Category created successfully")
-            return redirect('store:product-list')
+            return redirect('store:category_list')
         else:
             messages.warning(request, "Error creating Category")
     context = {'form': form}

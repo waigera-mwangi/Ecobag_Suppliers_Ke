@@ -10,32 +10,13 @@
 
 <!-- <div class="container"> -->
     <p><h3 class="mb-0">Orders List</h3></p> 
-
-    <style type="text/css">
-		body
-		{
-		    counter-reset: Serial;          
-		}
-
-		table
-		{
-		    border-collapse: separate;
-		}
-
-		tr td:first-child:before
-		{
-		  counter-increment: Serial;      
-		  content: counter(Serial); 
-		}
-	</style>
-
     <div class="card-body">
         <!-- <a class="btn btn-primary btn-sm btn-block" href="{% url 'orders:create_order' %}">Create Order</a> -->
         <table class="table table-info table-striped">
             <thead>
-                <tr>
-                    <th>Num</th>
-                    <th>Date Orderd</th>
+                <tr style="background:  #80ff80">
+                    <th class="serial">Num</th>
+                    <th>Date</th>
                     <th>Track No</th>
                     <th>Amount</th>
                     <th>Status</th>
@@ -44,11 +25,11 @@
                 </tr>
             </thead>
             <tbody>
-                {% if orders %}
-                {% for i in orders %}
+                {% if list_orders %}
+                {% for i in list_orders %}
                 
                     <tr>
-                        <td></td>
+                        <td class="serial">{{ forloop.counter }}</td>
                         <td>{{i.created}}</td>
                         <td>{{i.tracking_no}}</td>
                         <td>{{i.amount_paid}}</td>
