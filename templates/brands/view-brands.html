@@ -1,0 +1,49 @@
+{% extends 'layouts/customer-base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+{% block styles %}
+{% block title %} {% endblock %}
+{% endblock styles %}
+
+<div class="container">
+    <p><h3 class="mb-0">My brands</h3></p> 
+
+
+    <div class="card-body">
+        <table class="table table-info table-striped">
+            <thead>
+                <tr>
+                    <th class="serial">Num</th>
+                    <th>Date</th>
+                    <th>Track No</th>
+                    <th>Name</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if brands %}
+
+                {% for i in brands %}
+                    <tr>
+                        <td class="serial">{{ forloop.counter }}</td>
+                        <td>{{i.created}}</td>
+                        <td>{{i.brand_tno}}</td>
+                        <td>{{i.brand_name}}</td>
+                        <td>{{i.brandstatus}}</td>
+                    </tr>
+                {% endfor %}
+
+                {% else %}
+                <tr><td>No recent brands</td></tr>
+
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock content %}

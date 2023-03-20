@@ -8,6 +8,7 @@ from django.views.generic import ListView
 from django.contrib import messages
 from .forms import *
 from django.shortcuts import get_object_or_404, render
+import random
 
 def create_supplyTender(request):
     form = SupplyTenderForm()
@@ -60,7 +61,10 @@ def create_supply(request):
     form = SupplyForm()
     if request.method == 'POST':
         form = SupplyForm(request.POST, request.FILES)
+        
         if form.is_valid():
+            user = request.user
+            user.save()
             form.save()
             messages.success(request, "Supply made successfully")
             return redirect('supply:supply_request_list')

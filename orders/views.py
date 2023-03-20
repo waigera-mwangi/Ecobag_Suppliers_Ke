@@ -117,10 +117,10 @@ def create_order(request):
         form =  OrderForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Order updated successfully")
+            messages.success(request, "Order created successfully")
             return redirect('store:order_list')
         else:
-            messages.warning(request, "Error updating order")
+            messages.warning(request, "Error creating order")
     context ={"form":form}
     return render(request, 'orders/create_order.html',context)
 
@@ -134,7 +134,7 @@ def update_order(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Order updated successfully")
-            return redirect('accounts:finance_manager')
+            return redirect('store:order_list')
         else:
             messages.warning(request, "Error updating order")
     context = {"form":form}
