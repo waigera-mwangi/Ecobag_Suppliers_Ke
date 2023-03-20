@@ -11,5 +11,5 @@ urlpatterns = [
     path('create_brand', views.create_brand, name='create_brand'),
     path('update_brand/<str:pk>/', views.update_brand, name='update_brand'),
     path('delete_brand/<str:pk>/', views.delete_brand, name='delete_brand'),
-    
+    path('view_brands/', views.view_brands, name='view_brands'),
     ]

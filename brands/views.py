@@ -80,3 +80,13 @@ def delete_brand(request, pk):
         return redirect('brands:brand_list')
     context = {"brand":brand}
     return render(request, 'brands/delete_brand.html', context)
+
+    # customer to view brands in table
+def view_brands(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    currentuser=request.user.email
+    brands = Brand.objects.filter(email=currentuser)
+    status= Brand.objects.filter()
+    context = {"brands":brands, "status":status}
+    return render(request,"brands/view-brands.html",context)
