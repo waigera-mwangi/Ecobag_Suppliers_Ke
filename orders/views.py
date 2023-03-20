@@ -134,7 +134,7 @@ def update_order(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Order updated successfully")
-            return redirect('store:order_list')
+            return redirect('store:orders_list')
         else:
             messages.warning(request, "Error updating order")
     context = {"form":form}
