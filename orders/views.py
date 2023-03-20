@@ -99,7 +99,7 @@ def order_view(request, t_no):
     return render(request,"orders/orderview.html", context)
 
 
-# staff to view ordersin table
+# staff to view orders in table
 
 def orders_list(request):
     if not request.user.is_authenticated:
@@ -118,7 +118,7 @@ def create_order(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Order created successfully")
-            return redirect('store:order_list')
+            return redirect('order:orders_list')
         else:
             messages.warning(request, "Error creating order")
     context ={"form":form}
@@ -134,7 +134,7 @@ def update_order(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Order updated successfully")
-            return redirect('store:orders_list')
+            return redirect('orders:orders_list')
         else:
             messages.warning(request, "Error updating order")
     context = {"form":form}
