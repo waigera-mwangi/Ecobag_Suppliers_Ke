@@ -30,7 +30,7 @@ class Order(models.Model):
     #     ordering = ('-created',)
 
     def __str__(self):
-        return '{} - {}'.format(self.tracking_no)
+        return '{}'.format(self.tracking_no)
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order,on_delete=models.CASCADE)

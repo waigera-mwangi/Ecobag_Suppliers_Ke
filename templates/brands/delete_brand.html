@@ -9,7 +9,7 @@
 {% endblock styles %}
 
 <div class="container-fluid mt-3">
-    <form action="{% url 'orders:delete_order' order.id %}" method="POST" >{% csrf_token %}
+    <form action="{% url 'brands:delete_brand' brand.id %}" method="POST" >{% csrf_token %}
         <div class="row">
             <div class="col-md">
                 <div class="card shadow">
@@ -28,11 +28,11 @@
                 </div>   
             </div>
         <div>
-            <a  href="{% url 'orders:orders_list' %}" class="btn btn-warning  fw-bold float-left">Cancel</a>
+            <a  href="{% url 'brands:brand_list' %}" class="btn btn-warning  fw-bold float-left">Cancel</a>
         </div>
 
         <div>
-            <input type="submit" class="btn btn-danger float-right name="confirm">
+            <input type="submit" class="btn btn-danger float-right" name="confirm">
         </div>
 
        </div>

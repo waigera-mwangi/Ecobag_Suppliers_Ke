@@ -31,7 +31,7 @@ def branding(request):
 
         messages.success(request, 'Submitted successfully for branding')
         
-    return redirect('/')
+    return redirect('brands:view_brands')
 
 # staff to view brands in table
 def brand_list(request):
@@ -81,12 +81,11 @@ def delete_brand(request, pk):
     context = {"brand":brand}
     return render(request, 'brands/delete_brand.html', context)
 
-    # customer to view brands in table
+# customer to view brands in table
 def view_brands(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    currentuser=request.user.email
-    brands = Brand.objects.filter(email=currentuser)
-    status= Brand.objects.filter()
-    context = {"brands":brands, "status":status}
+    currentuser = request.user
+    brands = Brand.objects.filter(user = currentuser)
+    context = {'brands':brands}
     return render(request,"brands/view-brands.html",context)

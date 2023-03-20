@@ -34,21 +34,18 @@
         </a>
       </li><!-- End Orders-->
 
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'brands:custom_branding' %}">
-          <i class="fa fa-pencil-square-o"></i>
-          <span>Custom Branding</span>
-        </a>
-      </li>
-      <!-- End Custom Nav -->
-      
-
         <li class="nav-item">
         <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-           <i class="bi bi-cart"></i><span>My brands</span><i class="bi bi-chevron-down ms-auto"></i>
+           <i class="bi bi-cart"></i><span>Custom Branding</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
+
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           
+          <li>
+            <a href="{% url 'brands:custom_branding' %}">
+             <i class="bi bi-receipt" style="font-size: large"></i><span>Create brand</span>
+            </a>
+          </li>
           <li>
             <a href="{% url 'brands:view_brands' %}">
              <i class="bi bi-receipt" style="font-size: large"></i><span>View Brands</span>
