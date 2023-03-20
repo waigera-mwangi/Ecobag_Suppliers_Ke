@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import Brand
 from orders.models import Order
 from django.contrib import messages
+from .forms import *
 import random
 
 
@@ -31,3 +32,51 @@ def branding(request):
         messages.success(request, 'Submitted successfully for branding')
         
     return redirect('/')
+
+# staff to view brands in table
+def brand_list(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    list_brands = Order.objects.filter()
+    context = {"list_brands":list_brands}
+    return render(request,"brands/brands_list.html",context)
+
+# staff create brand
+def create_brand(request):
+
+    form =  BrandForm()
+    if request.method == 'POST':
+        form =  BrandForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Order created successfully")
+            return redirect('brands:brand_list')
+        else:
+            messages.warning(request, "Error creating order")
+    context ={"form":form}
+    return render(request, 'brands/create_brand.html',context)
+
+# update brand
+def update_brand(request, pk):
+    brand = Order.objects.get(id=pk)
+    form = BrandForm(instance=brand)
+
+    if request.method == 'POST':
+        form = BrandForm(request.POST, instance=brand)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Brand updated successfully")
+            return redirect('brands:brand_list')
+        else:
+            messages.warning(request, "Error updating brand")
+    context = {"form":form}
+    return render(request, 'brands/create_brand.html',context)
+
+# staff delete brand
+def delete_brand(request, pk):
+    brand = Brand.objects.get(id=pk)
+    if request.method == 'POST':
+        brand.delete()
+        return redirect('brands:brand_list')
+    context = {"brand":brand}
+    return render(request, 'brands/delete_brand.html', context)
