@@ -72,7 +72,7 @@ def create_supply(request):
             messages.warning(request, "Error making supply")
     context = {'form': form}
     return render(request, 'supply/create-supply.html', context)
-
+#supplier view supplies
 def supply_list(request):
     supply = ProductSupply.objects.filter()
     context = {'supply':supply}

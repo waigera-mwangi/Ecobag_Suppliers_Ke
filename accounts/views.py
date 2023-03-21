@@ -15,6 +15,8 @@ from django.urls import reverse_lazy
 
 from orders.models import Order
 from store.models import *
+from supply.models import *
+from brands.models import *
 # from orders.views import user_orders
 
 
@@ -136,7 +138,13 @@ def driver(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
 def supplier(request):
-    return render(request, 'supplier.html')
+    supply_requests = SupplyTender.objects.all()
+    total_requests = supply_requests.count()
+    supplies = ProductSupply.objects.all()
+    total_supplies = supplies.count()
+    context = {'total_requests':total_requests,
+               'total_supplies':total_supplies,}
+    return render(request, 'supplier.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="MN")
 def manager(request):
@@ -144,7 +152,10 @@ def manager(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="BR")
 def brander(request):
-    return render(request, 'brander.html')
+    brands = Brand.objects.all()
+    total_brands = brands.count()
+    context = {'total_brands':total_brands}
+    return render(request, 'brander.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DM")
 def dispatch_manager(request):

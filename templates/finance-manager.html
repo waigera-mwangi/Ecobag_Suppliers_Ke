@@ -5,7 +5,7 @@
       <h1>Dashboard</h1>
       <nav>
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item"><a href="{% url 'accounts:finance-manager' %}">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
       </nav>
@@ -29,7 +29,9 @@
                       <i class="fa fa-shopping-bag"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{total_orders}}</h6>
+                    </a>
                     </div>
                   </div>
                 </div>
@@ -48,7 +50,9 @@
                       <i class="fa fa-pause"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{pending}}</h6>
+                    </a>
                     </div>
                   </div>
                 </div>
@@ -67,7 +71,9 @@
                       <i class="fa fa-thumbs-up"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{approved}}</h6>
+                    </a>
                     </div>
                   </div>
                 </div>
@@ -86,7 +92,9 @@
                       <i class="fa fa-ban"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{rejected}}</h6>
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -105,7 +113,9 @@
                       <i class="fa fa-truck"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{out_for_shipping}}</h6>
+                    </a>
                     </div>
                   </div>
                 </div>
@@ -125,7 +135,9 @@
                       <i class="fa fa-list-alt"></i>
                     </div>
                     <div class="ps-3">
+                      <a href="{% url 'orders:orders_list' %}">
                       <h6>{{completed}}</h5>
+                      </a>
                     </div>
                   </div>
                 </div>
