@@ -25,6 +25,6 @@ urlpatterns = [
     # path('profile', views.profile, name='customer'),
     path('change-password', password_change, name='change-password'),
     path('profile', views.profile, name='profile'),
-    path('supplier/', required_access(function=TemplateView.as_view(template_name="Supplier.html"),
-                                   login_url=reverse_lazy('accounts:Supplier-login'), user_type="RD"), name="index"),
+    # path('supplier/', required_access(function=TemplateView.as_view(template_name="Supplier.html"),
+                                #    login_url=reverse_lazy('accounts:Supplier-login'), user_type="RD"), name="index"),
 ]
