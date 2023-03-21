@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from .models import Brand
-from orders.models import Order
 from django.contrib import messages
 from .forms import *
 import random
@@ -37,13 +36,12 @@ def branding(request):
 def brand_list(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    list_brands = Order.objects.filter()
+    list_brands = Brand.objects.filter()
     context = {"list_brands":list_brands}
     return render(request,"brands/brands_list.html",context)
 
 # staff create brand
 def create_brand(request):
-
     form =  BrandForm()
     if request.method == 'POST':
         form =  BrandForm(request.POST)
@@ -58,9 +56,10 @@ def create_brand(request):
 
 # update brand
 def update_brand(request, pk):
-    brand = Order.objects.get(id=pk)
+    print(pk)
+    brand = Brand.objects.get(id=pk)
     form = BrandForm(instance=brand)
-
+    
     if request.method == 'POST':
         form = BrandForm(request.POST, instance=brand)
         if form.is_valid():
@@ -74,6 +73,7 @@ def update_brand(request, pk):
 
 # staff delete brand
 def delete_brand(request, pk):
+    
     brand = Brand.objects.get(id=pk)
     if request.method == 'POST':
         brand.delete()
