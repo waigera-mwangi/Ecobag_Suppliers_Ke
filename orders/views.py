@@ -8,7 +8,7 @@ import random
 from .forms import OrderForm
 
 # imports for invoice
-from django.http import  HttpResponseRedirect
+
 from django.http import FileResponse
 import io
 from reportlab.pdfgen import canvas
