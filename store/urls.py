@@ -12,7 +12,7 @@ urlpatterns = [
     # path('create-buyer/', create_buyer, name='create-buyer'),
     # path('create-drop/', create_drop, name='create-drop'),
     path('invoice/', invoice, name='invoice'),
-    path('create-delivery/', create_delivery, name='create-delivery'),
+    
 
     # path('customer-list/', CustomerListView.as_view(), name='customer-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),

@@ -68,22 +68,6 @@ class OrderListView(ListView):
         # context['order'] = Order.objects.all().order_by('-id')
         return context
 
-
-# # Delivery views
-# @login_required(login_url='login')
-def create_delivery(request):
-    forms = DeliveryForm()
-    if request.method == 'POST':
-        forms = DeliveryForm(request.POST)
-        if forms.is_valid():
-            forms.save()
-            return redirect('delivery-list')
-    context = {
-        'form': forms
-    }
-    return render(request, 'store/create-delivery.html', context)
-
-
 class DeliveryListView(ListView):
     # model = Delivery
     template_name = 'store/delivery-list.html'

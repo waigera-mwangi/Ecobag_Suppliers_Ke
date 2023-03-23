@@ -14,16 +14,15 @@
        <i class="bi bi-cart"></i></i><span >Orders</span><i class="bi bi-chevron-down ms-auto"></i>
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+          
+          
+
           <li>
-            <a href="{% url 'orders:orders_list' %}">
-             <i class="bi bi-cart" style="font-size: large"></i><span>Order-list</span>
+            <a href="{% url 'orders:orders_approved' %}">
+             <i class="bi bi-cart" style="font-size: large"></i><span>Approved Orders</span>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <i class="bi bi-people" style="font-size: large"></i><span>Customers</span>
-            </a>
-          </li>
+
         </ul>
       </li><!-- End Orders Nav -->
 
@@ -33,12 +32,12 @@
         </a>
         <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
           <li>
-            <a href="{% url 'store:create-delivery' %}">
+            <a href="{% url 'delivery:create_delivery' %}">
              <i class="bi bi-box-arrow-in-right" style="font-size: large"></i><span>Create delivery</span>
             </a>
           </li>
           <li>
-            <a href="{% url 'store:delivery-list' %}">
+            <a href="{% url 'delivery:delivery_list' %}">
                 <i class="bi bi-text-indent-left" style="font-size: large"></i><span>View delivery</span>
             </a>
           </li>
