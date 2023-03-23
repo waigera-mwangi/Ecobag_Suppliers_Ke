@@ -18,6 +18,7 @@ urlpatterns = [
     path('', include('store.urls')),
     path('', include('brands.urls')),
     path('', include('supply.urls')),
+    path('', include('delivery.urls')),
 
       # password reset urls
       path('reset_password/',

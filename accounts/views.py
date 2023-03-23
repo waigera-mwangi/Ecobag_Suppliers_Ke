@@ -17,6 +17,7 @@ from orders.models import Order
 from store.models import *
 from supply.models import *
 from brands.models import *
+from delivery.models import *
 # from orders.views import user_orders
 
 
@@ -134,7 +135,13 @@ def finance_manager(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):
-    return render(request, 'driver.html')
+    deliveries = Delivery.objects.all().count()
+    orders = Order.objects.all()
+    approved = orders.filter(orderstatus='Approved').count()
+    context = {'approved':approved,
+               'deliveries':deliveries,
+    }
+    return render(request, 'driver.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
 def supplier(request):
@@ -159,7 +166,14 @@ def brander(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DM")
 def dispatch_manager(request):
-    return render(request, 'dispatch-manager.html')
+    orders = Order.objects.all()
+    approved = orders.filter(orderstatus='Approved').count()
+    deliveries = Delivery.objects.all().count()
+    context = {'approved':approved,
+               'deliveries':deliveries,
+
+    }
+    return render(request, 'dispatch-manager.html', context)
 
 
 #Change password

@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'orders.apps.OrdersConfig',
     'brands.apps.BrandsConfig',
     'supply.apps.SupplyConfig',
+    'delivery.apps.DeliveryConfig',
     'widget_tweaks',
 ]
 

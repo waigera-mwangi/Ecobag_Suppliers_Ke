@@ -11,9 +11,13 @@ urlpatterns = [
     path('order_view <str:t_no>/',views.order_view, name='orderview'),
     # view order by staff
     path('orders_list/', views.orders_list, name='orders_list'),
+    path('orders_list_driver/', views.orders_list_driver, name='orders_list_driver'),
+    # orders list by dispatch
+    path('orders_approved/', views.orders_approved, name='orders_approved'),
     # new order by staff
     path('create_order/', views.create_order, name='create_order'),
     path('update_order/<str:pk>/', views.update_order, name='update_order'),
+    path('update_order_driver/<str:pk>/', views.update_order_driver, name='update_order_driver'),
     path('delete_order/<str:pk>/', views.delete_order, name='delete_order'),
     # invoice
     path('orders_pdf/', views.orders_pdf, name='orders_pdf'),

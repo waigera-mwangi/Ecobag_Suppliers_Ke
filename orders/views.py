@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from basket.basket import Basket
-from .models import Order,OrderItem
+from .models import *
 from store.models import Product
 from django.contrib import messages
 import random
@@ -26,19 +26,8 @@ def orders_pdf(request):
     textob.setTextOrigin(inch, inch)
     textob.setFont("Helvetica",14)
 
-    # lines of text
-    # lines = [
-    #     "This is line 1",
-    #     "This is line 2",
-    #     "This is line 3",
-    #     "This is line 4",
-    # ]
-
-    # The model
-    # order = Order.objects.filter(tracking_no=t_no).filter(user=request.user).first()
     orderitems = Order.objects.filter(user=request.user)
     
-
     # blan list
     lines = [
         "Ecobag Suppliers ke",
@@ -57,6 +46,13 @@ def orders_pdf(request):
         lines.append("Amount Paid: " + orderitem.amount_paid)
         lines.append("Status: " + orderitem.orderstatus)
         lines.append("======================")
+
+    # blan list
+    lines = [
+        "Thank you for being part of us",
+        "---------------------------------------------------",
+
+    ]
 
     # loop
     for line in lines:
@@ -208,6 +204,42 @@ def delete_order(request, pk):
     order = Order.objects.get(id=pk)
     if request.method == 'POST':
         order.delete()
-        return redirect('/')
+        messages.success(request, "Delivery deleted succesfully")
+        return redirect('orders:orders_list')
+    else:
+            messages.warning(request, "Error while deleting delivery")
+
     context = {"order":order}
     return render(request, 'orders/delete_order.html', context)
+
+# dispatch manager view approved orders
+def orders_approved(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    list_orders = Order.objects.filter(orderstatus='Approved')
+    context = {"list_orders":list_orders}
+    return render(request,"orders/orders_approved.html",context)
+
+# driver view approved orders
+def update_order_driver(request, pk):
+    order = Order.objects.get(id=pk)
+    form = OrderForm(instance=order)
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST, instance=order)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Order updated successfully")
+            return redirect('orders:orders_list')
+        else:
+            messages.warning(request, "Error updating order")
+    context = {"form":form}
+    return render(request, 'orders/create_order_driver.html',context)
+
+# driver view orders in table
+def orders_list_driver(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    list_orders = Order.objects.filter(orderstatus='Approved')
+    context = {"list_orders":list_orders}
+    return render(request,"orders/orders_list_driver.html",context)
