@@ -29,6 +29,9 @@ INSTALLED_APPS = [
     'supply.apps.SupplyConfig',
     'delivery.apps.DeliveryConfig',
     'widget_tweaks',
+    'djmoney',
+    'shipping'
+    
 ]
 
 MIDDLEWARE = [
@@ -57,6 +60,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'store.views.categories',
                 'basket.context_processors.basket',
+                'orders.context_processors.order_count',
             ],
         },
     },
@@ -97,11 +101,22 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
 USE_TZ = True
+
+
+
+
+# # # settings.py
+import moneyed
+from moneyed import CURRENCIES, Currency
+
+DEFAULT_CURRENCY = 'KES'
+
+CURRENCIES['KES'] = Currency(code='KES', name='Kenyan Shilling')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

@@ -1,52 +1,36 @@
 {% extends 'layouts/customer-base.html' %}
 
-{% block title %}view-products{% endblock title %}
+
+{% block title %}View Products{% endblock title %}
 
 {% block content %}
-<!-- Jquery autocomplete -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <div class="container">
+        <h1 class="text-center mb-4">View Available Products</h1>
+        <div class="row row-cols-1 row-cols-md-3">
+            {% for product in products %}
+                <div class="col-6 col-md-4 mb-4">
+                    <div class="card shadow-sm">
+                        <a href="#">
+                            <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+                        </a>
+                        <div class="card-body p-3">
+                            <h5 class="card-title mb-2">{{ product.name }}</h5>
+                            <p class="card-text text-primary mb-1"><strong>{{ product.price }}</strong>
+                            <p class="card-text text-primary mb-1"><strong>In stock:{{ product.quantity }}</strong>
+                            </p>
+                            
+                                <div style="padding:  5px;">
+                                    <a href="{% url 'store:add_to_cart' product.pk %}" class="btn btn-primary btn-sm btn-block">Add to cart</a>
+                                </div>
 
-    <h1 style="text-align: center;">Products and Categories </h1>
-    <div class="row">
-        {% for product in products %}
-        <div class="col">
-            <div class="card" style="width: 18rem;">
-                <img src="{{ product.image.url }}" class="card-img-top" alt="..."  class="btn view-btn add-to-cart-btn" >
-                <div class="card-body">
-                    <h5 class="card-title">{{ product.name }}</h5>
-                    <p class="card-text">Ksh.{{ product.price }}</p>
-                    <p class="card-text">{{ product.description }}</p>
-                    <div class="row rowfloat-end-sm ">
-								<div class="col-6">
-									<a href="{{ product.get_absolute_url }}" class="btn btn-primary">View product</a>
-								</div>
-							</div>
+                                <div >
+                                    <a href="#" class="btn btn-primary btn-sm btn-block">View product</a>
+                                </div>
+                            
+                        </div>
+                    </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-     {% endfor %}
     </div>
-    
-    <!-- Jquery autocomplete -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
-    <script>
-        var availableTags = [];
-
-        $.ajax({
-            method: 'GET',
-            url: "/product-search-list",
-            success:function(response){
-                startAutocomplete(response);
-            }
-        });
-
-    function startAutocomplete(availableTags)
-    {
-        $( "#searchproducts" ).autocomplete({
-            source: availableTags
-        });
-    }
-    
-    </script>
 {% endblock %}

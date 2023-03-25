@@ -1,43 +1,30 @@
 from django.db import models
 from decimal import Decimal
 from django.conf import settings
-
+from accounts.models import User
 from store.models import Product
 
+
 class Order(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='order_user')
-    fname = models.CharField(max_length=20)
-    lname  = models.CharField(max_length=20)
-    phone = models.IntegerField(default=0)
-    email = models.CharField(max_length=50)
-    county = models.CharField(max_length=20)
-    town = models.CharField(max_length=20)
-    created = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
-    mpesa_code = models.CharField(max_length=8,)
-    amount_paid = models.CharField(max_length=250)
-    tracking_no = models.CharField(max_length=150)
-    status = (
-        ('Pending','Pending'),
-        ('Approved','Approved'),
-        ('Rejected','Rejected'),
-        ('Out for shipping','Out for shipping'),
-        ('Completed','Completed'),
-    )
-    orderstatus = models.CharField(max_length=50, choices=status, default='Pending')
+    class Meta:
+        verbose_name = 'Order'
+        verbose_name_plural = 'Orders'
 
-    # class Meta:
-    #     ordering = ('-created',)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date_ordered = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Date ordered')
+    is_completed = models.BooleanField(default=False)  
+    products = models.ManyToManyField(Product, through='OrderItem')
 
-    def __str__(self):
-        return '{}'.format(self.tracking_no)
+
+
 
 class OrderItem(models.Model):
-    order = models.ForeignKey(Order,on_delete=models.CASCADE)
-    price = models.DecimalField(max_digits=20, decimal_places=2, null=False)
-    quantity = models.PositiveBigIntegerField(default=1)
-    product = models.ForeignKey(Product,on_delete=models.CASCADE, null=True)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return '{} {}'.format(self.order.id,self.order.tracking_no)
+        return f"{self.quantity} x {self.product.name} in cart for {self.order.user.username}"
 
+    def subttotal(self):
+        return self.product * self.quantity

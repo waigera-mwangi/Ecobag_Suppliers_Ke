@@ -35,19 +35,23 @@
           </a>
         </li><!-- End Search Icon-->
                             
-        
-          <a type="button" role="button" href="{% url 'basket:basket_summary' %}" class="btn btn-outline-primary">
-            {% with total_qty=basket|length %}
-              <div class="d-inline-flex" id="basket-qty">
-                {% if total_qty > 0 %}
-                  {{total_qty}}
-                {% else %}
-                  0
-                {% endif %}
-              </div>
-            {% endwith %}
-           <i class="bi bi-cart4">Cart</i>
-          </a><!-- End basket icon -->     
+         <div style="padding: 15px">
+           <!-- Cart -->
+              <li class="nav-item">
+                <a class="nav-link position-relative" href="{% url 'store:view_cart' %}">
+                  <i class="bx bx-cart-alt"></i>
+                  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {% if request.user.is_authenticated %}
+                          {{ order_count }}
+                    {% else %}
+                      0
+                    {% endif %}
+                    <span class="visually-hidden">items in cart</span>
+                  </span>
+                </a>
+              </li>
+              <!-- /Cart --> 
+         </div>
   
         <li class="nav-item dropdown pe-3">
 

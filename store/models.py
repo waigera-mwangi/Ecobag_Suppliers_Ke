@@ -1,7 +1,8 @@
 from django.db import models
 # from pkg_resources import _
 from django.urls import reverse
-
+from djmoney.models.fields import MoneyField
+from moneyed import Money
 from accounts.models import User, Customer
 
 
@@ -21,14 +22,12 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name = 'product', on_delete=models.CASCADE,null = True,default='Gift_bag')
     name = models.CharField(max_length=120, unique=True)
-    slug = models.SlugField(max_length=255, null = True)
-    price = models.IntegerField(null=True)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Price', null=True)
     quantity = models.IntegerField(null=True)
     image = models.ImageField()
     created_date = models.DateField(auto_now_add=True)
     updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
     description = models.CharField(max_length=100, null=True)
-    is_active = models.BooleanField(default = True)
     in_stock = models.BooleanField(default = True)
 
     def get_absolute_url(self):

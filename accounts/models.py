@@ -20,6 +20,10 @@ class User(AbstractUser, PermissionsMixin):
         default=UserTypes.CUSTOMER,
     )
     email = models.EmailField()
+    is_active = models.BooleanField(default=True)
+    is_archived = models.BooleanField(default=False)
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True, null=True)
 
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
@@ -35,6 +39,8 @@ GENDER_TYPES = (
     ('m', 'Male'),
     ('f', 'Female')
 )
+
+
 
 
 class UserProfileManager(BaseUserManager):

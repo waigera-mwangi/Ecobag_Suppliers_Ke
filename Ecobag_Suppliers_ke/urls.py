@@ -14,11 +14,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('accounts.urls')),
     path('basket/', include('basket.urls', namespace = 'basket')),
-    path('orders/', include('orders.urls', namespace = 'orders')),
+    # path('orders/', include('orders.urls', namespace = 'orders')),
     path('', include('store.urls')),
     path('', include('brands.urls')),
     path('', include('supply.urls')),
     path('', include('delivery.urls')),
+    path('shipping/', include('shipping.urls')),
 
       # password reset urls
       path('reset_password/',

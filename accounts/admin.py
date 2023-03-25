@@ -27,13 +27,15 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('first_name', 'last_name', 'email', 'username', 'user_type')
-    search_fields = ('first_name', 'last_name', 'email', 'username',)
-    list_filter = ('is_active', 'user_type')
+    list_display = ( 'email', 'username', 'user_type')
+    search_fields = ('email', 'username',)
+    list_filter = ('is_active', 'is_archived', 'updated', 'created', 'user_type')
+    actions = ['make_active', 'make_inactive']
+    readonly_fields = ['created', 'updated']
 
     fieldsets = (
         (None, {'fields': ('password',)}),
-        ('Personal info', {'fields': ('first_name', 'last_name', 'email', 'username')}),
+        ('Personal info', {'fields': ('first_name', 'last_name',  'is_active', 'email', 'username')}),
         ('Permissions', {'fields': ('user_type',)}),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
@@ -46,6 +48,27 @@ class UserAdmin(BaseUserAdmin):
     )
     ordering = ['email']
     filter_horizontal = ()
+
+    def make_active(self, request, queryset):
+        updated = queryset.update(is_active=True, is_archived=False)
+        self.message_user(request, ngettext(
+            '%d User has successfully been marked as active.',
+            '%d Users have been successfully marked as active.',
+            updated,
+        ) % updated, messages.SUCCESS)
+
+    make_active.short_description = "Activate User"
+
+    def make_inactive(self, request, queryset):
+        updated = queryset.update(is_archived=True, is_active=False)
+        self.message_user(request, ngettext(
+            '%d User has been archived successfully.',
+            '%d Users have been archived successfully.',
+            updated,
+        ) % updated, messages.INFO)
+
+    make_inactive.short_description = "Archive User"
+
 
     @staticmethod
     def has_delete_permission(request, obj=None):

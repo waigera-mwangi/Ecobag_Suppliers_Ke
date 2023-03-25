@@ -5,15 +5,16 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.contrib import messages
-
+from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import Customer
 from utils.utils import generate_key
 # from .filter import OrderFilter
-from orders.models import Order
+from orders.models import Order, OrderItem
 from .forms import *
 from django.shortcuts import get_object_or_404, render
-
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views import View
 
 from .models import (
     Product,Category
@@ -77,10 +78,12 @@ class DeliveryListView(ListView):
 def invoice(request):
     return render(request, 'store/invoice.html')
 
+class ProductView(View):
+    def get(self, request):
+        products = Product.objects.all()
+        context = {'products': products}
+        return render(request, 'store/view-products.html', context)
 
-def view_product(request):
-    products = Product.objects.all()
-    return render(request, 'store/view-products.html', {'products': products})
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug, in_stock = True)
@@ -209,3 +212,90 @@ def category_list(request):
     category = Category.objects.filter()
     context = {"category":category}
     return render(request, "store/category-list.html", context)
+
+    
+
+ # cart functions
+
+# @login_required
+def add_to_cart(request, pk):
+    quantity = request.GET.get('quantity', 1)
+    product = get_object_or_404(Product, pk=pk)
+
+    # Check if requested quantity is in stock
+    if product.quantity < int(quantity):
+        messages.error(request, f"{product.name} is out of stock.")
+        return redirect('store:view-product')
+
+    # Check if the total quantity in the order exceeds the available stock
+    order_items = OrderItem.objects.filter(product=product, order__is_completed=False, order__user=request.user)
+    total_quantity_in_order = sum(order_item.quantity for order_item in order_items)
+    if product.quantity < total_quantity_in_order + int(quantity):
+        messages.error(request, f"Only {product.quantity } {product.name} available in stock.")
+        return redirect('store:view-product')
+
+    order, created = Order.objects.get_or_create(user=request.user, is_completed=False)
+    order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+    order_item.quantity += int(quantity)
+    order_item.save()
+    messages.success(request, 'Item added to cart.', extra_tags='text-success')
+    return redirect('store:view-product')
+
+
+# @login_required
+def view_cart(request):
+    user = User.objects.all()
+    
+    # Retrieve the latest pending order if one exists, otherwise create a new one
+    try:
+        order = Order.objects.filter(user=request.user, is_completed=False).latest('id')
+    except Order.DoesNotExist:
+        order = Order.objects.create(user=request.user)
+
+    order_items = order.orderitem_set.all()
+
+    if request.method == 'POST':
+        if 'order_item_id' in request.POST:
+            # Handle updates to order items
+            order_item_id = int(request.POST.get('order_item_id'))
+            order_item = OrderItem.objects.get(id=order_item_id, order=order)
+
+            if 'increment' in request.POST:
+                order_item.quantity += 1
+                order_item.save()
+                messages.success(request, 'Quantity updated successfully.', extra_tags='text-success')
+
+            if 'decrement' in request.POST:
+                if order_item.quantity > 1:
+                    order_item.quantity -= 1
+                    order_item.save()
+                    messages.success(request, 'Quantity updated successfully.', extra_tags='text-success')
+                else:
+                    order_item.delete()
+                    messages.success(request, 'Item removed from order.', extra_tags='text-success')
+
+        elif 'pickup_station_id' in request.POST:
+            # Handle selection of a pickup station by the user
+            pickup_station_id = int(request.POST.get('pickup_station_id'))
+            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
+            shipping = Shipping.objects.create(order=order, station=pickup_station)
+            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
+
+    # Calculate the subtotal for each order item and save it
+    for item in order_items:
+        item.subtotal = item.product.price * item.quantity
+        item.save()
+
+    # Calculate the order total by summing the subtotals of each order item
+    order_total = sum([item.subtotal for item in order_items])
+
+    # Get the available pickup stations
+    userpickupstations = UserPickUpStation.objects.all()
+
+    context = {
+        'order': order,
+        'order_items': order_items,
+        'order_total': order_total,
+        'userpickupstations': userpickupstations
+    }
+    return render(request, 'store/cart.html', context)
