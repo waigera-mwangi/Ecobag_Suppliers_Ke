@@ -11,6 +11,7 @@ from accounts.models import Customer
 from utils.utils import generate_key
 # from .filter import OrderFilter
 from orders.models import Order, OrderItem
+from shipping.models import *
 from .forms import *
 from django.shortcuts import get_object_or_404, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView

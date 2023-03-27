@@ -116,7 +116,7 @@ from moneyed import CURRENCIES, Currency
 
 DEFAULT_CURRENCY = 'KES'
 
-CURRENCIES['KES'] = Currency(code='KES', name='Kenyan Shilling')
+# CURRENCIES['KES'] = Currency(code='KES', name='Kenyan Shilling')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
