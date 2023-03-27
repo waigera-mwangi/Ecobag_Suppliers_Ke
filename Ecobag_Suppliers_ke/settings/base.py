@@ -30,8 +30,8 @@ INSTALLED_APPS = [
     'delivery.apps.DeliveryConfig',
     'widget_tweaks',
     'djmoney',
-    'shipping'
-    
+    'shipping',
+    'finance',
 ]
 
 MIDDLEWARE = [

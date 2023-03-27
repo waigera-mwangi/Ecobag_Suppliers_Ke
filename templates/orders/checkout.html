@@ -1,102 +1,119 @@
 {% extends 'layouts/customer-base.html' %}
-{% load static %}
-{% load humanize %}
-{% load widget_tweaks %}
+
 {% block content %}
 
-{% load static %}
-{% block styles %}
-{% block title %}Shipping Details {% endblock %}
-{% endblock styles %}
-<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js">  
-</script> 
+<style>
+    .errorlist {
+        color: red;
+    }
 
-<!-- my checkout -->
-<div class="container-fluid mt-3">
-    <form action="{% url 'orders:placeorder' %}" method="POST" >{% csrf_token %}
-    <div class="row">
-        <div class="col-md-7">
-            <div class="card shadow">
-                <div class="card-body">
-                    <h4 class="card-title">Personal Information</h4>
-                    <hr>
-                    <div class="row checkoutform">
-                        <div class="col-md-6">
-                            <label>First Name:</label>
-                            <input type="text" class="form-control" name="fname" placeholder="Enter First name" required>                       
-                         </div>
-                         <div class="col-md-6">
-                            <label>Last Name:</label>
-                            <input type="text" class="form-control" name="lname"  placeholder="Enter First name" required>                       
-                         </div>                        
-                          <div class="col-md-6">
-                            <label>Email:</label>
-                            <input type="email" class="form-control" name="email" placeholder="Enter Email" required>                       
-                         </div>
-                         <div class="col-md-6">
-                            <label>Phone:</label>
-                            <input type="number" class="form-control" name="phone" placeholder="Enter Phone Number" required>                       
-                         </div>
-                         <div class="col-md-6">
-                            <label>County:</label>
-                            <input type="text" class="form-control"  name="county" placeholder="Enter County" required>                       
-                         </div>
-                         <div class="col-md-6">
-                            <label>Town:</label>
-                            <input type="text" class="form-control" name="town" placeholder="Enter Town" required>                       
-                         </div>
-                         
-                    </div>
-                    
-                </div>
-                
-            </div>   
+    .text-red-500 {
+        color: #EF4444 !important;
+    }
+</style>
+
+<div class="container my-3">
+    <h1 class="mb-4" style="text-align: center; color: blue;">Checkout</h1>
+
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-body">
+                <h2 class="mb-3" style="color: blue;">Order Summary</h2>
+                <ul class="list-unstyled mb-4">
+                    {% for item in order_items %}
+                    <li class="d-flex justify-content-between align-items-center mb-3">
+                        <div>
+                            <h5 class="mb-0">{{ item.product.name }}</h5>
+                            <small class="text-muted">Quantity: {{ item.quantity }}</small>
+                        </div>
+                        <span class="text-muted">KES {{ item.subtotal }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <h5 class="mb-3">Total</h5>
+                <h3 class="text-primary">{{ order_total }}</h3>
+            </div>
         </div>
-        
-        <div class="col-md-5">
-            <div class="card shadow">
-                <div class="card-body">
-                
-                    <div class="payment-widget">
 
-                    <h4 class="card-title">Mpesa Payment</h4>
-                   <hr>
-                    <div class="payment-list">
-                        <label class="payment-radio credit-card-option">
-                          <h4>  PayBill: 877877 </h4>
-                        </label>
-                        <div class="row">
+        <div class="container-fluid">
+          {% if userpickupstations %}
+          <div class="d-flex flex-column align-items-center mt-4">
+              <form method="post">
+                  {% csrf_token %}
+                  <label for="pickup_station">Select Pickup Station:</label>
+                  <select class="form-control" id="pickstation-select" name="pickup_station_id" required>
+                      {% for userpickupstation in userpickupstations %}
+                          <option value="{{ userpickupstation.pk }}">{{ userpickupstation.station}}
+                              ({{ userpickupstation.station.location.name }})</option>
+                      {% endfor %}
+                  </select>
+                  <button type="submit" class="btn btn-primary mb-3">Select Pickup Station</button>
+              </form>
+          </div>
+          {% else %}
 
-                            <div class="col-md-12">
-                                <div class="form-group card-label">
-                                    <p> <h5><b>Amount required:</b> Ksh.{{basket.get_total_price|floatformat:2|intcomma}}</p></h5>
-                                </div>	
-                            </div>
+            <div class="alert alert-warning">
+                You have not created any pickup stations yet. Please <a href="{% url 'shipping:userpickupstation_create' %}">create
+                    one here</a> before proceeding with checkout.
+            </div>
+            {% endif %}
+        </div>
 
-                            <div class="col-md-6">
-                                <label><h5> Mpesa Code:</h5></label>
-                                <input type="text" class="form-control" name="mpesa_code" name="payment_mode" placeholder="e.g MKDIR54ERW" required>                       
-                            </div>		
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body">
+                        <h2 class="mb-3" style="color: blue;">Payment Info</h2>
+                        <form method="post">
+                            {% csrf_token %}
+                            {{ form.as_p }}
 
-                         </div>
+                            <button type="submit" class="btn btn-info btn-block btn-lg">
+                                <div class="d-flex justify-content-between">
+                                    <span>{{order_total}}</span>
+                                    <span>Pay <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                                </div>
+                            </button>
+                        </form>
                     </div>
                 </div>
-             </div>  
+            </div>
+        </div>
 
-           </div>
     </div>
- </div>
-        <button id="submit" class="btn btn-primary w-100 fw-bold">Confirm and Pay</button>
-    </div>
-    </form>
+
+</div>
+
+<style>
+    .card {
+        background-color: #fff;
+        border-radius: 10px;
+        border: none;
+    }
+
+    .card-body {
+        padding: 10px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    h2,
+    h3,
     
-</div>
+    h5 {
+      margin-bottom: 10px;
+      color: #333;
+    }
 
+    .list-unstyled li {
+      margin-bottom: 5px;
+    }
 
-</div>
-<script>
-    var CSRF_TOKEN = '{{ csrf_token}}'
-</script>
-<script src="https://js.stripe.com/v3/"></script>
-<script src="{% static 'assets/js/payment-index.js' %}" data-rel-js></script>
-{% endblock content %}
+    .float-end {
+      color: #777;
+    }
+  </style>
+
+  {% endblock %}
