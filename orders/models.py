@@ -17,7 +17,6 @@ class Order(models.Model):
 
 
 
-
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
@@ -26,5 +25,5 @@ class OrderItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in cart for {self.order.user.username}"
 
-    def subttotal(self):
-        return self.product * self.quantity
+    def subtotal(self):
+        return self.product.price * self.quantity

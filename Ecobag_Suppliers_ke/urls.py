@@ -20,6 +20,8 @@ urlpatterns = [
     path('', include('supply.urls')),
     path('', include('delivery.urls')),
     path('shipping/', include('shipping.urls')),
+    path('finance/', include('finance.urls')),
+    # path('orders/', include('orders.urls')),
 
       # password reset urls
       path('reset_password/',
