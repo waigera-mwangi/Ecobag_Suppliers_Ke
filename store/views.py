@@ -81,13 +81,13 @@ def invoice(request):
 
 class ProductView(View):
     def get(self, request):
-        products = Product.objects.all()
+        products = Product.objects.filter(in_stock = True)
         context = {'products': products}
         return render(request, 'store/view-products.html', context)
 
 
-def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, in_stock = True)
+def product_detail(request, name):
+    product = get_object_or_404(Product, slug=name)
     return render(request, 'store/product-detail.html',{'product': product})
 
 def category_list(request, category_slug):
