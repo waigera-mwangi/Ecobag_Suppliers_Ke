@@ -19,10 +19,18 @@ urlpatterns = [
     # path('order-list/', OrderListView.as_view(), name='order-list'),
     path('category_list/', category_list, name='category_list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
+    # view products by customer
     path('view-products/', ProductView.as_view(), name='view-product'),
+<<<<<<< HEAD
     path('product_detail/<slug:slug>/', product_detail, name='product_detail'),
     # path('category_view/<slug:category_slug>/', category_list, name='category_list'),
     # path('user/', userPage, name="user-page"),
+=======
+    # view single product by customer
+    path('product_detail/<slug:name>/', views.product_detail, name='product_detail'),
+    path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
+    # path('user/', views.userPage, name="user-page"),
+>>>>>>> 7f1a830933b5f41f8ac44e08e56091723d05a748
 
     path('products/', product, name='products'),
     # search products

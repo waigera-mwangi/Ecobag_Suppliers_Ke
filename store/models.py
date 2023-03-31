@@ -1,8 +1,9 @@
 from django.db import models
 # from pkg_resources import _
 from django.urls import reverse
+# from moneyfield import MoneyField
 from djmoney.models.fields import MoneyField
-from moneyed import Money
+# from moneyed import Money
 from accounts.models import User, Customer
 
 
