@@ -1,0 +1,47 @@
+{% extends 'inventory/layouts/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 offset-md-2">
+        <h1 class="text-center mb-4" style="color: blue;">Assign Shipping Duty for Order {{ order.id }}</h1>
+
+        {% if messages %}
+          <ul class="list-group mb-4">
+            {% for message in messages %}
+              <li class="list-group-item{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+
+        <div class="card mb-4">
+          <div class="card-body">
+            <p><strong>Customer Name:</strong> {{ order.user }}</p>
+            <p><strong>Transaction Id:</strong> {{ order.payment.transaction_id }}</p>
+          </div>
+        </div>
+
+        <!-- Add a new card to display the userpickupstation -->
+        <!-- 
+        <div class="card mb-4">
+          <div class="card-body">
+            <p><strong>User Pickup Station:</strong> {{ request.user.userpickupstation }}</p>
+          </div>
+        </div>
+ -->
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="driver_id">Select Driver:</label>
+            <select class="form-control" id="driver_id" name="driver_id">
+              {% for driver in drivers %}
+                <option value="{{ driver.id }}">{{ driver.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary btn-block">Assign Shipping Duty</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

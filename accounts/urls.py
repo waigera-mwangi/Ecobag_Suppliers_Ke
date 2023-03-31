@@ -15,9 +15,9 @@ urlpatterns = [
     # staff urls
     path('', views.loginView, name='login'),
     path('customer/', views.customer, name='customer'),
-    path('inventory-manager/', views.inventory_manager, name='inventory-manager'),
-    path('manager/', views.manager, name='manager'),
-    path('brander/', views.brander, name='brander'),
+    path('inventory/', inventory, name='inventory'),
+    path('manager/', manager, name='manager'),
+    path('brander/', brander, name='brander'),
     path('dispatch-manager/', views.dispatch_manager, name='dispatch-manager'),
     path('finance-manager/', views.finance_manager, name='finance-manager'),
     path('driver/', views.driver, name='driver'),

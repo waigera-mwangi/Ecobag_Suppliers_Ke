@@ -3,6 +3,16 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 
+
+class TimeStamp(models.Model):
+    updated = models.DateTimeField(auto_now=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        abstract = True
+
+
+
 class User(AbstractUser, PermissionsMixin):
     class UserTypes(models.TextChoices):
         DRIVER = 'DR', _('Driver')

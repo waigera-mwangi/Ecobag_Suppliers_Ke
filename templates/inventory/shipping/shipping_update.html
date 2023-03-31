@@ -1,0 +1,13 @@
+{% extends "inventory/layouts/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>Update Shipping</h2>
+    <br>
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </div>
+{% endblock %}

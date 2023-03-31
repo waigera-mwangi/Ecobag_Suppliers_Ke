@@ -1,0 +1,15 @@
+{% extends 'customer/layouts/base.html' %}
+
+{% block content %}
+<div class="container" style="padding: 50px;">
+  <img src="{{ object.image.url }}" alt="{{ object.name }}" class="img-fluid">
+  <h1>{{ object.name }}</h1>
+  <!-- <p>{{ object.description }}</p> -->
+  <p><strong>Price:</strong> {{ object.price }}</p>
+  <p><strong>Installation:</strong> {{ object.installation_cost }}</p>
+  <p><strong>Category:</strong> {{ object.category }}</p>
+  <a href="{% url 'inventory:add_to_cart' product.pk %}" class="btn btn-primary">Add to cart</a>
+  
+  <a href="{% url 'inventory:product-view' %}" class="btn btn-secondary">Continue shopping</a>
+  </div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "inventory/layouts/base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h2>Shipping Detail</h2>
+    <br>
+    <table class="table">
+      <tbody>
+        <tr>
+          <th>Shipping ID</th>
+          <td>{{ shipping.id }}</td>
+        </tr>
+        <tr>
+          <th>From</th>
+          <td>{{ shipping.from_location }}</td>
+        </tr>
+        <tr>
+          <th>To</th>
+          <td>{{ shipping.to_location }}</td>
+        </tr>
+        <tr>
+          <th>Pick-up Station</th>
+          <td>{{ shipping.pickup_station }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+{% endblock %}

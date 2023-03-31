@@ -7,7 +7,7 @@ from .views import *
 app_name = "store"
 
 urlpatterns = [
-    path('SM-dashboard', views.SM_dashboard, name='SM-dashboard'),
+    path('SM-dashboard', SM_dashboard, name='SM-dashboard'),
 
     # path('create-buyer/', create_buyer, name='create-buyer'),
     # path('create-drop/', create_drop, name='create-drop'),
@@ -17,27 +17,30 @@ urlpatterns = [
     # path('customer-list/', CustomerListView.as_view(), name='customer-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),
     # path('order-list/', OrderListView.as_view(), name='order-list'),
-    path('category_list/', views.category_list, name='category_list'),
+    path('category_list/', category_list, name='category_list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     path('view-products/', ProductView.as_view(), name='view-product'),
-    path('product_detail/<slug:slug>/', views.product_detail, name='product_detail'),
-    path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
-    # path('user/', views.userPage, name="user-page"),
+    path('product_detail/<slug:slug>/', product_detail, name='product_detail'),
+    # path('category_view/<slug:category_slug>/', category_list, name='category_list'),
+    # path('user/', userPage, name="user-page"),
 
     path('products/', product, name='products'),
     # search products
-    path('product-search-list/', views.productlistAjax, name='product-search-list'),
-    path('searchproduct', views.searchproduct, name='searchproduct'),
+    path('product-search-list/', productlistAjax, name='product-search-list'),
+    path('searchproduct', searchproduct, name='searchproduct'),
    
 #    update stock by inventory
-    path('create_category/', views.create_category, name='create_category'),
-    path('create_product/', views.create_product, name='create_product'),
-    path('update_category/<str:pk>/', views.update_category, name='update_category'),
-    path('update_product/<str:pk>/', views.update_product, name='update_product'),
-    path('delete_category/<str:pk>/', views.delete_category, name='delete_category'),
-    path('delete_product/<str:pk>/', views.delete_product, name='delete_product'),
-    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
-    path('view_cart/', view_cart, name='view_cart'),
+    path('product/<int:pk>/', ProductDetailView.as_view(), name='product-detail'),
+    path('product-detail/<int:pk>/', ProductDetailViewCustomer.as_view(), name='product-detail-customer'),
+    path('product/create/', ProductCreateView.as_view(), name='product-create'),
+    path('product-list/', ProductListView.as_view(), name='product-list'),
+    path('product/<int:pk>/update/', ProductUpdateView.as_view(), name='product-update'),
+    path('product/<int:pk>/delete/', ProductDeleteView.as_view(), name='product-delete'),
+    path('category/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'),
+    # path('category-list/', CategoryListView.as_view(), name='category-list'),
+    # path('category/create/', CategoryCreateView.as_view(), name='category-create'),
+    # path('category/<int:pk>/update/', CategoryUpdateView.as_view(), name='category-update'),
+    # path('category/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category-delete')
     
 
 

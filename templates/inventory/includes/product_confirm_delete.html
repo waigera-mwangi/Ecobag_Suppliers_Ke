@@ -1,0 +1,18 @@
+{% extends 'inventory/layouts/base.html' %}
+
+{% block content %}
+<div class="container mt-3">
+  <div class="card" style="width: 250px;">
+    <img src="{{ object.image.url }}" class="card-img-top" alt="{{ object.name }}">
+    <div class="card-body">
+      <h5 class="card-title">Delete Product: {{ object.name }}</h5>
+      <p class="card-text">Are you sure you want to delete the product "{{ object.name }}"?</p>
+      <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mr-2">Delete</button>
+        <a href="{% url 'inventory:product-list' %}" class="btn btn-secondary">Cancel</a>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

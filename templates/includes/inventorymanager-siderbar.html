@@ -26,42 +26,69 @@
         </ul>
       </li><!-- end of products-->
 
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#" >
-        <i class="bi bi-shop"></i></i><span>Products</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{% url 'store:create_product' %}">
-              <i class="bi bi-plus" style="font-size: large"></i></i><span>Add product</span>
+        <li class="menu-item">
+            <a href="#">
+              <i class="fas fa-folder-plus"></i>Create Category
             </a>
-          </li>
-          <li>
+          </li><br>
+
+          <li class="menu-item">
+            <a href="#">
+              <i class="fas fa-list"></i>Category List
+            </a>
+          </li><br>
+
+          <li class="menu-item">
+            <a href="{% url 'store:product-create' %}">
+              <i class="fas fa-plus"></i>Create Product
+            </a>
+          </li><br>
+
+          <li class="menu-item">
             <a href="{% url 'store:product-list' %}">
-                   <i class="fa fa-product-hunt" style="font-size: large"></i><span>Product List</span>
+              <i class="fas fa-boxes"></i>Product List
             </a>
-          </li>
-        </ul>
-      </li><!-- end of products-->
+          </li><br>
+
+       <!--    <li class="menu-item">
+            <a href="#"}">
+              <i class="fas fa-shopping-basket"></i>Order List
+            </a>
+          </li><br -->
+
+          <!-- <li class="menu-item">
+            <a href="#">
+              <i class="fas fa-check-double"></i>Completed Orders
+            </a>
+          </li><br> -->
 
 
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-        <i class="bi bi-truck"></i></i><span>Supply</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          <li>
-            <a href="{% url 'supply:request_supply' %}">
-             <i class="bi bi-box-arrow-in-right" style="font-size: large"></i><span>Request Supply</span>
+
+          <li class="menu-item">
+            <a href="{% url 'supply:tender-request' %}">
+              <i class="fas fa-pen"></i>Add Supply Tender
             </a>
-          </li>
-          <li>
-            <a href="{% url 'supply:supply_request_list' %}">
-                <i class="bi bi-text-indent-left" style="font-size: large"></i><span>Supply request list</span>
+          </li><br>
+
+          <li class="menu-item">
+            <a href="{% url 'supply:pending_approval_tenders' %}">
+              <i class="fas fa-hourglass-half"></i>Pending Approval Tenders
             </a>
-          </li>
-        </ul>
-      </li><!-- End deliveries Nav -->
+          </li><br>
+
+          <li class="menu-item">
+            <a href="{% url 'supply:confirm-tenders' %}">
+              <i class="fas fa-check-circle"></i>Confirm Supplies
+            </a>
+          </li><br>
+
+          <li class="menu-item">
+            <a href="{% url 'supply:confirmed-inventory-tenders' %}">
+              <i class="fas fa-check-double"></i>Completed Supplies
+            </a>
+          </li><br>
+
+         <!-- End deliveries Nav -->
 
       <li class="nav-heading">Pages</li>
         

@@ -299,3 +299,370 @@ def view_cart(request):
         'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
+
+
+from django.db.models import Q
+from django.forms import inlineformset_factory
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse_lazy
+from django.views.generic import ListView, View
+from django.contrib import messages
+from shipping.models import UserPickUpStation
+from accounts.decorators import required_access
+from accounts.models import Customer
+from utils.utils import generate_key
+from orders.models import Order, OrderItem
+from .forms import *
+from .models import Product, Category
+from django.shortcuts import render
+from .models import Category
+
+def index(request):
+    categories = Category.objects.all()
+    # your code here
+    return render(request, 'index.html', {'categories': categories})
+
+
+
+# dashboard views
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
+def SM_dashboard(request):
+    return render(request, 'dashboard/inventorymanager-dashboard.html')
+
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'store/product-list.html'
+    context_object_name = 'product'
+
+
+class OrderListView(ListView):
+    template_name = 'store/order-list.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+
+class DeliveryListView(ListView):
+    template_name = 'store/delivery-list.html'
+    context_object_name = 'delivery'
+
+
+def invoice(request):
+    return render(request, 'store/invoice.html')
+
+
+class ProductView(View):
+    def get(self, request):
+        products = Product.objects.all()
+        context = {'products': products}
+        return render(request, 'store/view-products.html', context)
+
+
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug, in_stock=True)
+    return render(request, 'store/product-detail.html', {'product': product})
+
+
+def product(request):
+    product = Product.objects.all()
+    return render(request, 'store/products.html', {'product': product})
+
+
+def productlistAjax(request):
+    products = Product.objects.filter(is_active=True).values_list('name', flat=True)
+    productsList = list(products)
+
+    return JsonResponse(productsList, safe=False)
+
+
+def searchproduct(request):
+    if request.method == 'POST':
+        searchedterm = request.POST.get('productsearch')
+        if searchedterm == "":
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            product = Product.objects.filter(name__contains=searchedterm).first()
+
+            if product:
+                return redirect('product_detail/' + product.slug)
+            else:
+                messages.info(request, "No matched product")
+                return redirect(request.META.get('HTTP_REFERER'))
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+    
+
+ # cart functions
+
+# @login_required
+def add_to_cart(request, pk):
+    quantity = request.GET.get('quantity', 1)
+    product = get_object_or_404(Product, pk=pk)
+
+    # Check if requested quantity is in stock
+    if product.quantity < int(quantity):
+        messages.error(request, f"{product.name} is out of stock.")
+        return redirect('store:view-product')
+
+    # Check if the total quantity in the order exceeds the available stock
+    order_items = OrderItem.objects.filter(product=product, order__is_completed=False, order__user=request.user)
+    total_quantity_in_order = sum(order_item.quantity for order_item in order_items)
+    if product.quantity < total_quantity_in_order + int(quantity):
+        messages.error(request, f"Only {product.quantity } {product.name} available in stock.")
+        return redirect('store:view-product')
+
+    order, created = Order.objects.get_or_create(user=request.user, is_completed=False)
+    order_item, created = OrderItem.objects.get_or_create(order=order, product=product)
+    order_item.quantity += int(quantity)
+    order_item.save()
+    messages.success(request, 'Item added to cart.', extra_tags='text-success')
+    return redirect('store:view-product')
+
+
+# @login_required
+def view_cart(request):
+    user = User.objects.all()
+    
+    # Retrieve the latest pending order if one exists, otherwise create a new one
+    try:
+        order = Order.objects.filter(user=request.user, is_completed=False).latest('id')
+    except Order.DoesNotExist:
+        order = Order.objects.create(user=request.user)
+
+    order_items = order.orderitem_set.all()
+
+    if request.method == 'POST':
+        if 'order_item_id' in request.POST:
+            # Handle updates to order items
+            order_item_id = int(request.POST.get('order_item_id'))
+            order_item = OrderItem.objects.get(id=order_item_id, order=order)
+
+            if 'increment' in request.POST:
+                order_item.quantity += 1
+                order_item.save()
+                messages.success(request, 'Quantity updated successfully.', extra_tags='text-success')
+
+            if 'decrement' in request.POST:
+                if order_item.quantity > 1:
+                    order_item.quantity -= 1
+                    order_item.save()
+                    messages.success(request, 'Quantity updated successfully.', extra_tags='text-success')
+                else:
+                    order_item.delete()
+                    messages.success(request, 'Item removed from order.', extra_tags='text-success')
+
+        elif 'pickup_station_id' in request.POST:
+            # Handle selection of a pickup station by the user
+            pickup_station_id = int(request.POST.get('pickup_station_id'))
+            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
+            shipping = Shipping.objects.create(order=order, station=pickup_station)
+            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
+
+    # Calculate the subtotal for each order item and save it
+    for item in order_items:
+        item.subtotal = item.product.price * item.quantity
+        item.save()
+
+    # Calculate the order total by summing the subtotals of each order item
+    order_total = sum([item.subtotal for item in order_items])
+
+    # Get the available pickup stations
+    userpickupstations = UserPickUpStation.objects.all()
+
+    context = {
+        'order': order,
+        'order_items': order_items,
+        'order_total': order_total,
+        'userpickupstations': userpickupstations
+    }
+    return render(request, 'store/cart.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib import messages
+from django.views.generic import DetailView
+
+
+
+# class CategoryListView(LoginRequiredMixin, ListView):
+#     model = Category
+#     template_name = 'inventory/includes/category_list.html'
+#     context_object_name = 'categories'
+
+# class CategoryCreateView(LoginRequiredMixin,  CreateView):
+#     model = Category
+#     template_name = 'inventory/includes/create_category.html'
+#     form_class = CategoryForm
+#     success_url = reverse_lazy('inventory:category-list')
+
+
+#     def test_func(self):
+#         return self.request.user.is_superuser
+
+# class CategoryUpdateView(LoginRequiredMixin,  UpdateView):
+#     model = Category
+#     template_name = 'inventory/includes/category_update_form.html'
+#     form_class = CategoryForm
+
+#     def test_func(self):
+#         return self.request.user.is_superuser
+
+# class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+#     model = Category
+#     template_name = 'category_confirm_delete.html'
+#     success_url = reverse_lazy('inventory:category-list')
+
+
+# def Category(request):
+#     category = Category.objects.all()
+#     return render (request,  {'category': category})
+
+#     def test_func(self):
+#         return self.request.user.is_superuser
+
+class ProductListView(ListView):
+    model = Product
+    template_name = 'inventory/includes/product_list.html'
+    context_object_name = 'products'
+
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import ProductForm
+from .models import Product
+
+class ProductCreateView(LoginRequiredMixin, CreateView):
+    model = Product
+    template_name = 'inventory/includes/product_form.html'
+    form_class = ProductForm
+    success_url = reverse_lazy('inventory:product-list')
+
+    def form_valid(self, form):
+        # Set the user of the product to the currently logged in user
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        # Add error messages to the form if it is invalid
+        messages.error(self.request, 'There was an error with the form. Please try again.')
+        return super().form_invalid(form)
+
+    def post(self, request, *args, **kwargs):
+        # Set the user of the product to the currently logged in user
+        request.POST = request.POST.copy()
+        request.POST['user'] = request.user.id
+        return super().post(request, *args, **kwargs)
+
+
+  
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
+    model = Product
+    template_name = 'inventory/includes/product_update_form.html'
+    form_class = ProductForm
+    success_url = reverse_lazy('inventory:product-list')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    model = Product
+    template_name = 'inventory/includes/product_confirm_delete.html'
+    success_url = reverse_lazy('inventory:product-list')
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'inventory/includes/product_detail.html'
+    context_object_name = 'product'
+
+
+class ProductDetailViewCustomer(DetailView):
+    model = Product
+    template_name = 'inventory/includes/product_detail_customer.html'
+    context_object_name = 'product'
+
+
+class ProductDetailsView(DetailView):
+    model = Product
+    template_name = 'inventory/includes/product_detail_view.html'
+    context_object_name = 'product'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categories'] = Category.objects.all()
+        context['cart_product_form'] = CartAddProductForm()
+        return context
+
+
+
+
+
+# views.py
+class OrderListView(ListView):
+    model = Order
+    template_name = 'inventory/order_list.html'
+    context_object_name = 'carts'
+    
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+    
+
+class OrderDeleteView(DeleteView):
+    model = Order
+    success_url = reverse_lazy('inventory:order-list')
+    
+    def get_queryset(self):
+        return self.model.objects.filter(user=self.request.user)
+    
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, 'order successfully deleted.')
+        return super().delete(request, *args, **kwargs)
+
+
+
+
+
+class CategoryDetailView(DetailView):
+    model = Category
+    template_name = 'category_detail.html'
+    context_object_name = 'category'
+
+
+class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Order
+    template_name = 'order_confirm_delete.html'
+    success_url = reverse_lazy('order-list')
+
+    def test_func(self):
+        return self.get_object().user == self.request.user
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(self.request, "Order deleted successfully.")
+        return super().delete(request, *args, **kwargs)
+
+

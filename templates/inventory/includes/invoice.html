@@ -1,0 +1,23 @@
+{% extends "customer/layouts/base.html" %}
+
+{% block content %}
+<h1>Invoice</h1>
+<table>
+    <tr>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Price</th>
+    </tr>
+    {% for item in items %}
+    <tr>
+        <td>{{ item.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.price }}</td>
+    </tr>
+    {% endfor %}
+    <tr>
+        <td colspan="2">Total</td>
+        <td>{{ total }}</td>
+    </tr>
+</table>
+{% endblock %}

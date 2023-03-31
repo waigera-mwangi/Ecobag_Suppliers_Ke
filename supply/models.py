@@ -1,34 +1,27 @@
 from django.db import models
 from decimal import Decimal
 from django.conf import settings
+from accounts.models import User, TimeStamp
+from store.models import Product
+from moneyed import Money
+from djmoney.models.fields import MoneyField
 
-class ProductSupply(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='supplied')
-    item = models.CharField(max_length=255)
-    quantity = models.IntegerField()
-    created_date = models.DateField(auto_now=True)
-    price = models.IntegerField(default=500)
-    status = (
-        ('Pending','Pending'),
-        ('Complete','Complete'),
-    )
-    supply_status = models.CharField(max_length=50, choices=status, default='Pending')
-
-    class Meta:
-        verbose_name_plural = 'Product Supplies'
-    
-    def __str__(self):
-        return self.item
-
+        
 class SupplyTender(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='needs_supply')
-    item = models.CharField(max_length=255)
-    quantity = models.IntegerField()
-    created_date = models.DateField(auto_now_add=True)
-    updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
-    
+    date = models.DateTimeField(auto_now_add=True, null=True)
+    delivery_date = models.DateField(null= True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='needs_supply', null=True, verbose_name='supplier')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Design Price', null=True)
+    quantity = models.IntegerField()    
     status = (
         ('Pending','Pending'),
+        ('Accepted','Accepted'),
+        ('Approved', 'Approved'),
+        ('Supplied', 'Supplied'),
+        ('Rejected','Rejected'),
+        ('Confirmed','Confirmed'),
+        ('Paid','Paid'),
         ('Complete','Complete'),
     )
     tender_status = models.CharField(max_length=50, choices=status, default='Pending')
@@ -37,4 +30,14 @@ class SupplyTender(models.Model):
         verbose_name_plural = 'Supply Tenders'
     
     def __str__(self):
-        return self.item
+        return f"{self.quantity} units of {self.product.name}"
+
+    def total(self):
+        return self.price * self.quantity
+
+
+
+    def __str__(self):
+        return '{} units of {}'.format(self.quantity, self.product.name)
+
+

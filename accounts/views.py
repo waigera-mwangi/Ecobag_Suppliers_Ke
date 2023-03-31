@@ -54,7 +54,7 @@ def loginView(request):
                 
             elif user is not None and user.user_type == "SM":
                 login(request, user)
-                return redirect('accounts:inventory-manager')
+                return redirect('accounts:inventory')
 
             elif user is not None and user.user_type == "CM":
                 login(request, user)
@@ -91,26 +91,18 @@ def loginView(request):
 def customer(request):
     return redirect('store:view-product')
 
+
+
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
-def inventory_manager(request):
-    products = Product.objects.all()
-    total_products = products.count()
-    inStock = products.filter(in_stock=True)
-    isActive = products.filter(is_active=True)
-    total_isActive = isActive.count()
-    total_inStock = inStock.count()
-    category  = Category.objects.all()
-    total_categories = category.count()
+def inventory(request):
+    pending_cart_count = Order.objects.filter(payment__payment_status='Pending').count()
+    completed_cart_count = Order.objects.filter(payment__payment_status='Approved').count()
 
-    context = {'products':products,
-               'total_products':total_products,
-               'total_categories':total_categories,
-               'total_inStock':total_inStock,
-               'total_isActive':total_isActive,
+    context = {
+        'pending_cart_count': pending_cart_count,
+        'completed_cart_count': completed_cart_count,
     }
-
-
-    return render(request, 'inventory-manager.html',context)
+    return render(request, 'inventory/index.html', context)
 
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="FM")
@@ -145,13 +137,20 @@ def driver(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
 def supplier(request):
-    supply_requests = SupplyTender.objects.all()
-    total_requests = supply_requests.count()
-    supplies = ProductSupply.objects.all()
-    total_supplies = supplies.count()
-    context = {'total_requests':total_requests,
-               'total_supplies':total_supplies,}
-    return render(request, 'supplier.html', context)
+    user = request.user
+    all_tenders_count = SupplyTender.objects.count()
+    pending_tenders_count = SupplyTender.objects.filter(tender_status='Pending', user=user).count()
+    complete_tenders_count = SupplyTender.objects.filter(tender_status='Complete', user=user).count()
+    context = {
+        'all_tenders_count': all_tenders_count,
+        'pending_tenders_count': pending_tenders_count,
+        'complete_tenders_count': complete_tenders_count,
+    }
+    return render(request, 'supplier/index.html', context=context)
+
+
+
+
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="MN")
 def manager(request):
