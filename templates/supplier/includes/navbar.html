@@ -45,13 +45,20 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             
-            <img src="{% static 'assets/img/profile-img.jpg' %}" alt="Profile" class="rounded-circle">
+            {% if brander_profile %}
+            <img class="rounded-circle" src="{{ supplier_profile.image.url }}" alt="Profile Picture">
+           {% else %}
+            <img class="rounded-circle" src="{% static 'assets/img/avatars/1.png' %}" alt="Default Profile Picture">
+            {% endif %}
+
             <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.get_full_name|title }}</span>
           </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
               <h6>{{ request.user.get_full_name|title }}</h6>
+            <small class="text-muted" >{{user.get_user_type_display}}</small>
+
 <!-- {#              <span>Customer</span>#} -->
             </li>
             <li>
@@ -59,7 +66,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:profile' %}">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:supplier-profile' %}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>

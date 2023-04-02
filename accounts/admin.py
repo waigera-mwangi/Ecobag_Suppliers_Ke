@@ -1,10 +1,11 @@
 from django.contrib import admin, messages
-from .models import User, Profile
+from .models import *
 from accounts.forms import UserAdminChangeForm, RegistrationForm
 from django.contrib.admin import ModelAdmin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import ngettext
+from accounts.mixins import ExportCsvMixin
 
 
 admin.site.site_header = "Ecobag Suppliers ke Admin"
@@ -83,15 +84,21 @@ class UserAdmin(BaseUserAdmin):
         return True
 
 
-# @admin.register(Profile)
-# class ProfileAdmin(ModelAdmin):
-#     search_fields = ['user__username']
-#     list_display = ['user', 'phone_number', 'image']
-#     list_display_links = ['user', ]
-#     search_help_text = "Search by username"
-#     list_filter = ('updated', 'created')
+@admin.register(Profile)
+class ProfileAdmin(ExportCsvMixin, ModelAdmin):
+    search_fields = ['user__name']
+    list_display = ['phone_number', 'image', 'gender']
+    list_display_links = ['phone_number']
+    search_help_text = "Search by name"
+    list_filter = ('gender', 'phone_number')
 
-#     @staticmethod
-#     def has_change_permission(request, obj=None):
-#         return True
+    
 
+@admin.register(FAQ)
+class FAQAdmin(ExportCsvMixin, ModelAdmin):
+    search_fields = ['subject', 'question_types']
+    list_display = ['subject', 'content', 'question_types']
+    list_display_links = ['subject']
+    search_help_text = "Search by subject"
+    list_filter = ('subject', 'question_types')
+ 

@@ -6,6 +6,7 @@ app_name = 'shipping'
 
 urlpatterns = [
 
-		path('select-pickup-station', UserPickUpStationCreateView.as_view(), name='select-pickup-station')
+		path('select-pickup-station', UserPickUpStationCreateView.as_view(), name='select-pickup-station'),
+    	path('track_shipping/<str:order_id>/', track_delivery, name='track_shipping'),
 
 ]

@@ -12,14 +12,14 @@
 
 
 <li class="menu-item">
-  <a href="#">
+  <a href="{% url 'store:create_category' %}">
     <i class="bi bi-folder-plus"></i>
     Create Category
   </a>
 </li><br>
 
 <li class="menu-item">
-  <a href="#">
+  <a href="{% url 'store:category_list' %}">
     <i class="bi bi-list"></i>
     Category List
   </a>
@@ -69,10 +69,10 @@
 
          <!-- End deliveries Nav -->
 
-      <li class="nav-heading">Pages</li>
+      <!-- <li class="nav-heading">Pages</li> -->
         
       <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
+        <a class="nav-link collapsed" href="{% url 'accounts:inventory-faq' %}">
           <i class="bi bi-question-circle"></i>
           <span>F.A.Q</span>
         </a>

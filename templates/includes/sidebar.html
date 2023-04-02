@@ -1,77 +1,77 @@
 
 <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+  <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'store:view-product' %}">
-          <i class="bi bi-grid"></i>
-          <span>Home</span>
-        </a>
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'store:view-product' %}">
+        <i class="bi bi-grid"></i>
+        <span>Home</span>
+      </a>
+    </li>
+    <!-- End Dashboard Nav -->
+
+    <li class="nav-item">
+      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+            <i class="bi bi-shop"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
+
+      
+
+      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+        {% for c in categories %}
+      <li>
+        <a class="bi bi-circle" href="{{c.get_absolute_url}}">{{c.name|title}}</a>
       </li>
-      <!-- End Dashboard Nav -->
+      {% endfor %}
+      </ul>
+    </li><!-- End Categories Nav -->
+      
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'store:customer-order-list' %}">
+        <i class="fa fa-truck"></i>
+        <span>My Orders</span>
+      </a>
+    </li><!-- End Orders-->
 
       <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-              <i class="bi bi-shop"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
+      <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+         <i class="bi bi-cart"></i><span>Custom Branding</span><i class="bi bi-chevron-down ms-auto"></i>
+      </a>
 
+      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
         
-
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          {% for c in categories %}
         <li>
-          <a class="bi bi-circle" href="{{c.get_absolute_url}}">{{c.name|title}}</a>
+          <a href="{% url 'brands:custom_branding' %}">
+           <i class="bi bi-receipt" style="font-size: large"></i><span>Create brand</span>
+          </a>
         </li>
-        {% endfor %}
-        </ul>
-      </li><!-- End Categories Nav -->
-        
-      <li class="nav-item">
-        <a class="nav-link " href="#">
-          <i class="fa fa-truck"></i>
-          <span>My Orders</span>
-        </a>
-      </li><!-- End Orders-->
+        <li>
+          <a href="{% url 'brands:view_brands' %}">
+           <i class="bi bi-receipt" style="font-size: large"></i><span>View Brands</span>
+          </a>
+        </li>
+      </ul>
+    </li><!-- End my branding Nav -->
 
-        <li class="nav-item">
-        <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-           <i class="bi bi-cart"></i><span>Custom Branding</span><i class="bi bi-chevron-down ms-auto"></i>
-        </a>
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'store:customer-invoice' %}">
+        <i class="fa fa-file"></i>
+        <span>Orders Invoice</span>
+      </a>
+    </li><!-- End Orders-->
 
-        <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-          
-          <li>
-            <a href="{% url 'brands:custom_branding' %}">
-             <i class="bi bi-receipt" style="font-size: large"></i><span>Create brand</span>
-            </a>
-          </li>
-          <li>
-            <a href="{% url 'brands:view_brands' %}">
-             <i class="bi bi-receipt" style="font-size: large"></i><span>View Brands</span>
-            </a>
-          </li>
-        </ul>
-      </li><!-- End my branding Nav -->
-
-      <li class="nav-item">
-        <a class="nav-link " href="#">
-          <i class="fa fa-file"></i>
-          <span>Invoice</span>
-        </a>
-      </li><!-- End Orders-->
-
-      <!-- <li class="nav-heading">Pages</li> -->
+    <!-- <li class="nav-heading">Pages</li> -->
 
 
-      <!-- <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li> -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:faq_question_types' %}">
+        <i class="bi bi-question-circle"></i>
+        <span>F.A.Q</span>
+      </a>
+    </li>
 
 
-    </ul>
+  </ul>
 
-  </aside><!-- End Sidebar-->
+</aside><!-- End Sidebar-->

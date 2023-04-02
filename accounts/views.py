@@ -7,17 +7,20 @@ from django.views import View
 from django.contrib.auth.forms import PasswordChangeForm
 from django.views.generic import CreateView
 from django.contrib.messages.views import SuccessMessageMixin
-
+from django.views import View
+from django.core.exceptions import ObjectDoesNotExist
+from django.views.generic import ListView, DetailView
 from accounts.decorators import required_access
 from accounts.forms import *
 from accounts.models import User, CustomerProfile, Profile
 from django.urls import reverse_lazy
-
+from .models import *
 from orders.models import Order
 from store.models import *
 from supply.models import *
 from brands.models import *
 from delivery.models import *
+from . import context_processors
 # from orders.views import user_orders
 
 
@@ -93,37 +96,40 @@ def customer(request):
 
 
 
-@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
+required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory(request):
     pending_cart_count = Order.objects.filter(payment__payment_status='Pending').count()
     completed_cart_count = Order.objects.filter(payment__payment_status='Approved').count()
-
+    products = Product.objects.all()
+    total_products = products.count()
+    inStock = products.filter(in_stock=True)
+    total_inStock = inStock.count()
+    category  = Category.objects.all()
+    total_categories = category.count()
     context = {
         'pending_cart_count': pending_cart_count,
         'completed_cart_count': completed_cart_count,
+        'products':products,
+        'total_products':total_products,
+        'total_categories':total_categories,
+        'total_inStock':total_inStock,
+        
     }
     return render(request, 'inventory/index.html', context)
+
 
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="FM")
 def finance_manager(request):
     orders = Order.objects.all()
     total_orders = orders.count()
-    pending = orders.filter(orderstatus='Pending').count()
-    approved = orders.filter(orderstatus='Approved').count()
-    rejected = orders.filter(orderstatus='Rejected').count()
-    out_for_shipping = orders.filter(orderstatus='Out for shipping').count()
-    completed = orders.filter(orderstatus='Completed').count()
-
+   
+    
     context = {'orders':orders,
               'total_orders':total_orders,
-              'pending':pending,
-              'approved':approved,
-              'rejected':rejected,
-              'out_for_shipping':out_for_shipping,
-              'completed':completed}
-    
-    return render(request, 'finance-manager.html', context)
+    }
+
+    return render(request, 'finance-manager.html')
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):
@@ -207,21 +213,268 @@ def password_change(request):
 #     return render(request, 'finance/forms/profile.html', context)
 
 
-def profile(request):
-    # profile = Profile.object.all()
-    profile, created = Profile.objects.get_or_create(user=request.user)
-    p_form = CustomerProfileForm(instance=profile)
+# def profile(request):
+#     # profile = Profile.object.all()
+#     profile = Profile.objects.get_or_create(user=request.user)
+#     p_form = CustomerProfileForm(instance=profile)
+#     form = CustomerForm(instance=request.user)
+#     if request.method == "POST":
+#         p_form = CustomerProfileForm(request.POST, request.FILES, instance=profile)
+#         form = CustomerForm(request.POST, instance=request.user)
+#         p_form.save()
+#         form.save()
+#         messages.success(request, 'Profile updated successfully')
+#     # order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
+#     context = {+
+#         'p_form': p_form,
+#         'form': form,
+#         # 'order': order
+#     }
+#     return render(request, 'accounts/profile.html',  context)
+
+
+class FAQQuestionTypeListView(ListView):
+    template_name = 'faq/customer_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class D_FAQ(ListView):
+    template_name = 'faq/driver_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class S_FAQ(ListView):
+    template_name = 'faq/supplier_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class B_FAQ(ListView):
+    template_name = 'faq/brander_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class I_FAQ(ListView):
+    template_name = 'faq/inventory_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class DP_FAQ(ListView):
+    template_name = 'faq/dispatch_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+class F_FAQ(ListView):
+    template_name = 'faq/finance_faq.html'
+    queryset = FAQ.objects.all()
+    context_object_name = 'faqs'
+
+
+# profiles
+def customer_profile(request):
+    
+    try:
+        customer_profile = CustomerProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no customer profile exists for the user
+        customer_profile = CustomerProfile.objects.create(user=request.user)
+
+    # customer_profile = CustomerProfile.objects.get(user=request.user)
+    # profile, created = CustomerProfile.objects.get_or_create(user=request.user)
+    p_form = CustomerProfileForm(instance=customer_profile)
     form = CustomerForm(instance=request.user)
+
+    # Retrieve profile image URL
+
     if request.method == "POST":
-        p_form = CustomerProfileForm(request.POST, request.FILES, instance=profile)
+        p_form = CustomerProfileForm(request.POST, request.FILES, instance=customer_profile)
         form = CustomerForm(request.POST, instance=request.user)
-        p_form.save()
-        form.save()
-        messages.success(request, 'Profile updated successfully')
-    # order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
-    context = {+
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+    context = {
         'p_form': p_form,
         'form': form,
-        # 'order': order
+        'customer_profile': customer_profile,
     }
-    return render(request, 'accounts/profile.html',  context)
+    return render(request, 'accounts/profiles/customer-profile-create.html',  context)
+
+
+def finance_profile(request):
+  
+    try:
+        finance_profile = FinanceProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        finance_profile = FinanceProfile.objects.create(user=request.user)
+
+    p_form = FinanceProfileForm(instance=finance_profile)
+    form = FinanceForm(instance=request.user)
+
+    # Retrieve profile image URL
+    profile_image_url = finance_profile.image.url if finance_profile.image else None
+
+    if request.method == "POST":
+        p_form = FinanceProfileForm(request.POST, request.FILES, instance=finance_profile)
+        form = FinanceForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'finance_profile': finance_profile,
+        'profile_image_url': profile_image_url,
+    }
+    return render(request, 'accounts/profiles/finance-profile.html',  context)
+
+
+def brander_profile(request):
+  
+    try:
+        brander_profile = BranderProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        brander_profile = BranderProfile.objects.create(user=request.user)
+
+    p_form = BranderProfileForm(instance=brander_profile)
+    form = BranderForm(instance=request.user)
+
+    # Retrieve profile image URL
+    profile_image_url = brander_profile.image.url if brander_profile.image else None
+
+    if request.method == "POST":
+        p_form = BranderProfileForm(request.POST, request.FILES, instance=brander_profile)
+        form = BranderForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'brander_profile': brander_profile,
+        'profile_image_url': profile_image_url,
+    }
+    return render(request, 'accounts/profiles/brander-profile.html',  context)
+
+def dispatch_profile(request):
+  
+    try:
+        dispatch_profile = DispatchProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        dispatch_profile = DispatchProfile.objects.create(user=request.user)
+
+    p_form  = DispatchProfileForm(instance=dispatch_profile)
+    form = DispatchForm(instance=request.user)
+
+    # Retrieve profile image URL
+    profile_image_url = dispatch_profile.image.url if dispatch_profile.image else None
+
+    if request.method == "POST":
+        p_form = DispatchProfileForm(request.POST, request.FILES, instance=dispatch_profile)
+        form = DispatchForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'dispatch_profile': dispatch_profile,
+        'profile_image_url': profile_image_url,
+    }
+    return render(request, 'accounts/profiles/dispatch-profile.html',  context)
+
+def driver_profile(request):
+
+    try:
+        driver_profile = DispatchProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        driver_profile = DispatchProfile.objects.create(user=request.user)
+
+    p_form = DriverProfileForm(instance=driver_profile)
+    form = DriverForm(instance=request.user)
+
+    # Retrieve profile image URL
+    
+
+    if request.method == "POST":
+        p_form = DriverProfileForm(request.POST, request.FILES, instance=driver_profile)
+        form = DriverForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile has been updated successfully')
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'driver_profile': driver_profile,
+        
+    }
+    return render(request, 'accounts/profiles/driver-profile.html',  context)
+
+def inventory_profile(request):
+    try:
+        inventory_profile = InventoryProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        inventory_profile = InventoryProfile.objects.create(user=request.user)
+
+    p_form = InventoryProfileForm(instance=inventory_profile)
+    form = InventoryForm(instance=request.user)
+
+    # Retrieve profile image URL
+    profile_image_url = inventory_profile.image.url if inventory_profile.image else None
+
+    if request.method == "POST":
+        p_form = InventoryProfileForm(request.POST, request.FILES, instance=inventory_profile)
+        form = InventoryForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            # Update profile image URL after saving
+            profile_image_url = inventory_profile.image.url if inventory_profile.image else None
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'inventory_profile': inventory_profile,
+        'profile_image_url': profile_image_url,
+    }
+    return render(request, 'accounts/profiles/inventory-profile.html',  context)
+
+
+
+def supplier_profile(request):
+    try:
+        supply_profile = SupplyProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+    # handle the case where no profile exists for the user
+        supply_profile = SupplyProfile.objects.create(user=request.user)
+
+    p_form = SupplierProfileForm(instance=supply_profile)
+    form = SupplierForm(instance=request.user)
+
+    # Retrieve profile image URL
+    profile_image_url = supply_profile.image.url if supply_profile.image else None
+
+    if request.method == "POST":
+        p_form = SupplierProfileForm(request.POST, request.FILES, instance=supply_profile)
+        form = SupplierForm(request.POST, instance=request.user)
+        if p_form.is_valid() and form.is_valid():
+            p_form.save()
+            form.save()
+            messages.success(request, 'Profile updated successfully')
+            # Update profile image URL after saving
+            profile_image_url = supply_profile.image.url if supply_profile.image else None
+    context = {
+        'p_form': p_form,
+        'form': form,
+        'supply_profile': supply_profile,
+        'profile_image_url': profile_image_url,
+    }
+    return render(request, 'accounts/profiles/supplier-profile.html',  context)

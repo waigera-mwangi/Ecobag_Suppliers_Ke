@@ -1,0 +1,13 @@
+{% extends 'customer/layouts/base.html' %}
+
+{% block content %}
+  <h1>Customer Profile Detail</h1>
+  <div>
+    <p><strong>Name:</strong> {{ profile.names }}</p>
+    <p><strong>Photo:</strong></p>
+    <img src="{{ profile.photo.url }}" alt="{{ profile.names }} profile photo">
+    <p><strong>Phone number:</strong> {{ profile.phone_number }}</p>
+    <p><strong>ID number:</strong> {{ profile.id_number }}</p>
+    <p><strong>Gender:</strong> {{ profile.get_gender_display }}</p>
+  </div>
+{% endblock %}

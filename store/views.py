@@ -8,9 +8,16 @@ from django.contrib import messages
 from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import Customer
+from django.db.models import Sum
+from django.http import HttpResponse
+from io import BytesIO
+from xhtml2pdf import pisa
+from django.template.loader import get_template
+
 from utils.utils import generate_key
 # from .filter import OrderFilter
-from orders.models import Order, OrderItem
+from orders.models import *
+from finance.models import *
 from shipping.models import *
 from .forms import *
 from django.shortcuts import get_object_or_404, render
@@ -181,7 +188,7 @@ def create_category(request):
         else:
             messages.warning(request, "Error creating Category")
     context = {'form': form}
-    return render(request, 'store/add-category.html', context)
+    return render(request, 'inventory/includes/add-category.html', context)
 
 # update category
 def update_category(request, pk):
@@ -192,22 +199,14 @@ def update_category(request, pk):
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
-            messages.success(request, "Product updated successfully")
+            messages.success(request, "Category updated successfully")
             return redirect('store:category_list')
         else:
-            messages.warning(request, "Error updating Product")
+            messages.warning(request, "Error updating Category")
     context = {'form': form}
-    return render(request, 'store/add-category.html', context)
+    return render(request, 'inventory/includes/add-category.html', context)
 
 
-# delete category
-def delete_category(request, pk):
-    category = Category.objects.get(id=pk)
-    if request.method == 'POST':
-        category.delete()
-        return redirect('store:category_list')
-    context = {"category":category}
-    return render(request, 'store/delete-category.html', context)
 
 def category_list(request):
     category = Category.objects.filter()
@@ -396,8 +395,107 @@ def searchproduct(request):
     return redirect(request.META.get('HTTP_REFERER'))
 
 
+ # optimized
+# @login_required
+def customer_order_list(request):
+        user = request.user
+        orders = Order.objects.filter(user=user, is_completed=True)
+        order_list = []
+        for order in orders:
+            payment = Payment.objects.filter(order=order).first()
+            if payment:
+                order_info = {
+                    'transaction_id': payment.transaction_id,
+                    'username': order.user.username,
+                    'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                    # 'total_cost': order.subtotal,
+                    'payment_status': payment.payment_status,
+                    'date_ordered': order.date_ordered,
+                    'order_id': order.id,  # Add cart_id to the dictionary
+                }
+                order_list.append(order_info)
+        return render(request, 'store/customer_order_list.html', {'order_list': order_list})    
+
+
+# @login_required
+def customer_order_detail(request, order_id):
+    user = request.user
+    order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
+    payment = Payment.objects.filter(order=order).first()
+    order_items = order.orderitem_set.all()
+    # order_total = order.total_cost
 
     
+    # Get the pick-up station for the user
+    user_pick_up_station = None
+    if hasattr(user, 'pick_up_stations'):
+        user_pick_up_station = user.pick_up_stations.first()
+
+    context = {
+        'order': order,
+        'payment': payment,
+        'order_items': order_items,
+        # 'order_total': order_total,
+        'user_pick_up_station': user_pick_up_station,
+    }
+    return render(request, 'store/customer_order_detail.html', context)
+
+# @login_required
+def customer_order_invoice(request):
+        user = request.user
+        orders = Order.objects.filter(user=user, is_completed=True)
+        order_list = []
+        for order in orders:
+            payment = Payment.objects.filter(order=order).first()
+            if payment:
+                order_info = {
+                    'transaction_id': payment.transaction_id,
+                    'username': order.user.username,
+                    'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                    # 'total_cost': order.total_cost,
+                    'payment_status': payment.payment_status,
+                    'date_ordered': order.date_ordered,
+                    'order_id': order.id,  # Add cart_id to the dictionary
+                }
+                order_list.append(order_info)
+        return render(request, 'finance/customer-invoice.html', {'order_list': order_list})  
+
+def customer_order_pdf(request, order_id):
+    user = request.user
+    order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
+    payment = Payment.objects.filter(order=order).first()
+    order_items = order.orderitem_set.all()
+    # order_total = order.total_cost
+
+    # Get the pick-up station for the user
+    user_pick_up_station = UserPickUpStation.objects.first()
+
+    # Load template for receipt
+    template = get_template('finance/order_payment_receipt.html')
+    context = {
+        'order': order,
+        'payment': payment,
+        'order_items': order_items,
+        # 'order_total': order_total,
+        'user_pick_up_station': user_pick_up_station,
+        'user': user,
+    }
+    html = template.render(context)
+
+    # Create a file-like buffer to receive PDF data.
+    buffer = BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), buffer)
+
+    if not pdf.err:
+        # Get the value of the BytesIO buffer and write it to the response
+        pdf_value = buffer.getvalue()
+        buffer.close()
+        response = HttpResponse(content_type='application/pdf')
+        response['Content-Disposition'] = 'filename="order_invoice_{}.pdf"'.format(order_id)
+        response.write(pdf_value)
+        return response
+
+    return HttpResponse('Error generating PDF!')
 
  # cart functions
 
@@ -557,7 +655,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     template_name = 'inventory/includes/product_form.html'
     form_class = ProductForm
-    success_url = reverse_lazy('inventory:product-list')
+    success_url = reverse_lazy('store:product-list')
 
     def form_valid(self, form):
         # Set the user of the product to the currently logged in user
@@ -566,7 +664,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 
     def form_invalid(self, form):
         # Add error messages to the form if it is invalid
-        messages.error(self.request, 'There was an error with the form. Please try again.')
+        messages.error(self.request, 'An error occurred. Please try again.')
         return super().form_invalid(form)
 
     def post(self, request, *args, **kwargs):
@@ -582,7 +680,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     template_name = 'inventory/includes/product_update_form.html'
     form_class = ProductForm
-    success_url = reverse_lazy('inventory:product-list')
+    success_url = reverse_lazy('store:product-list')
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -590,7 +688,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     template_name = 'inventory/includes/product_confirm_delete.html'
-    success_url = reverse_lazy('inventory:product-list')
+    success_url = reverse_lazy('store:product-list')
 
     def test_func(self):
         return self.request.user.is_superuser
@@ -667,3 +765,75 @@ class OrderDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         return super().delete(request, *args, **kwargs)
 
 
+def approve_payment(request, transaction_id):
+    payment = Payment.objects.get(transaction_id=transaction_id)
+    if request.method == 'POST':
+        status = request.POST.get('status')
+        if status == 'approve':
+            payment.payment_status = 'Approved'
+            order = Order.objects.get(payment=payment)
+            order.is_completed = True
+            order.save()
+        elif status == 'reject':
+            payment.payment_status = 'Rejected'
+        payment.save()  # save the payment status change
+        return redirect('store:order-payment')
+
+    context = {
+        'payment': payment,
+    }
+    return render(request, 'finance/order-payment.html', context)
+
+def order_rejected_payment(request):
+    orders = Order.objects.filter(is_completed=True)
+    order_list = []
+    for order in orders:
+        payment = Payment.objects.filter(order=order, payment_status='Rejected').first()
+        if payment:
+            order_info = {
+                'transaction_id': payment.transaction_id,
+                'username': order.user.username,
+                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                # 'total_cost': order.total_cost,
+                'payment_status': payment.payment_status,
+                'date_ordered': order.date_ordered,
+                'payment_id': payment.id,  # add payment_id to order_info
+            }
+            order_list.append(order_info)
+    return render(request, 'finance/order-payment-rejected.html', {'order_list': order_list})
+
+def order_approved_payment(request):
+    orders = Order.objects.filter(is_completed=True)
+    order_list = []
+    for order in orders:
+        payment = Payment.objects.filter(order=order, payment_status='Approved').first()
+        if payment:
+            order_info = {
+                'transaction_id': payment.transaction_id,
+                'username': order.user.username,
+                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                 'total_cost': order.order_total,
+                'payment_status': payment.payment_status,
+                'date_ordered': order.date_ordered,
+                'payment_id': payment.id,  # add payment_id to order_info
+            }
+            order_list.append(order_info)
+    return render(request, 'finance/order_approved_payment.html', {'order_list': order_list})
+
+def order_payment(request):
+    orders = Order.objects.filter(is_completed=True)
+    order_list = []
+    for order in orders:
+        payment = Payment.objects.filter(order=order, payment_status='pending').first()
+        if payment:
+            order_info = {
+                'transaction_id': payment.transaction_id,
+                'username': order.user.username,
+                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                # 'total_cost': order.total_cost,
+                'payment_status': payment.payment_status,
+                'date_ordered': order.date_ordered,
+                'payment_id': payment.id,  # add payment_id to order_info
+            }
+            order_list.append(order_info)
+    return render(request, 'finance/order-payment.html', {'order_list': order_list})

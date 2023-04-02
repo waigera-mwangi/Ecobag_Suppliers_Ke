@@ -2,8 +2,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm,ReadO
 from django.contrib.auth import get_user_model, logout
 from django.forms import forms, ModelForm
 from django import forms
-from accounts.models import Profile
-from accounts.models import CustomerProfile, Customer
+from accounts.models import *
 
 User = get_user_model()
 
@@ -182,3 +181,86 @@ class UserAdminChangeForm(ModelForm):
         # This is done here, rather than on the field, because the
         # field does not have access to the initial value
         return self.initial["password"]
+
+
+# profile forms
+class CustomerProfileForm(ModelForm):
+    class Meta:
+        model = CustomerProfile
+        fields = ['image', 'gender']
+
+
+class CustomerForm(ModelForm):
+    class Meta:
+        model = Customer
+        fields = ['last_name', 'first_name', 'email']
+
+
+class SupplierProfileForm(ModelForm):
+    class Meta:
+        model = SupplyProfile
+        fields = [ 'image','gender']
+
+
+class SupplierForm(ModelForm):
+    class Meta:
+        model = Supply
+        fields = ['last_name', 'first_name', 'email']
+
+class DispatchProfileForm(ModelForm):
+    class Meta:
+        model = DispatchProfile
+        fields = [ 'image','gender']
+
+
+class DispatchForm(ModelForm):
+    class Meta:
+        model = Dispatch
+        fields = ['last_name', 'first_name', 'email' ]
+
+
+class DriverProfileForm(ModelForm):
+    class Meta:
+        model = DriverProfile
+        fields = [ 'image','gender', ]
+
+
+class DriverForm(ModelForm):
+    class Meta:
+        model = Driver
+        fields = ['last_name', 'first_name', 'email']
+
+
+class FinanceProfileForm(ModelForm):
+    class Meta:
+        model = FinanceProfile
+        fields = [ 'image', 'gender']
+
+
+class FinanceForm(ModelForm):
+    class Meta:
+        model = Finance
+        fields = ['last_name', 'first_name', 'email']
+
+
+class InventoryProfileForm(ModelForm):
+    class Meta:
+        model = InventoryProfile
+        fields = [ 'image','gender']
+
+
+class InventoryForm(ModelForm):
+    class Meta:
+        model = Inventory
+        fields = ['last_name', 'first_name', 'email']
+
+class BranderProfileForm(ModelForm):
+    class Meta:
+        model = BranderProfile
+        fields = [ 'image','gender']
+
+
+class BranderForm(ModelForm):
+    class Meta:
+        model = Brander
+        fields = ['last_name', 'first_name', 'email']

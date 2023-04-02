@@ -1,33 +1,42 @@
 <aside id="sidebar" class="sidebar">
 
-    <ul class="sidebar-nav" id="sidebar-nav">
+  <ul class="sidebar-nav" id="sidebar-nav">
 
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'accounts:finance-manager' %}">
-          <i class="bi bi-grid"></i>
-          <span>Dashboard</span>
-        </a>
-      </li><!-- End Dashboard Nav -->
+    <li class="nav-item">
+      <a class="nav-link " href="{% url 'accounts:finance-manager' %}">
+        <i class="bi bi-grid"></i>
+        <span>Dashboard</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
 
-      <li class="nav-item">
-        <a class="nav-link " href="{% url 'orders:orders_list' %}">
-          <i class="fa fa-pencil-square-o"></i>
-          <span>Orders</span>
-        </a>
-      </li>
-      <!-- End Custom Nav -->
+    <li class="nav-item">
+      <a class="nav-link " href="#">
+        <i class="fa fa-pause"></i>
+        <span>Pending Orders</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
+    <li class="nav-item">
+      <a class="nav-link " href="#">
+        <i class="fa fa-thumbs-o-up"></i>
+        <span>Approved Orders</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
+    <li class="nav-item">
+      <a class="nav-link " href="#">
+        <i class="fa fa-times"></i>
+        <span>Rejected Orders</span>
+      </a>
+    </li><!-- End Dashboard Nav -->
 
-      <li class="nav-heading">Pages</li>
+  
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:finance-faq' %}">
+        <i class="bi bi-question-circle"></i>
+        <span>F.A.Q</span>
+      </a>
+    </li><!-- End F.A.Q Page Nav -->
 
 
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="pages-faq.html">
-          <i class="bi bi-question-circle"></i>
-          <span>F.A.Q</span>
-        </a>
-      </li><!-- End F.A.Q Page Nav -->
+  </ul>
 
-
-    </ul>
-
-  </aside><!-- End Sidebar-->
+</aside><!-- End Sidebar-->

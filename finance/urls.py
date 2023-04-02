@@ -6,6 +6,7 @@ app_name = 'finance'
 
 
 urlpatterns = [
-			path('checkout/', views.checkout, name='checkout')
+	path('checkout/', views.checkout, name='checkout'),
+	path('supply-receipt/<int:tender_id>/', receipt, name='receipt'),
 		
 ]

@@ -13,9 +13,9 @@
               <table class="table table-sm mb-0" style="font-size: 14px;">
                 <thead style="background-color: #f8f9fa;">
                   <tr>
-                    <th style="font-weight: 400;">Product Name</th>
+                    <th style="font-weight: 400;">Product</th>
                     <th style="font-weight: 400;">Price</th>
-                    <th style="font-weight: 400;">Installation</th>
+      
                      <th style="font-weight: 400;">Quantity in stock</th>
                     <th style="font-weight: 400;">Category</th>
                     <th style="font-weight: 400;">Actions</th>
@@ -26,13 +26,11 @@
                   <tr>
                     <td>{{ product.name }}</td>
                     <td>{{ product.price }}</td>
-                    <td>{{ product.installation_cost }}</td>
                     <td>{{ product.quantity }}</td>
                     <td>{{ product.category }}</td>
                     <td>
-                      <a href="{% url 'inventory:product-detail' product.id %}" class="btn btn-sm btn-outline-info">View</a>
-                      <a href="{% url 'inventory:product-update' product.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
-                      <a href="{% url 'inventory:product-delete' product.id %}" class="btn btn-sm btn-outline-danger">Delete</a>
+                      <a href="{% url 'store:product-detail' product.id %}" class="btn btn-sm btn-outline-info">View</a>
+                      <a href="{% url 'store:product-update' product.id %}" class="btn btn-sm btn-outline-primary">Edit</a>
                     </td>
                   </tr>
                   {% empty %}

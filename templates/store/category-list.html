@@ -1,4 +1,4 @@
-{% extends 'layouts/inventorymanager-base.html' %}
+{% extends 'inventory/layouts/base.html' %}
 
 {% block title %}Product List{% endblock title %}
 
@@ -45,7 +45,7 @@
                                 <th>Name</th>
                                 <th>Slug</th>                                
                                 <th>Update</th>
-                                <th>Remove</th>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -59,9 +59,7 @@
                                 <td>
                                     <a href="{% url 'store:update_category' category.id %}" class="btn btn-primary">Update</a>
                                 </td>
-                                <td>
-                                    <a href="{% url 'store:delete_category' category.id %}" class="btn btn-danger">Delete</a>
-                                </td>
+                                
                             </tr>
                             {% endfor %}
                             {% else %}

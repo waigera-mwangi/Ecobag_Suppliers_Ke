@@ -16,21 +16,23 @@ urlpatterns = [
 
     # path('customer-list/', CustomerListView.as_view(), name='customer-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),
-    # path('order-list/', OrderListView.as_view(), name='order-list'),
+    # path('order-list/', OrderListView.asdelete_c_view(), name='order-list'),
     path('category_list/', category_list, name='category_list'),
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     # view products by customer
     path('view-products/', ProductView.as_view(), name='view-product'),
-<<<<<<< HEAD
     path('product_detail/<slug:slug>/', product_detail, name='product_detail'),
+    path('update_category/<str:pk>/', views.update_category, name='update_category'),
+    
+    path('category_list/', views.category_list, name='category_list'),
+    path('create_category/', views.create_category, name='create_category'),
     # path('category_view/<slug:category_slug>/', category_list, name='category_list'),
     # path('user/', userPage, name="user-page"),
-=======
+    
     # view single product by customer
     path('product_detail/<slug:name>/', views.product_detail, name='product_detail'),
     path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
     # path('user/', views.userPage, name="user-page"),
->>>>>>> 7f1a830933b5f41f8ac44e08e56091723d05a748
 
     path('products/', product, name='products'),
     # search products
@@ -51,6 +53,22 @@ urlpatterns = [
     # path('category/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category-delete')
     
 
+     # finance
+    path('approve-payment/<str:transaction_id>/', approve_payment, name='approve_payment'),
+    path('order-payments/', order_payment, name='order-payment'),
+    path('order/approved-payments/', order_approved_payment, name='order-payment-approved'),
+    path('order/rejected-payments/', order_rejected_payment, name='order-payment-rejected'),
 
-   
+
+    # organised
+    path('customer-order-list/', customer_order_list, name='customer-order-list'),
+    path('customer-order-details/<int:order_id>/', customer_order_detail, name='customer-order-details'),
+    path('customer-invoice/', customer_order_invoice, name='customer-invoice'),
+    path('order/<int:order_id>/pdf/', views.customer_order_pdf, name='customer-order-pdf'),
+
+#    customer
+    path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
+    
+    path('view_cart/', view_cart, name='view_cart'),
+
 ]
