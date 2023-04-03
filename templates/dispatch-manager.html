@@ -1,4 +1,4 @@
-{% extends 'layouts/dispatchmanager-base.html' %}
+{% extends 'dispatch/layouts/base.html' %}
 {% block title %}Home{% endblock %}
 {% block content %}
     <div class="pagetitle">
@@ -29,7 +29,7 @@
                       <i class="fa fa-shopping-bag"></i>
                     </div>
                     <div class="ps-3">
-                      <a href="{% url 'orders:orders_approved' %}">
+                      <a href="#">
                       <h6>{{approved}}</h6>
                     </a>
                     </div>
@@ -50,10 +50,10 @@
                       <i class="fa fa-truck"></i>
                     </div>
                     <div class="ps-3">
-                      <a href="{% url 'delivery:delivery_list' %}">
+                      <a href="#">
                       <h6>{{deliveries}}</h6>
                     </a>
-                    </div>
+                    </div
                   </div>
                 </div>
 

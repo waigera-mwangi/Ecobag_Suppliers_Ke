@@ -7,13 +7,13 @@ from django.views.generic import ListView
 from django.contrib import messages
 from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
-from accounts.models import Customer
+from accounts.models import User
 from django.db.models import Sum
 from django.http import HttpResponse
 from io import BytesIO
 from xhtml2pdf import pisa
 from django.template.loader import get_template
-
+from django.contrib.auth import get_user_model
 from utils.utils import generate_key
 # from .filter import OrderFilter
 from orders.models import *
@@ -812,7 +812,7 @@ def order_approved_payment(request):
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                 'total_cost': order.order_total,
+                #  'total_cost': order.order_total,
                 'payment_status': payment.payment_status,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,  # add payment_id to order_info
@@ -837,3 +837,101 @@ def order_payment(request):
             }
             order_list.append(order_info)
     return render(request, 'finance/order-payment.html', {'order_list': order_list})
+
+
+User = get_user_model()
+
+def assign_driver_order_list(request):
+    orders = Order.objects.filter(is_completed=True, shipping__isnull=True)
+    order_list = []
+    for order in orders:
+        payment = Payment.objects.filter(order=order, payment_status='Approved').first()
+        if payment:
+            order_info = {
+                'transaction_id': payment.transaction_id,
+                'username': order.user.username,
+                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                # 'total_cost': order.total_cost,
+                'payment_status': payment.payment_status,
+                'date_ordered': order.date_ordered,
+                'payment_id': payment.id,
+                'id': order.id,
+                'driver': None,
+               
+            }
+            shipping = Shipping.objects.filter(order=order).first()
+            if shipping:
+                order_info['driver'] = shipping.driver
+            order_list.append(order_info)
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id', None)
+        driver_id = request.POST.get('driver_id', None)
+        if order_id and driver_id:
+            try:
+                order = Order.objects.get(pk=order_id)
+                if Shipping.objects.filter(order=order).exists():
+                    messages.error(request, f"{order} has already been assigned to a driver")
+                else:
+                    driver = User.objects.filter(pk=driver_id, user_type=User.UserTypes.DRIVER).first()
+                    shipping = Shipping.objects.create(order=order, driver=driver)
+                    messages.success(request, f"{order} has been assigned to {driver}")
+            except (Order.DoesNotExist, User.DoesNotExist):
+                messages.error(request, "Failed to assign driver")
+        else:
+            messages.error(request, "Missing order_id or driver_id")
+
+        return redirect('store:assign-order-list')
+
+
+    drivers = User.objects.filter(user_type=User.UserTypes.DRIVER)
+    return render(request, 'dispatch/assign_order_list.html', {'order_list': order_list, 'drivers': drivers})
+
+
+
+def assigned_order_list(request):
+    orders = Order.objects.filter(is_completed=True, shipping__isnull=False)
+    order_list = []
+    for order in orders:
+        payment = Payment.objects.filter(order=order, payment_status='Approved').first()
+        if payment:
+            order_info = {
+                'transaction_id': payment.transaction_id,
+                'username': order.user.username,
+                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
+                # 'total_cost': order.total_cost,
+                'payment_status': payment.payment_status,
+                'date_ordered': order.date_ordered,
+                'payment_id': payment.id,
+                'id': order.id,
+                'driver': None,
+               
+            }
+            shipping = Shipping.objects.filter(order=order).first()
+            if shipping:
+                order_info['driver'] = shipping.driver
+            order_list.append(order_info)
+
+    if request.method == 'POST':
+        order_id = request.POST.get('order_id', None)
+        driver_id = request.POST.get('driver_id', None)
+        if order_id and driver_id:
+            try:
+                order = Order.objects.get(pk=order_id)
+                if Shipping.objects.filter(order=order).exists():
+                    messages.error(request, f"{order} has already  assigned to a driver")
+                else:
+                    driver = User.objects.filter(pk=driver_id, user_type=User.UserTypes.DRIVER).first()
+                    shipping = Shipping.objects.create(order=order, driver=driver)
+                    messages.success(request, f"{order} has been assigned to {driver}")
+            except (Order.DoesNotExist, User.DoesNotExist):
+                messages.error(request, "Failed to assign driver")
+        else:
+            messages.error(request, "Missing order_id or driver_id")
+
+        return redirect('inventory:assigned-order-list')
+
+
+    drivers = User.objects.filter(user_type=User.UserTypes.DRIVER)
+    return render(request, 'dispatch/assigned_order_list.html', {'order_list': order_list, 'drivers': drivers})
+

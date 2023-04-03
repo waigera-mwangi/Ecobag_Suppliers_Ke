@@ -1,0 +1,36 @@
+{% extends 'dispatch/layouts/base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1 class="my-4">Delivered Order List</h1>
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+  <thead class="thead-light">
+    <tr>
+      <th>Order Id</th>
+      <th>Station</th>
+      <th>Delivery Date</th>
+      <th>Status</th>
+       <!-- Add new column for action button -->
+    </tr>
+  </thead>
+  <tbody>
+    {% for shipping in shipping_list %}
+      <tr>
+        <td>{{ shipping.order.payment.transaction_id }}</td>
+        <td>{{ shipping.station }}</td>
+        <td>{{ shipping.delivery_date }}</td>
+        <td>{{ shipping.get_status_display }}</td>
+       
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="5">No shipments found.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+    </div>
+  </div>
+{% endblock %}

@@ -68,7 +68,10 @@ urlpatterns = [
 
 #    customer
     path('add_to_cart/<int:pk>/', views.add_to_cart, name='add_to_cart'),
-    
     path('view_cart/', view_cart, name='view_cart'),
+
+    # dispatch
+    path('assign-order-list/', assign_driver_order_list, name='assign-order-list'),
+    path('assigned-order-list/', assigned_order_list, name='assigned-order-list'),
 
 ]

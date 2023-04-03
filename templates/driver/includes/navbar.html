@@ -45,10 +45,10 @@
 
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
             
-            {% if supplier_profile %}
-            <img class="rounded-circle" src="{{ supplier_profile.image.url }}" alt="Profile Picture">
+            {% if driver_profile %}
+            <img class="rounded-circle" src="{{ driver_profile.image.url }}" alt="Profile Picture">
            {% else %}
-            <img class="rounded-circle" src="{% static 'assets/img/avatars/1.png' %}" alt="Default Profile Picture">
+            <img class="rounded-circle" src="{% static 'assets/img/avatars/1.png' %}" alt="Profile">
             {% endif %}
 
             <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.get_full_name|title }}</span>
@@ -66,7 +66,7 @@
             </li>
 
             <li>
-              <a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:supplier-profile' %}">
+              <a class="dropdown-item d-flex align-items-center" href="{% url 'accounts:driver-profile' %}">
                 <i class="bi bi-person"></i>
                 <span>My Profile</span>
               </a>
@@ -106,12 +106,12 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
+            <!-- <li>
               <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
                 <i class="bi bi-question-circle"></i>
                 <span>FAQ's</span>
               </a>
-            </li>
+            </li> -->
 
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->

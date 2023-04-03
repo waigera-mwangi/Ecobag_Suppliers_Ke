@@ -40,3 +40,9 @@ class ShippingForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['station'].label_from_instance = lambda obj: f"{obj.station.name} ({obj.station.location.name})"
+
+
+class PickUpStationForm(forms.ModelForm):
+    class Meta:
+        model = PickUpStation
+        fields = ['name', 'location']

@@ -135,8 +135,8 @@ def finance_manager(request):
 def driver(request):
     deliveries = Delivery.objects.all().count()
     orders = Order.objects.all()
-    approved = orders.filter(orderstatus='Approved').count()
-    context = {'approved':approved,
+    # approved = orders.filter(orderstatus='Approved').count()
+    context = {
                'deliveries':deliveries,
     }
     return render(request, 'driver.html', context)
@@ -172,9 +172,9 @@ def brander(request):
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DM")
 def dispatch_manager(request):
     orders = Order.objects.all()
-    approved = orders.filter(orderstatus='Approved').count()
+    
     deliveries = Delivery.objects.all().count()
-    context = {'approved':approved,
+    context = {
                'deliveries':deliveries,
 
     }

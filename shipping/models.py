@@ -50,6 +50,7 @@ class Shipping(models.Model):
         PENDING = 'PD', _('Pending')
         OUT_FOR_DELIVERY = 'OFD', _('Out For Delivery')
         DELIVERED = 'DL', _('Delivered')
+        COMPLETE = 'CL', _('Complete')
 
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     delivery_date = models.DateTimeField(auto_now_add=True, verbose_name='shipped_date')
