@@ -478,3 +478,95 @@ def supplier_profile(request):
         'profile_image_url': profile_image_url,
     }
     return render(request, 'accounts/profiles/supplier-profile.html',  context)
+
+# change password
+
+def customer_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/customer-change-password.html', {'form': form})
+
+
+def driver_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/driver-change-password.html', {'form': form})
+
+
+def supplier_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/supplier-change-password.html', {'form': form})
+
+
+def finance_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/finance-change-password.html', {'form': form})
+
+
+def inventory_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/inventory-change-password.html', {'form': form})
+
+
+def dispatch_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/dispatch-change-password.html', {'form': form})
+
+def brander_password_change(request):
+    form = PasswordChangeForm(request.user)
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)  # Important
+            messages.success(request, 'Your password was successfully updated!')
+        else:
+            messages.info(request, 'Please correct the errors below.')
+    return render(request, 'accounts/password-change/brander-change-password.html', {'form': form})
+

@@ -47,6 +47,13 @@ urlpatterns = [
     path('driver-profile', driver_profile, name='driver-profile'),
     path('inventory-profile', inventory_profile, name='inventory-profile'),
     path('supplier-profile', supplier_profile, name='supplier-profile'),
-    
 
+    # change password
+    path('customer/password-change', customer_password_change, name='customer_password_change'),
+    path('supplier/password-change', supplier_password_change, name='supplier_password_change'),
+    path('inventory/password-change', inventory_password_change, name='inventory_password_change'),
+    path('dispatch/password-change', dispatch_password_change, name='dispatch_password_change'),
+    path('brander/password-change', brander_password_change, name='brander_password_change'),
+    path('driver/password-change', driver_password_change, name='driver_password_change'),
+    path('finance/password-change', finance_password_change, name='finance_password_change'),
 ]
