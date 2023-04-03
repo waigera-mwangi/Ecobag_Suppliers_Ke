@@ -38,7 +38,7 @@ class User(AbstractUser, PermissionsMixin):
     last_name = models.CharField( max_length=250, null=True)
     phone_number = CustomPhoneNumberField(null=True, unique=True)
     id_number = models.IntegerField(null=True, unique=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     is_archived = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
