@@ -14,6 +14,7 @@ class Order(models.Model):
     date_ordered = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Date ordered')
     is_completed = models.BooleanField(default=False)  
     products = models.ManyToManyField(Product, through='OrderItem')
+    
 
 
 
