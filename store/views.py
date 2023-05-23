@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.contrib import messages
-from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import User
 from django.db.models import Sum
@@ -274,12 +273,12 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        elif 'pickup_station_id' in request.POST:
-            # Handle selection of a pickup station by the user
-            pickup_station_id = int(request.POST.get('pickup_station_id'))
-            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-            shipping = Shipping.objects.create(order=order, station=pickup_station)
-            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
+        # elif 'pickup_station_id' in request.POST:
+        #     # Handle selection of a pickup station by the user
+        #     pickup_station_id = int(request.POST.get('pickup_station_id'))
+        #     pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
+        #     shipping = Shipping.objects.create(order=order, station=pickup_station)
+        #     messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
 
     # Calculate the subtotal for each order item and save it
     for item in order_items:
@@ -290,13 +289,13 @@ def view_cart(request):
     order_total = sum([item.subtotal for item in order_items])
 
     # Get the available pickup stations
-    userpickupstations = UserPickUpStation.objects.all()
+    # userpickupstations = UserPickUpStation.objects.all()
 
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        'userpickupstations': userpickupstations
+        # 'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
 
@@ -308,7 +307,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.contrib import messages
-from shipping.models import UserPickUpStation
+# from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import Customer
 from utils.utils import generate_key
@@ -468,7 +467,7 @@ def customer_order_pdf(request, order_id):
     # order_total = order.total_cost
 
     # Get the pick-up station for the user
-    user_pick_up_station = UserPickUpStation.objects.first()
+    # user_pick_up_station = UserPickUpStation.objects.first()
 
     # Load template for receipt
     template = get_template('finance/order_payment_receipt.html')
@@ -556,12 +555,12 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        elif 'pickup_station_id' in request.POST:
-            # Handle selection of a pickup station by the user
-            pickup_station_id = int(request.POST.get('pickup_station_id'))
-            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-            shipping = Shipping.objects.create(order=order, station=pickup_station)
-            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
+        # elif 'pickup_station_id' in request.POST:
+        #     # Handle selection of a pickup station by the user
+        #     pickup_station_id = int(request.POST.get('pickup_station_id'))
+        #     pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
+        #     shipping = Shipping.objects.create(order=order, station=pickup_station)
+        #     messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
 
     # Calculate the subtotal for each order item and save it
     for item in order_items:
@@ -572,13 +571,13 @@ def view_cart(request):
     order_total = sum([item.subtotal for item in order_items])
 
     # Get the available pickup stations
-    userpickupstations = UserPickUpStation.objects.all()
+    # userpickupstations = UserPickUpStation.objects.all()
 
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        'userpickupstations': userpickupstations
+        # 'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
 
