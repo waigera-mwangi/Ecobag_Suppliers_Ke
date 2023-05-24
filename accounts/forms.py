@@ -10,7 +10,7 @@ User = get_user_model()
 class CustomerSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'phone_number','email', 'username', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super().save(commit=False)

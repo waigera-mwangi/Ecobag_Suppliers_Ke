@@ -84,9 +84,12 @@ def loginView(request):
                 return redirect('accounts:dispatch-manager')
 
             else:
-                msg = 'Invalid login credentials'
+                messages.warning(request, 'Invalid Login credentials ')
+                # msg = messages.error(request, 'Invalid form submission')
         else:
-            msg = 'error validating form'
+            messages.warning(request, 'Invalid form submission')
+            msg = 'Invalid form submission'
+
     return render(request, 'accounts/user-login.html', {'form': loginform, 'msg': msg})
 
 
@@ -140,6 +143,7 @@ def driver(request):
                'deliveries':deliveries,
     }
     return render(request, 'driver.html', context)
+    
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
 def supplier(request):

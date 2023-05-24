@@ -38,7 +38,7 @@ class User(AbstractUser, PermissionsMixin):
     last_name = models.CharField( max_length=250, null=True)
     phone_number = CustomPhoneNumberField(null=True, unique=True)
     id_number = models.IntegerField(null=True, unique=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     is_archived = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True, null=True)
@@ -101,8 +101,8 @@ class Profile(models.Model):
 
     image = models.ImageField(upload_to='Users/profile_pictures/%Y/%m/',
                               default="null")
-    phone_number = PhoneNumberField(null=True)
-    is_active = models.BooleanField(_('Active'), default=False, help_text=_('Activated, users profile is published'))
+    phone_number = PhoneNumberField(null=False)
+    is_active = models.BooleanField(_('Active'), default=True, help_text=_('Activated, users profile is published'))
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
     gender = models.CharField(
