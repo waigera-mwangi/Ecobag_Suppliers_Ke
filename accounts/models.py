@@ -114,7 +114,7 @@ class Profile(models.Model):
 
 
 class CustomerProfile(Profile):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer_profile')
 
     class Meta:
         verbose_name = 'Customer Profile'

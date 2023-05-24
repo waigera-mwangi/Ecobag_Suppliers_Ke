@@ -95,11 +95,12 @@ def loginView(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="CM")
 def customer(request):
+
     return redirect('store:view-product')
 
 
 
-required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory(request):
     pending_cart_count = Order.objects.filter(payment__payment_status='Pending').count()
     completed_cart_count = Order.objects.filter(payment__payment_status='Approved').count()
@@ -278,6 +279,7 @@ def customer_profile(request):
     
     try:
         customer_profile = CustomerProfile.objects.get(user=request.user)
+
     except ObjectDoesNotExist:
     # handle the case where no customer profile exists for the user
         customer_profile = CustomerProfile.objects.create(user=request.user)
@@ -288,7 +290,8 @@ def customer_profile(request):
     form = CustomerForm(instance=request.user)
 
     # Retrieve profile image URL
-
+    profile_image_url = customer_profile.image.url if customer_profile.image else None
+    
     if request.method == "POST":
         p_form = CustomerProfileForm(request.POST, request.FILES, instance=customer_profile)
         form = CustomerForm(request.POST, instance=request.user)
@@ -300,6 +303,7 @@ def customer_profile(request):
         'p_form': p_form,
         'form': form,
         'customer_profile': customer_profile,
+        'profile_image_url': profile_image_url,
     }
     return render(request, 'accounts/profiles/customer-profile-create.html',  context)
 
