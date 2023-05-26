@@ -424,20 +424,15 @@ def customer_order_detail(request, order_id):
     order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
     payment = Payment.objects.filter(order=order).first()
     order_items = order.orderitem_set.all()
-    # order_total = order.total_cost
+    order_total = order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost']
 
-    
-    # Get the pick-up station for the user
-    user_pick_up_station = None
-    if hasattr(user, 'pick_up_stations'):
-        user_pick_up_station = user.pick_up_stations.first()
+
 
     context = {
         'order': order,
         'payment': payment,
         'order_items': order_items,
-        # 'order_total': order_total,
-        'user_pick_up_station': user_pick_up_station,
+        'order_total' : order_total, 
     }
     return render(request, 'store/customer_order_detail.html', context)
 
