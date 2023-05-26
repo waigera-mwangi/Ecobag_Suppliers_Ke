@@ -461,19 +461,15 @@ def customer_order_pdf(request, order_id):
     order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
     payment = Payment.objects.filter(order=order).first()
     order_items = order.orderitem_set.all()
-    # order_total = order.total_cost
-
-    # Get the pick-up station for the user
-    # user_pick_up_station = UserPickUpStation.objects.first()
-
+    order_total = order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost']
+    
     # Load template for receipt
     template = get_template('finance/order_payment_receipt.html')
     context = {
         'order': order,
         'payment': payment,
         'order_items': order_items,
-        # 'order_total': order_total,
-        'user_pick_up_station': user_pick_up_station,
+        'order_total': order_total,
         'user': user,
     }
     html = template.render(context)
