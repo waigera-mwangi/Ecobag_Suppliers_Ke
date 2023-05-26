@@ -21,7 +21,6 @@ from xhtml2pdf import pisa
 
 def checkout(request):
     user = User.objects.get(pk=1)
-    pick_up_stations = user.pick_up_stations.all()
     order_items = OrderItem.objects.all()
 
 
@@ -79,13 +78,13 @@ def checkout(request):
     else:
         form = PaymentForm()
 
-    userpickupstations = customer.pick_up_stations.all()
+    
 
     context = {
         'form': form,
         'order_items': order_items,
         'order_total': order_total,
-        'userpickupstations': userpickupstations
+        
     }
     return render(request, 'orders/checkout.html', context)
 

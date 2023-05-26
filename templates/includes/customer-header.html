@@ -74,7 +74,8 @@
          </div>
 
         
-                  <!-- loading profile picture -->
+      
+            <!-- loading profile picture -->
 
           {% load static %}
           <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
@@ -86,15 +87,16 @@
             {% endif %}
           {% else %}
             <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Picture">
+            
           {% endif %}
           </a>
+          
+
+
+          <!-- end of profile picture  -->
 
   
         <li class="nav-item dropdown pe-3">
-
-          
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.get_full_name|title }}</span>
-          </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">

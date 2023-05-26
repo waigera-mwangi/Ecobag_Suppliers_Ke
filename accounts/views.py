@@ -240,37 +240,37 @@ def password_change(request):
 
 class FAQQuestionTypeListView(ListView):
     template_name = 'faq/customer_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='CM')
     context_object_name = 'faqs'
 
 class D_FAQ(ListView):
     template_name = 'faq/driver_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='DR')
     context_object_name = 'faqs'
 
 class S_FAQ(ListView):
     template_name = 'faq/supplier_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='RD')
     context_object_name = 'faqs'
 
 class B_FAQ(ListView):
     template_name = 'faq/brander_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='BR')
     context_object_name = 'faqs'
 
 class I_FAQ(ListView):
     template_name = 'faq/inventory_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='SM')
     context_object_name = 'faqs'
 
 class DP_FAQ(ListView):
     template_name = 'faq/dispatch_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='DM')
     context_object_name = 'faqs'
 
 class F_FAQ(ListView):
     template_name = 'faq/finance_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='FM')
     context_object_name = 'faqs'
 
 

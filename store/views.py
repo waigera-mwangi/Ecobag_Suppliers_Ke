@@ -27,6 +27,8 @@ from .models import (
     Product,Category
 )
 
+from django.db.models import F, Sum
+
 
 # from .forms import (
 #     ProductForm,
@@ -97,7 +99,7 @@ def product_detail(request, name):
     return render(request, 'store/product-detail.html',{'product': product})
 
 def category_list(request, category_slug):
-    category = get_object_or_404(Category, slug= category_slug)
+    category = get_object_or_404(Category, slug = category_slug)
     products = Product.objects.filter(category = category)
     return render(request,'store/category.html',{'category':category,'product': products})
 
@@ -451,7 +453,7 @@ def customer_order_invoice(request):
                     'transaction_id': payment.transaction_id,
                     'username': order.user.username,
                     'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                    # 'total_cost': order.total_cost,
+                    'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                     'payment_status': payment.payment_status,
                     'date_ordered': order.date_ordered,
                     'order_id': order.id,  # Add cart_id to the dictionary
