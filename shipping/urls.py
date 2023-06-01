@@ -8,12 +8,6 @@ urlpatterns = [
 
 	# path('select-pickup-station', UserPickUpStationCreateView.as_view(), name='select-pickup-station'),
 	path('track_shipping/<str:order_id>/', track_delivery, name='track_shipping'),
-
-    # path('userpickupstations/create/', UserPickUpStationCreateView.as_view(), name='userpickupstation_create'),
-	# path('pickupstations/', PickUpStationListView.as_view(), name='pickupstation_list'),
-    # path('pickupstations/create/', PickUpStationCreateView.as_view(), name='pickupstation_create'),
-    # path('pickupstations/<int:pk>/', PickUpStationDetailView.as_view(), name='pickupstation_detail'),
-    # path('pickupstations/<int:pk>/update/', PickUpStationUpdateView.as_view(), name='pickupstation_update'),
     path('delivered-order/', ServiceDeliveredListView.as_view(), name='delivered-orders'),
     
     # driver

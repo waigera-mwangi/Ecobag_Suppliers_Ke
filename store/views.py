@@ -842,8 +842,6 @@ def assign_driver_order_list(request):
             order_info = {
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
-                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,
@@ -863,11 +861,11 @@ def assign_driver_order_list(request):
             try:
                 order = Order.objects.get(pk=order_id)
                 if Shipping.objects.filter(order=order).exists():
-                    messages.error(request, f"{order} has already been assigned to a driver")
+                    messages.error(request, f"Order has already been assigned to a driver")
                 else:
                     driver = User.objects.filter(pk=driver_id, user_type=User.UserTypes.DRIVER).first()
                     shipping = Shipping.objects.create(order=order, driver=driver)
-                    messages.success(request, f"{order} has been assigned to {driver}")
+                    messages.success(request, f"Order has been assigned to {driver}")
             except (Order.DoesNotExist, User.DoesNotExist):
                 messages.error(request, "Failed to assign driver")
         else:

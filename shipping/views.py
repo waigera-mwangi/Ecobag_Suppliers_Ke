@@ -10,17 +10,6 @@ from django.http import HttpResponse
 from django.http import HttpResponseNotFound
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-# Create your views here.
-# class UserPickUpStationCreateView(CreateView):
-#     model = UserPickUpStation
-#     form_class = UserPickUpStationForm
-#     template_name = 'orders/userpickupstation_form.html'
-#     success_url = reverse_lazy('store:view_cart')
-
-#     def form_valid(self, form):
-#         form.instance.user = self.request.user
-#         return super().form_valid(form)
-
 def track_delivery(request, order_id):
     try:
         order = Order.objects.get(id=order_id)
@@ -36,31 +25,6 @@ def track_delivery(request, order_id):
     
     return render(request, 'shipping/track_shipping.html', context)
 
-
-# class PickUpStationCreateView(CreateView):
-#     model = PickUpStation
-#     form_class = PickUpStationForm
-#     template_name = 'shipping/pickupstation_form.html'
-#     success_url = reverse_lazy('shipping:pickupstation_list')
-
-
-# class PickUpStationUpdateView(UpdateView):
-#     model = PickUpStation
-#     form_class = PickUpStationForm
-#     template_name = 'shipping/pickupstation_update.html'
-#     success_url = reverse_lazy('shipping:pickupstation_list')
-
-
-# class PickUpStationListView(ListView):
-#     model = PickUpStation
-#     template_name = 'shipping/pickupstation_list.html'
-#     context_object_name = 'pickupstations'
-
-
-# class PickUpStationDetailView(DetailView):
-#     model = PickUpStation
-#     template_name = 'shipping/pickupstation_detail.html'
-#     context_object_name = 'pickupstation'
 
 
 class ServiceDeliveredListView(ListView):
@@ -111,7 +75,6 @@ class DeliveredListView(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['userpickupstations'] = UserPickUpStation.objects.all()
         return context
 
 class UpdateShippingStatusView(View):
