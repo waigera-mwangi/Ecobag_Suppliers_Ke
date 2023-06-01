@@ -1,0 +1,42 @@
+{% extends 'layouts/financemanager-base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+{% block styles %}
+{% block title %} {% endblock %}
+{% endblock styles %}
+
+<div class="container-fluid mt-3">
+    <form action="{% url 'orders:delete_order' order.id %}" method="POST" >{% csrf_token %}
+        <div class="row">
+            <div class="col-md">
+                <div class="card shadow">
+                    <div class="card-body"></div>                       
+                        <p>
+                            <h4>
+                                Are you sure you want to delete Order "{{order}}" ?
+                            </h4>
+                        </p>
+
+                        <hr>
+                    {{form.as_p}}
+                   
+                    </div>
+                
+                </div>   
+            </div>
+        <div>
+            <a  href="{% url 'orders:orders_list' %}" class="btn btn-warning  fw-bold float-left">Cancel</a>
+        </div>
+
+        <div>
+            <input type="submit" class="btn btn-danger float-right" name="confirm">
+        </div>
+
+       </div>
+    </form>
+    
+</div>
+{% endblock content %}

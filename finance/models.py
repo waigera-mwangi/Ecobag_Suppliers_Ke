@@ -1,6 +1,7 @@
 from django.db import models
 from accounts.models import User
 from orders.models import Order
+from phonenumber_field.modelfields import PhoneNumberField
 
 # Create your models here.
 class Payment(models.Model):
