@@ -183,7 +183,6 @@ class PendingApprovalTenderListView(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         tender_id = request.POST.get('tender_id')
         status = request.POST.get('status')
-        tender.user = request.user
         tender = SupplyTender.objects.get(id=tender_id)
         tender.tender_status = status
         tender.save()
@@ -213,8 +212,6 @@ class ApprovedSupplierTenderListView(LoginRequiredMixin, ListView):
         tender.save()
         messages.success(request, '{} Thanks for supplying our tender request.Please  Wait for payment confirmation.'.format(request.user.get_full_name()))
 
-      
-        messages.success(request, '.')
         return redirect('supply:approved-supplier-tenders')
 
 
@@ -237,8 +234,6 @@ class SupplierConfirmRecievedPayments(LoginRequiredMixin, ListView):
         tender.save()
         messages.success(request, '{} Thanks for confirmining tender payment received.'.format(request.user.get_full_name()))
 
-      
-        messages.success(request, '.')
         return redirect('supply:approved-supplier-tenders')
 
 
@@ -248,7 +243,6 @@ class SuppliedTenderListView(ListView):
     model = SupplyTender
     template_name = 'supplier/supplied_tenders.html'
     context_object_name = 'tenders'
-
     def get_queryset(self):
         # Filter the supply tenders by tender_status = 'Pending' and user_id = the logged-in user's id
         return SupplyTender.objects.filter(tender_status='Supplied', user_id=self.request.user.id)
@@ -257,7 +251,6 @@ class confirmedSupplierTenderListView(ListView):
     model = SupplyTender
     template_name = 'supplier/confirmed_supplied_tenders.html'
     context_object_name = 'tenders'
-
     def get_queryset(self):
         # Filter the supply tenders by tender_status = 'Pending' and user_id = the logged-in user's id
         return SupplyTender.objects.filter(tender_status='Confirmed', user_id=self.request.user.id)
