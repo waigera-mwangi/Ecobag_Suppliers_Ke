@@ -137,9 +137,6 @@ class PendingTenderListView(LoginRequiredMixin, ListView):
             # Update the SupplyTender object with the provided price and change the tender_status to 'Supplied'
             tender = SupplyTender.objects.get(id=tender_id)
             tender.price = price
-
-
-
             tender.tender_status = 'Accepted'
             tender.user = request.user  # set the supplied_by attribute to the current user
             tender.save()
@@ -186,6 +183,7 @@ class PendingApprovalTenderListView(LoginRequiredMixin, ListView):
     def post(self, request, *args, **kwargs):
         tender_id = request.POST.get('tender_id')
         status = request.POST.get('status')
+        tender.user = request.user
         tender = SupplyTender.objects.get(id=tender_id)
         tender.tender_status = status
         tender.save()
