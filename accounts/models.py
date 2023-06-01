@@ -102,7 +102,9 @@ class Profile(models.Model):
 
     image = models.ImageField(upload_to='Users/profile_pictures/%Y/%m/',
                               default="null")
-    phone_number = PhoneNumberField(null=False)
+    phone_number = CustomPhoneNumberField(null=False)
+    county = models.CharField(max_length=20,null=True)
+    town = models.CharField(max_length=20,null=True)
     is_active = models.BooleanField(_('Active'), default=True, help_text=_('Activated, users profile is published'))
     updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
     created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)

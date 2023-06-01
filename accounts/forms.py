@@ -139,16 +139,16 @@ class LoginForm(forms.Form):
     )
 
 
-class CustomerProfileForm(ModelForm):
-    class Meta:
-        model = CustomerProfile
-        fields = ['image', 'gender', 'phone_number']
+# class CustomerProfileForm(ModelForm):
+#     class Meta:
+#         model = CustomerProfile
+#         fields = ['image', 'gender', 'phone_number','county']
 
 
-class CustomerForm(ModelForm):
-    class Meta:
-        model = Customer
-        fields = ['last_name', 'first_name', 'email']
+# class CustomerForm(ModelForm):
+#     class Meta:
+#         model = Customer
+#         fields = ['last_name', 'first_name', 'email', 'town']
 
 # overiding password
 class RegistrationForm(UserCreationForm):
@@ -187,13 +187,13 @@ class UserAdminChangeForm(ModelForm):
 class CustomerProfileForm(ModelForm):
     class Meta:
         model = CustomerProfile
-        fields = ['image', 'gender']
+        fields = ['image', 'gender', 'town']
 
 
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email',]
 
 
 class SupplierProfileForm(ModelForm):
