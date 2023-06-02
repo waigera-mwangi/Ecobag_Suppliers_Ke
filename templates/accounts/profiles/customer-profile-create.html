@@ -63,13 +63,25 @@
                             <div class="col-md-6 col-sm-12">
                               <div class="form-group card-label">
                                 <label>Phone</label>
-                                {{p_form.phone_number|add_class:"form-control"}}
+                                {{form.phone_number|add_class:"form-control"}}
                               </div>
                               <div class="text-danger" id="error-phone_number">{{form.errors.phone_number}}</div>
                             </div>
                             <div class="col-md-6 col-sm-12">
                               <div class="form-group card-label">
-                                <label>gender</label>
+                                <label>County</label>
+                                {{p_form.county|add_class:"form-control"}}
+                              </div>
+                              <div class="text-danger" id="error-gender">{{form.errors.county}}</div>
+                            </div>
+                              <div class="form-group card-label">
+                                <label>Town</label>
+                                {{p_form.town|add_class:"form-control"}}
+                              </div>
+                              <div class="text-danger" id="error-gender">{{form.errors.town}}</div>
+                            </div>
+                              <div class="form-group card-label">
+                                <label>Gender</label>
                                 {{p_form.gender|add_class:"form-control"}}
                               </div>
                               <div class="text-danger" id="error-gender">{{form.errors.gender}}</div>
