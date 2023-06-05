@@ -306,7 +306,7 @@ def customer_profile(request):
         'profile_image_url': profile_image_url,
     }
     return render(request, 'accounts/profiles/customer-profile-create.html',  context)
-
+    
 
 def finance_profile(request):
   

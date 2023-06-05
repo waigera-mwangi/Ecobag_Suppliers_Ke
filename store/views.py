@@ -275,13 +275,6 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        # elif 'pickup_station_id' in request.POST:
-        #     # Handle selection of a pickup station by the user
-        #     pickup_station_id = int(request.POST.get('pickup_station_id'))
-        #     pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-        #     shipping = Shipping.objects.create(order=order, station=pickup_station)
-        #     messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
-
     # Calculate the subtotal for each order item and save it
     for item in order_items:
         item.subtotal = item.product.price * item.quantity
@@ -290,14 +283,10 @@ def view_cart(request):
     # Calculate the order total by summing the subtotals of each order item
     order_total = sum([item.subtotal for item in order_items])
 
-    # Get the available pickup stations
-    # userpickupstations = UserPickUpStation.objects.all()
-
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        # 'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
 
@@ -309,7 +298,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.contrib import messages
-# from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import Customer
 from utils.utils import generate_key
@@ -548,13 +536,7 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        # elif 'pickup_station_id' in request.POST:
-        #     # Handle selection of a pickup station by the user
-        #     pickup_station_id = int(request.POST.get('pickup_station_id'))
-        #     pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-        #     shipping = Shipping.objects.create(order=order, station=pickup_station)
-        #     messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
-
+                    
     # Calculate the subtotal for each order item and save it
     for item in order_items:
         item.subtotal = item.product.price * item.quantity
@@ -563,8 +545,6 @@ def view_cart(request):
     # Calculate the order total by summing the subtotals of each order item
     order_total = sum([item.subtotal for item in order_items])
 
-    # Get the available pickup stations
-    # userpickupstations = UserPickUpStation.objects.all()
 
     context = {
         'order': order,
@@ -897,7 +877,7 @@ def assigned_order_list(request):
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
                 'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
-                'county':payment.county,
+                'county':order.user.county,
                 'town':payment.town,
                 'phone_number':payment.phone_number,
                 'date_ordered': order.date_ordered,
