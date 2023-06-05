@@ -82,12 +82,8 @@
                 <div class="d-flex flex-column align-items-center mt-4">
                   <form method="post">
                     {% csrf_token %}
-                    <div class="form-group">
-                      <label for="deliver_info" style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Delivery Information:</label>
-
-                    </div>
-                    
-                  </form>
+                    {{ form.as_p }}
+                </form>
                   <div class="text-center">
                    
                     <a href="{% url 'finance:checkout' %}" class="btn btn-primary mt-3">Checkout</a>

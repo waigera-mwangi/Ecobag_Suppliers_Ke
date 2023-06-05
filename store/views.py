@@ -545,25 +545,12 @@ def view_cart(request):
     # Calculate the order total by summing the subtotals of each order item
     order_total = sum([item.subtotal for item in order_items])
 
-
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        # 'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
-
-
-
-
-
-
-
-
-
-
-
 
 
 

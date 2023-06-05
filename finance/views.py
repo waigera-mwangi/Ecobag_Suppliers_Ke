@@ -4,7 +4,7 @@ from accounts.models import User
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import PaymentForm
+from .forms import *
 from orders.models import Order, OrderItem
 from finance.models import Payment
 from django.http import HttpResponse
@@ -77,12 +77,10 @@ def checkout(request):
             return redirect('store:view_cart')
     else:
         form = PaymentForm()
-
-    
-
+       
     context = {
         'form': form,
-        'order_items': order_items,
+        'order_OrderDeliveryFormtems': order_items,
         'order_total': order_total,
         
     }

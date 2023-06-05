@@ -9,3 +9,5 @@ class PaymentForm(forms.ModelForm):
             'transaction_id': forms.TextInput(attrs={'class': 'form-control'}),
             
         }
+
+

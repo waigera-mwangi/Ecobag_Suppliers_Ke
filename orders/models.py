@@ -17,9 +17,6 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    phone_number = CustomPhoneNumberField(null=True)
-    county = models.CharField(max_length=20,null=True)
-    town = models.CharField(max_length=20,null=True)
     date_ordered = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Date ordered')
     is_completed = models.BooleanField(default=False)  
     products = models.ManyToManyField(Product, through='OrderItem')
