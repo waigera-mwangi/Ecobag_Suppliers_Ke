@@ -80,10 +80,13 @@
                    
               <div class="container-fluid">
                 <div class="d-flex flex-column align-items-center mt-4">
-                  <form method="post">
-                    {% csrf_token %}
-                    {{ form.as_p }}
-                </form>
+                  <!-- order_form.html -->
+
+              <form method="post" action="#">
+                {% csrf_token %}
+                {{ form.as_p }}
+              </form>
+
                   <div class="text-center">
                    
                     <a href="{% url 'finance:checkout' %}" class="btn btn-primary mt-3">Checkout</a>

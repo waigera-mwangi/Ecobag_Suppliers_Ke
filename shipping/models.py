@@ -2,48 +2,6 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from accounts.models import User
 from orders.models import Order
-
-
-# Create your models here.
-# class Location(models.Model):
-#     name = models.CharField(max_length=50)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return self.name
-
-
-# class PickUpStation(models.Model):
-#     name = models.CharField(max_length=50)
-#     # users = models.ManyToManyField(User, related_name='pickup_stations')
-#     description = models.TextField(max_length=255, null=True)
-#     location = models.ForeignKey(Location, default=None, on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-#     def __str__(self):
-#         return self.name
-
-# class UserPickUpStation(models.Model):
-#     user = models.ForeignKey(User, related_name='pick_up_stations', on_delete=models.CASCADE)
-#     station = models.ForeignKey(PickUpStation, default=None, on_delete=models.CASCADE)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-
-
-
-    # other fields for UserPickUpStation model
-
-
-    # def __str__(self):
-    #     return f"{self.station.name} ({self.station.location.name})"
-
-        
-    # def description(self):
-    #     return self.station.description
-
-
    
 class Shipping(models.Model):
     class Status(models.TextChoices):
@@ -63,3 +21,5 @@ class Shipping(models.Model):
 
     def get_status_display(self):
         return dict(Shipping.Status.choices)[self.status]
+
+    

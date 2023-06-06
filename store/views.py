@@ -788,9 +788,6 @@ def order_payment(request):
             order_info = {
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
-                'county':payment.county,
-                'town':payment.town,
-                'phone_number':payment.phone_number,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
                 'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,

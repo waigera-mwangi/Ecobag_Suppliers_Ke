@@ -1,7 +1,7 @@
 from django.contrib import admin, messages
 from django.contrib.admin import ModelAdmin
 from .models import Shipping
-from  orders.models import Order
+
 
 
 
@@ -34,8 +34,4 @@ class ShippingAdmin(admin.ModelAdmin):
     list_filter = ('delivery_date', )
     search_fields = ('name', 'order')
     readonly_fields = ('delivery_date',)
-
-    # def transaction_id(self, obj):
-    #     return obj.order.transaction_id
-
 admin.site.register(Shipping, ShippingAdmin)

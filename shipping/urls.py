@@ -16,5 +16,6 @@ urlpatterns = [
     path('delivered_shipping/', DeliveredListView.as_view(), name='delivered'),
     path('update_shipping/<str:pk>/', UpdateShippingStatusView.as_view(), name='update_shipping'),
     path('update_shipping_status/<str:pk>/', update_shipping_status, name='update_shipping_status'),
+   
 
 ]

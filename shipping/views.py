@@ -1,10 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from accounts.models import User
 from django.urls import reverse_lazy
 from orders.models import *
-from django.shortcuts import redirect
 from django.views.generic import View
 from django.http import HttpResponse
 from django.http import HttpResponseNotFound
@@ -24,8 +23,6 @@ def track_delivery(request, order_id):
     }
     
     return render(request, 'shipping/track_shipping.html', context)
-
-
 
 class ServiceDeliveredListView(ListView):
     model = Shipping
@@ -107,3 +104,4 @@ def update_shipping_status(request, pk):
         return redirect('store:customer-order-list')
     
     return redirect('store:customer-order-list')
+
