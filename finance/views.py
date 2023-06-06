@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from supply.models import SupplyTender
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
-from accounts.models import Profile
+from accounts.models import CustomerProfile
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -42,10 +42,19 @@ def checkout(request):
         customer = request.user
     except ObjectDoesNotExist:
         customer = User.objects.create(user=request.user)
+       
+    #   for phone number
+    try:
+        customer_profile = CustomerProfile.objects.get(user=request.user)
+    except ObjectDoesNotExist:
+        customer_profile = CustomerProfile.objects.create(user=request.user)
+
+    payment_form = PaymentForm(request.POST)
+    address_form = AddressForm(request.POST, instance=request.user)
 
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
-        address_form = AddressForm(request.POST, instance=request.user)
+        address_form = AddressForm(request.POST, instance=customer_profile)
 
         if payment_form.is_valid() and address_form.is_valid():
             transaction_id = payment_form.cleaned_data['transaction_id']
