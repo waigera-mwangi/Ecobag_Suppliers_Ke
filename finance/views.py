@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from supply.models import SupplyTender
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
-
+from accounts.models import Profile
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -44,17 +44,26 @@ def checkout(request):
         customer = User.objects.create(user=request.user)
 
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
-        if form.is_valid():
-            transaction_id = form.cleaned_data['transaction_id']
+        payment_form = PaymentForm(request.POST)
+        address_form = AddressForm(request.POST, instance=request.user)
+
+        if payment_form.is_valid() and address_form.is_valid():
+            transaction_id = payment_form.cleaned_data['transaction_id']
             # Check if a payment record already exists for the current order
             try:
+                # save user address
+                address = address_form.save(commit=False)
+                address.user = request.user
+                address.save()
+
                 payment = Payment.objects.get(order=order)
                 payment.transaction_id = transaction_id
                 payment.payment_status = 'Pending'
                 payment.save()
             except Payment.DoesNotExist:
-                payment = Payment.objects.create(order=order, transaction_id=transaction_id, payment_status='pending')
+                # enter data into payment model
+                payment = Payment.objects.create(order=order, transaction_id=transaction_id,payment_status='pending',
+                                                  town=address.town,county=address.county,phone_number=address.phone_number)
             
             # Update product quantity in stock
             for item in order_items:
@@ -76,15 +85,17 @@ def checkout(request):
             messages.success(request, 'Payment was successful!')
             return redirect('store:view_cart')
     else:
-        form = PaymentForm()
+        address_form = PaymentForm()
+        payment_form = AddressForm()
        
     context = {
-        'form': form,
+        'payment_form': payment_form,
+        'address_form':address_form,
         'order_OrderDeliveryFormtems': order_items,
         'order_total': order_total,
         
     }
-    return render(request, 'orders/checkout.html', context)
+    return render(request, 'finance/checkout.html', context)
 
 
 def receipt(request, tender_id):

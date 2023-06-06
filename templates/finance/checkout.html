@@ -49,7 +49,9 @@
                         <h2 class="mb-4" style="color: rgb(3, 3, 17); text-align: center;">Payment Info</h2>
                         <form method="post">
                             {% csrf_token %}
-                            {{ form.as_p }}
+                            {{ payment_form.as_p }}
+                            {{ address_form.as_p }}
+
 
                             <button type="submit" class="btn btn-info btn-block btn-lg">
                                 <div class="d-flex justify-content-between">
