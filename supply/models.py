@@ -8,11 +8,11 @@ from djmoney.models.fields import MoneyField
 
         
 class SupplyTender(models.Model):
-    date = models.DateTimeField(auto_now_add=True, null=True)
+    date = models.DateField(auto_now_add=True)
     delivery_date = models.DateField(null= True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='needs_supply', null=True, verbose_name='supplier')
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
-    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Design Price', null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='needs_supply', verbose_name='supplier')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Design Price')
     quantity = models.IntegerField()    
     status = (
         ('Pending','Pending'),

@@ -17,13 +17,13 @@ class Order(models.Model):
         verbose_name_plural = 'Orders'
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date_ordered = models.DateTimeField(auto_now_add=True, null=True, verbose_name='Date ordered')
+    date_ordered = models.DateField(auto_now_add=True, verbose_name='Date ordered')
     is_completed = models.BooleanField(default=False)  
     products = models.ManyToManyField(Product, through='OrderItem')
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,)
     quantity = models.PositiveIntegerField(default=0)
 
     def __str__(self):

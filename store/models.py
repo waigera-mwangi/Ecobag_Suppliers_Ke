@@ -23,12 +23,12 @@ class Category(models.Model):
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name = 'product', on_delete=models.CASCADE,null = True,default='Gift_bag')
     name = models.CharField(max_length=120, unique=True)
-    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Price', null=True)
-    quantity = models.IntegerField(null=True)
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Price' )
+    quantity = models.IntegerField()
     image = models.ImageField()
     created_date = models.DateField(auto_now_add=True)
-    updated = models.DateTimeField(('Updated'), auto_now=True, null=True)
-    description = models.CharField(max_length=100, null=True)
+    updated = models.DateField(('Updated'), auto_now=True)
+    description = models.CharField(max_length=100)
     in_stock = models.BooleanField(default = True)
 
     def get_absolute_url(self):
