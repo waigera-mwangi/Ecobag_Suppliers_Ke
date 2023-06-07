@@ -20,6 +20,7 @@
             <div class="card-body">
                 <h2 class="mb-4" style="color: rgb(3, 3, 17); text-align: center;">Order Summary</h2>
                 <ul class="list-unstyled mb-4">
+
                     {% for item in order_items %}
                     <li class="d-flex justify-content-between align-items-center mb-3">
                         <div>
@@ -28,7 +29,9 @@
                         </div>
                         <span class="text-muted">{{ item.subtotal }}</span>
                     </li>
-                    {% endfor %}
+
+                     {% endfor %}
+                
 
                     <li class="d-flex justify-content-between align-items-center mb-3">
                         <div>
@@ -36,7 +39,6 @@
                         </div>
                         <span class="text-primary"><h4>{{ order_total }}</span></h4></span>
                     </li>
-
                 </ul> 
 
             </div>
@@ -49,8 +51,12 @@
                         <h2 class="mb-4" style="color: rgb(3, 3, 17); text-align: center;">Payment Info</h2>
                         <form method="post">
                             {% csrf_token %}
-                            {{ payment_form.as_p }}
+                            
                             {{ address_form.as_p }}
+                            <!-- add space between two forms -->
+                            <div style="margin-bottom: 30px;"></div>
+
+                            {{ payment_form.as_p }}
 
 
                             <button type="submit" class="btn btn-info btn-block btn-lg">
@@ -77,4 +83,4 @@
     }
 
 </style>
-{% endblock %}
+{% endblock %} 

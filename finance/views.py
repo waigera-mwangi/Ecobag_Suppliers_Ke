@@ -11,7 +11,7 @@ from django.http import HttpResponse
 from supply.models import SupplyTender
 from django.shortcuts import get_object_or_404, render
 from django.template.loader import render_to_string
-from accounts.models import CustomerProfile
+from accounts.models import CustomerProfile, Profile
 from io import BytesIO
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -35,40 +35,57 @@ def checkout(request):
 
     # Create a Customer object for the user if it does not exist already
     try:
-        customer = request.user
-    except ObjectDoesNotExist:
-        customer = User.objects.create(user=request.user)
-       
-    #   for phone number
-    try:
         customer_profile = CustomerProfile.objects.get(user=request.user)
     except ObjectDoesNotExist:
         customer_profile = CustomerProfile.objects.create(user=request.user)
+# profile
 
+    # customer_profile, _ = Profile.objects.get_or_create(user=request.user)
+    # customer_profile = CustomerProfile.objects.get_or_create(user=request.user)
+       
     payment_form = PaymentForm(request.POST)
-    address_form = AddressForm(request.POST, instance=request.user)
+    address_form = AddressForm(request.POST, instance=customer_profile, initial={
+        'phone_number': customer_profile.phone_number,
+        'town':customer_profile.town,
+        'county':customer_profile.county
+        # Add other fields you want to prepopulate from customer profile
+    })
 
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
-        address_form = AddressForm(request.POST, instance=request.user)
-
+        address_form = AddressForm(request.POST, instance=customer_profile, initial={
+        'phone_number': customer_profile.phone_number,
+        'town':customer_profile.town,
+        'county':customer_profile.county
+        # Add other fields you want to prepopulate from customer profile
+    })
         if payment_form.is_valid() and address_form.is_valid():
             transaction_id = payment_form.cleaned_data['transaction_id']
+            
+            # Save user address
+            address = address_form.save()
+
+            # Update the phone_number in the CustomerProfile
+            customer_profile.phone_number = address.phone_number
+            customer_profile.town = address.town
+            customer_profile.county = address.county
+            customer_profile.save()
+
             # Check if a payment record already exists for the current order
             try:
-                # save user address
-                address = address_form.save(commit=False)
-                address.user = request.user
-                address.save()
-
                 payment = Payment.objects.get(order=order)
                 payment.transaction_id = transaction_id
                 payment.payment_status = 'Pending'
                 payment.save()
             except Payment.DoesNotExist:
                 # enter data into payment model
-                payment = Payment.objects.create(order=order, transaction_id=transaction_id,payment_status='pending',
-                                                  town=address.town,county=address.county,phone_number=address.phone_number)
+                payment = Payment.objects.create(
+                    order=order,
+                    transaction_id=transaction_id,
+                    payment_status='pending',
+                    town=address.town,
+                    county=address.county,
+                    phone_number=address.phone_number)
             
             # Update product quantity in stock
             for item in order_items:
@@ -90,13 +107,18 @@ def checkout(request):
             messages.success(request, 'Payment was successful!')
             return redirect('store:view_cart')
     else:
-        address_form = PaymentForm()
-        payment_form = AddressForm()
+        address_form = AddressForm(instance=customer_profile, initial={
+            'phone_number': customer_profile.phone_number,
+            'town': customer_profile.town,
+            'county': customer_profile.county,
+            # Add other fields you want to prepopulate from customer profile
+        })
+        payment_form = PaymentForm()
        
     context = {
         'payment_form': payment_form,
         'address_form':address_form,
-        'order_OrderDeliveryFormtems': order_items,
+        'order_items': order_items,
         'order_total': order_total,
         
     }
