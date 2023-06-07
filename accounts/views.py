@@ -295,6 +295,7 @@ def customer_profile(request):
     if request.method == "POST":
         p_form = CustomerProfileForm(request.POST, request.FILES, instance=customer_profile)
         form = CustomerForm(request.POST, instance=request.user)
+        
         if p_form.is_valid() and form.is_valid():
             p_form.save()
             form.save()

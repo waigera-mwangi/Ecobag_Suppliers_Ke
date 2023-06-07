@@ -8,7 +8,9 @@
   <thead class="thead-light">
     <tr>
       <th>Order Id</th>
-      <th>Station</th>
+      <th>County</th>
+      <th>Town</th>
+      <th>Phone</th>
       <th>Delivery Date</th>
       <th>Status</th>
        <!-- Add new column for action button -->
@@ -18,7 +20,9 @@
     {% for shipping in shipping_list %}
       <tr>
         <td>{{ shipping.order.payment.transaction_id }}</td>
-        <td>{{ shipping.userpickupstations }}</td>
+        <td>{{ shipping.order.payment.county}}</td>
+        <td>{{ shipping.order.payment.town }}</td>
+        <td>{{ shipping.order.payment.phone_number }}</td>
         <td>{{ shipping.delivery_date }}</td>
         <td>{{ shipping.get_status_display }}</td>
        

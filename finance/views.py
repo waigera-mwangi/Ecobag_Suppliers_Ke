@@ -23,7 +23,6 @@ def checkout(request):
     user = User.objects.get(pk=1)
     order_items = OrderItem.objects.all()
 
-
     # Get the latest pending order for the logged-in user
     try:
         order = Order.objects.filter(user=request.user, is_completed=False).latest('id')
@@ -31,11 +30,8 @@ def checkout(request):
         messages.error(request, 'Your order is empty.')
         return redirect('store:product-view')
 
-    
     order_items = order.orderitem_set.all()
     order_total = sum([item.subtotal() for item in order_items])
-
-
 
     # Create a Customer object for the user if it does not exist already
     try:
@@ -54,7 +50,7 @@ def checkout(request):
 
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
-        address_form = AddressForm(request.POST, instance=customer_profile)
+        address_form = AddressForm(request.POST, instance=request.user)
 
         if payment_form.is_valid() and address_form.is_valid():
             transaction_id = payment_form.cleaned_data['transaction_id']
