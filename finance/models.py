@@ -25,4 +25,4 @@ class Payment(models.Model):
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS_CHOICES, default='Pending')
     county = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
-    phone_number = CustomPhoneNumberField(unique=True, null=True)
+    phone_number = CustomPhoneNumberField(null=True)
