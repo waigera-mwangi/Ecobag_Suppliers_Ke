@@ -1,6 +1,6 @@
 from django import forms
 from .models import Payment
-from django.core.validators import RegexValidator, MaxLengthValidator
+from django.core.validators import RegexValidator
 
 def alphanumeric_mixed_validator(value):
     if not value.isalnum() or not any(char.isdigit() for char in value) or not any(char.isalpha() for char in value):
@@ -12,19 +12,7 @@ class PaymentForm(forms.Form):
         validators=[alphanumeric_mixed_validator],
         widget=forms.TextInput(attrs={'class': 'form-control'})
     )
-    # Add other fields of the payment form
 
-    # Rest of the form code
-
-
-# class PaymentForm(forms.ModelForm):
-#     class Meta:
-#         model = Payment
-#         fields = ['transaction_id']
-#         widgets = {
-#             'transaction_id': forms.TextInput(attrs={'class': 'form-control'}),
-            
-#         }
 
 class AddressForm(forms.ModelForm):
     alphanumeric_validator = RegexValidator(r'^[a-zA-Z0-9]*$', 'Only alphanumeric characters are allowed.')
