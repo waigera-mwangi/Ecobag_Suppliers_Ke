@@ -34,19 +34,17 @@ def checkout(request):
     order_total = sum([item.subtotal() for item in order_items])
 
     # Create a Customer object for the user if it does not exist already
+    customer_profile, created = CustomerProfile.objects.get_or_create(user=request.user)
+
     try:
         customer_profile = CustomerProfile.objects.get(user=request.user)
     except ObjectDoesNotExist:
         customer_profile = CustomerProfile.objects.create(user=request.user)
-# profile
-
-    # customer_profile, _ = Profile.objects.get_or_create(user=request.user)
-    # customer_profile = CustomerProfile.objects.get_or_create(user=request.user)
-       
+    
     payment_form = PaymentForm(request.POST)
     address_form = AddressForm(request.POST, instance=customer_profile, initial={
-        'phone_number': customer_profile.phone_number,
         'town':customer_profile.town,
+        'phone_number': request.user.phone_number if hasattr(request.user, 'phone_number') else '',
         'county':customer_profile.county
         # Add other fields you want to prepopulate from customer profile
     })
@@ -54,9 +52,9 @@ def checkout(request):
     if request.method == 'POST':
         payment_form = PaymentForm(request.POST)
         address_form = AddressForm(request.POST, instance=customer_profile, initial={
-        'phone_number': customer_profile.phone_number,
         'town':customer_profile.town,
-        'county':customer_profile.county
+        'phone_number': request.user.phone_number if hasattr(request.user, 'phone_number') else '',
+        'county':customer_profile.county,
         # Add other fields you want to prepopulate from customer profile
     })
         if payment_form.is_valid() and address_form.is_valid():
@@ -85,7 +83,8 @@ def checkout(request):
                     payment_status='pending',
                     town=address.town,
                     county=address.county,
-                    phone_number=address.phone_number)
+                    phone_number=address.phone_number,
+                    )
             
             # Update product quantity in stock
             for item in order_items:
@@ -108,8 +107,8 @@ def checkout(request):
             return redirect('store:view_cart')
     else:
         address_form = AddressForm(instance=customer_profile, initial={
-            'phone_number': customer_profile.phone_number,
             'town': customer_profile.town,
+            'phone_number': request.user.phone_number if hasattr(request.user, 'phone_number') else '',
             'county': customer_profile.county,
             # Add other fields you want to prepopulate from customer profile
         })

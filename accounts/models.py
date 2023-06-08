@@ -36,7 +36,7 @@ class User(AbstractUser, PermissionsMixin):
     )
     first_name = models.CharField( max_length=250)
     last_name = models.CharField( max_length=250)
-    phone_number = CustomPhoneNumberField(unique=True)
+    phone_number = CustomPhoneNumberField(unique=True, null=True)
     county = models.CharField(max_length=20)
     town = models.CharField(max_length=20)
     is_active = models.BooleanField(default=True)

@@ -14,7 +14,6 @@ class Shipping(models.Model):
     delivery_date = models.DateField(auto_now_add=True, verbose_name='shipped_date')
     status = models.CharField(_('status'), max_length=3, choices=Status.choices, default=Status.PENDING)
     driver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shipments_as_driver')
-    service_provider = models.ForeignKey(User, on_delete=models.CASCADE, related_name='shipments_as_service_provider')
 
     def __str__(self):
         return f'Shipping #{self.id}'

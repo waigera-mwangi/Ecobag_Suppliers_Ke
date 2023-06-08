@@ -812,7 +812,7 @@ def assign_driver_order_list(request):
                 'payment_status': payment.payment_status,
                 'county': payment.county,
                 'town': payment.town,
-                'phone_number': order.user.phone_number,
+                'phone_number': payment.phone_number,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,
                 'id': order.id,
