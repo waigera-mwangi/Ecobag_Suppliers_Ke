@@ -66,25 +66,39 @@
                     {% else %}
                       0
                     {% endif %}
-                    <span class="visually-hidden">items in cart</span>
+                    <span class="visually-hidden">Items in cart</span>
                   </span>
                 </a>
               </li>
               <!-- /Cart --> 
          </div>
+
+        
+      
+            <!-- loading profile picture -->
+
+            {% load static %}
+
+<a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+  {% if request.user.is_authenticated %}
+    {% if request.user.customer_profile.image %}
+      <img class="rounded-circle" src="{{ request.user.customer_profile.image.url }}" alt="Profile Picture">
+    {% else %}
+      <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default">
+    {% endif %}
+  {% else %}
+    <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Picture">
+  {% endif %}
+</a>
+
+            
+          
+
+
+          <!-- end of profile picture  -->
+
   
         <li class="nav-item dropdown pe-3">
-
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            {% if customer_profile %}
-              <img class="rounded-circle" src="{{ customer_profile.image.url }}" alt="Profile Picture">
-            {% else %}
-              <img class="rounded-circle" src="{% static 'assets/img/avatars/1.png' %}" alt="Default Profile Picture">
-            {% endif %}
-
-          
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.get_full_name|title }}</span>
-          </a><!-- End Profile Iamge Icon -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
@@ -102,6 +116,7 @@
                 <span>My Profile</span>
               </a>
             </li>
+
             <li>
               <hr class="dropdown-divider">
             </li>
@@ -137,12 +152,6 @@
               <hr class="dropdown-divider">
             </li>
 
-            <li>
-              <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                <i class="bi bi-question-circle"></i>
-                <span>FAQ's</span>
-              </a>
-            </li>
 
           </ul><!-- End Profile Dropdown Items -->
         </li><!-- End Profile Nav -->

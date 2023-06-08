@@ -9,8 +9,8 @@ class CustomPhoneNumberField(PhoneNumberField):
     }
 
 class TimeStamp(models.Model):
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+    created = models.DateField(auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -34,14 +34,15 @@ class User(AbstractUser, PermissionsMixin):
         choices=UserTypes.choices,
         default=UserTypes.CUSTOMER,
     )
-    first_name = models.CharField( max_length=250, null=True)
-    last_name = models.CharField( max_length=250, null=True)
-    phone_number = CustomPhoneNumberField(null=True, unique=True)
-    id_number = models.IntegerField(null=True, unique=True)
-    is_active = models.BooleanField(default=False)
+    first_name = models.CharField( max_length=250)
+    last_name = models.CharField( max_length=250)
+    phone_number = CustomPhoneNumberField(unique=True, null=True)
+    county = models.CharField(max_length=20)
+    town = models.CharField(max_length=20)
+    is_active = models.BooleanField(default=True)
     is_archived = models.BooleanField(default=False)
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True, null=True)
+    updated = models.DateField(auto_now=True)
+    created = models.DateField(auto_now_add=True)
 
     def get_user_type_display(self):
         return dict(User.UserTypes.choices)[self.user_type]
@@ -86,8 +87,8 @@ class UserProfileManager(BaseUserManager):
 
 
 class TimeStamp(models.Model):
-    updated = models.DateTimeField(auto_now=True)
-    created = models.DateTimeField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+    created = models.DateField(auto_now_add=True)
 
     class Meta:
         abstract = True
@@ -101,10 +102,12 @@ class Profile(models.Model):
 
     image = models.ImageField(upload_to='Users/profile_pictures/%Y/%m/',
                               default="null")
-    phone_number = PhoneNumberField(null=True)
-    is_active = models.BooleanField(_('Active'), default=False, help_text=_('Activated, users profile is published'))
-    updated = models.DateTimeField(_('Updated'), auto_now=True, null=True)
-    created = models.DateTimeField(_('Created'), auto_now_add=True, null=True)
+    phone_number = CustomPhoneNumberField(null=False)
+    county = models.CharField(max_length=20)
+    town = models.CharField(max_length=20)
+    is_active = models.BooleanField(_('Active'), default=True, help_text=_('Activated, users profile is published'))
+    updated = models.DateField(_('Updated'), auto_now=True)
+    created = models.DateField(_('Created'), auto_now_add=True)
     gender = models.CharField(
         max_length=2,
         choices=Gender.choices,
@@ -114,7 +117,7 @@ class Profile(models.Model):
 
 
 class CustomerProfile(Profile):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='customer_profile')
 
     class Meta:
         verbose_name = 'Customer Profile'
@@ -225,5 +228,5 @@ class FAQ(TimeStamp):
         choices=QustionType.choices,
         default=QustionType.CUSTOMER
     )
-    subject = models.CharField( max_length=250, null=True)
-    content = models.TextField(null=True)
+    subject = models.CharField( max_length=250)
+    content = models.TextField()

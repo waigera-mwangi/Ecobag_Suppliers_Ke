@@ -10,7 +10,7 @@ User = get_user_model()
 class CustomerSignUpForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']
+        fields = ['first_name', 'last_name', 'phone_number','email', 'username', 'password1', 'password2']
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -139,17 +139,6 @@ class LoginForm(forms.Form):
     )
 
 
-class CustomerProfileForm(ModelForm):
-    class Meta:
-        model = CustomerProfile
-        fields = ['image', 'gender', 'phone_number']
-
-
-class CustomerForm(ModelForm):
-    class Meta:
-        model = Customer
-        fields = ['last_name', 'first_name', 'email']
-
 # overiding password
 class RegistrationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -187,13 +176,13 @@ class UserAdminChangeForm(ModelForm):
 class CustomerProfileForm(ModelForm):
     class Meta:
         model = CustomerProfile
-        fields = ['image', 'gender']
+        fields = ['image', 'gender', 'town','county']
 
 
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['first_name', 'last_name','email','phone_number']
 
 
 class SupplierProfileForm(ModelForm):

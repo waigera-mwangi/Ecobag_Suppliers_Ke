@@ -80,20 +80,15 @@
                    
               <div class="container-fluid">
                 <div class="d-flex flex-column align-items-center mt-4">
-                  <form method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                      <label for="pickup_station" style="display: block; font-weight: bold; font-size: 1.2em; margin-bottom: 5px;">Pickup Station:</label>
-                      <select class="form-control" id="pickstation-select" name="pickup_station" required>
-                        {% for userpickupstation in userpickupstations %}
-                        <option value="{{ userpickupstation.pk }}">{{ userpickupstation.station}} ({{ userpickupstation.station.location.name }})</option>
-                        {% endfor %}
-                      </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary mb-3">Select Pickup Station</button>
-                  </form>
+                  <!-- order_form.html -->
+
+              <form method="post" action="#">
+                {% csrf_token %}
+                {{ form.as_p }}
+              </form>
+
                   <div class="text-center">
-                    <p class="mt-3 mb-0 text-muted">Don't have a pickup station? <a href="{% url 'shipping:select-pickup-station' %}">Create one here</a></p>
+                   
                     <a href="{% url 'finance:checkout' %}" class="btn btn-primary mt-3">Checkout</a>
                   </div>
                 </div>

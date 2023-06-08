@@ -9,7 +9,9 @@
           <tr>
             <th>Order Id</th>
             <th>Customer</th>
-            <th>Station</th>
+            <th>County</th>
+            <th>Town</th>
+            <th>Phone</th>
             <th>Delivery Date</th>
             <th>Status</th>
             <th>Action</th>
@@ -20,7 +22,9 @@
             <tr>
               <td>{{ shipping.order.payment.transaction_id }}</td>
               <td>{{ shipping.order.user }}</td>
-              <td>{{ shipping.pickup_station.name}}</td>
+              <td>{{ shipping.order.payment.county}}</td>
+              <td>{{ shipping.order.payment.town }}</td>
+              <td>{{ shipping.order.payment.phone_number }}</td>
               <td>{{ shipping.delivery_date }}</td>
               <td>{{ shipping.get_status_display }}</td>
               <td>

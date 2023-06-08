@@ -84,19 +84,23 @@ def loginView(request):
                 return redirect('accounts:dispatch-manager')
 
             else:
-                msg = 'Invalid login credentials'
+                messages.warning(request, 'Invalid Login credentials ')
+                # msg = messages.error(request, 'Invalid form submission')
         else:
-            msg = 'error validating form'
+            messages.warning(request, 'Invalid form submission')
+            msg = 'Invalid form submission'
+
     return render(request, 'accounts/user-login.html', {'form': loginform, 'msg': msg})
 
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="CM")
 def customer(request):
+
     return redirect('store:view-product')
 
 
 
-required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
+@required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory(request):
     pending_cart_count = Order.objects.filter(payment__payment_status='Pending').count()
     completed_cart_count = Order.objects.filter(payment__payment_status='Approved').count()
@@ -140,6 +144,7 @@ def driver(request):
                'deliveries':deliveries,
     }
     return render(request, 'driver.html', context)
+    
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="RD")
 def supplier(request):
@@ -235,37 +240,37 @@ def password_change(request):
 
 class FAQQuestionTypeListView(ListView):
     template_name = 'faq/customer_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='CM')
     context_object_name = 'faqs'
 
 class D_FAQ(ListView):
     template_name = 'faq/driver_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='DR')
     context_object_name = 'faqs'
 
 class S_FAQ(ListView):
     template_name = 'faq/supplier_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='RD')
     context_object_name = 'faqs'
 
 class B_FAQ(ListView):
     template_name = 'faq/brander_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='BR')
     context_object_name = 'faqs'
 
 class I_FAQ(ListView):
     template_name = 'faq/inventory_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='SM')
     context_object_name = 'faqs'
 
 class DP_FAQ(ListView):
     template_name = 'faq/dispatch_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='DM')
     context_object_name = 'faqs'
 
 class F_FAQ(ListView):
     template_name = 'faq/finance_faq.html'
-    queryset = FAQ.objects.all()
+    queryset = FAQ.objects.filter(question_types='FM')
     context_object_name = 'faqs'
 
 
@@ -274,6 +279,7 @@ def customer_profile(request):
     
     try:
         customer_profile = CustomerProfile.objects.get(user=request.user)
+
     except ObjectDoesNotExist:
     # handle the case where no customer profile exists for the user
         customer_profile = CustomerProfile.objects.create(user=request.user)
@@ -284,10 +290,12 @@ def customer_profile(request):
     form = CustomerForm(instance=request.user)
 
     # Retrieve profile image URL
-
+    profile_image_url = customer_profile.image.url if customer_profile.image else None
+    
     if request.method == "POST":
         p_form = CustomerProfileForm(request.POST, request.FILES, instance=customer_profile)
         form = CustomerForm(request.POST, instance=request.user)
+        
         if p_form.is_valid() and form.is_valid():
             p_form.save()
             form.save()
@@ -296,9 +304,10 @@ def customer_profile(request):
         'p_form': p_form,
         'form': form,
         'customer_profile': customer_profile,
+        'profile_image_url': profile_image_url,
     }
     return render(request, 'accounts/profiles/customer-profile-create.html',  context)
-
+    
 
 def finance_profile(request):
   

@@ -5,7 +5,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView
 from django.contrib import messages
-from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import User
 from django.db.models import Sum
@@ -27,6 +26,8 @@ from django.views import View
 from .models import (
     Product,Category
 )
+
+from django.db.models import F, Sum
 
 
 # from .forms import (
@@ -98,7 +99,7 @@ def product_detail(request, name):
     return render(request, 'store/product-detail.html',{'product': product})
 
 def category_list(request, category_slug):
-    category = get_object_or_404(Category, slug= category_slug)
+    category = get_object_or_404(Category, slug = category_slug)
     products = Product.objects.filter(category = category)
     return render(request,'store/category.html',{'category':category,'product': products})
 
@@ -274,13 +275,6 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        elif 'pickup_station_id' in request.POST:
-            # Handle selection of a pickup station by the user
-            pickup_station_id = int(request.POST.get('pickup_station_id'))
-            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-            shipping = Shipping.objects.create(order=order, station=pickup_station)
-            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
-
     # Calculate the subtotal for each order item and save it
     for item in order_items:
         item.subtotal = item.product.price * item.quantity
@@ -289,14 +283,10 @@ def view_cart(request):
     # Calculate the order total by summing the subtotals of each order item
     order_total = sum([item.subtotal for item in order_items])
 
-    # Get the available pickup stations
-    userpickupstations = UserPickUpStation.objects.all()
-
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
 
@@ -308,7 +298,6 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, View
 from django.contrib import messages
-from shipping.models import UserPickUpStation
 from accounts.decorators import required_access
 from accounts.models import Customer
 from utils.utils import generate_key
@@ -423,20 +412,15 @@ def customer_order_detail(request, order_id):
     order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
     payment = Payment.objects.filter(order=order).first()
     order_items = order.orderitem_set.all()
-    # order_total = order.total_cost
+    order_total = order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost']
 
-    
-    # Get the pick-up station for the user
-    user_pick_up_station = None
-    if hasattr(user, 'pick_up_stations'):
-        user_pick_up_station = user.pick_up_stations.first()
+
 
     context = {
         'order': order,
         'payment': payment,
         'order_items': order_items,
-        # 'order_total': order_total,
-        'user_pick_up_station': user_pick_up_station,
+        'order_total' : order_total, 
     }
     return render(request, 'store/customer_order_detail.html', context)
 
@@ -452,7 +436,7 @@ def customer_order_invoice(request):
                     'transaction_id': payment.transaction_id,
                     'username': order.user.username,
                     'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                    # 'total_cost': order.total_cost,
+                    'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                     'payment_status': payment.payment_status,
                     'date_ordered': order.date_ordered,
                     'order_id': order.id,  # Add cart_id to the dictionary
@@ -465,19 +449,15 @@ def customer_order_pdf(request, order_id):
     order = get_object_or_404(Order, user=user, id=order_id, is_completed=True)
     payment = Payment.objects.filter(order=order).first()
     order_items = order.orderitem_set.all()
-    # order_total = order.total_cost
-
-    # Get the pick-up station for the user
-    user_pick_up_station = UserPickUpStation.objects.first()
-
+    order_total = order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost']
+    
     # Load template for receipt
     template = get_template('finance/order_payment_receipt.html')
     context = {
         'order': order,
         'payment': payment,
         'order_items': order_items,
-        # 'order_total': order_total,
-        'user_pick_up_station': user_pick_up_station,
+        'order_total': order_total,
         'user': user,
     }
     html = template.render(context)
@@ -556,13 +536,7 @@ def view_cart(request):
                     order_item.delete()
                     messages.success(request, 'Item removed from order.', extra_tags='text-success')
 
-        elif 'pickup_station_id' in request.POST:
-            # Handle selection of a pickup station by the user
-            pickup_station_id = int(request.POST.get('pickup_station_id'))
-            pickup_station = UserPickUpStation.objects.get(id=pickup_station_id)
-            shipping = Shipping.objects.create(order=order, station=pickup_station)
-            messages.success(request, 'Pickup station selected successfully.', extra_tags='text-success')
-
+                    
     # Calculate the subtotal for each order item and save it
     for item in order_items:
         item.subtotal = item.product.price * item.quantity
@@ -571,27 +545,12 @@ def view_cart(request):
     # Calculate the order total by summing the subtotals of each order item
     order_total = sum([item.subtotal for item in order_items])
 
-    # Get the available pickup stations
-    userpickupstations = UserPickUpStation.objects.all()
-
     context = {
         'order': order,
         'order_items': order_items,
         'order_total': order_total,
-        'userpickupstations': userpickupstations
     }
     return render(request, 'store/cart.html', context)
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -794,7 +753,7 @@ def order_rejected_payment(request):
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                # 'total_cost': order.total_cost,
+                'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,  # add payment_id to order_info
@@ -812,7 +771,7 @@ def order_approved_payment(request):
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                #  'total_cost': order.order_total,
+                'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,  # add payment_id to order_info
@@ -830,7 +789,7 @@ def order_payment(request):
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                # 'total_cost': order.total_cost,
+                'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,  # add payment_id to order_info
@@ -850,9 +809,10 @@ def assign_driver_order_list(request):
             order_info = {
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
-                'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                # 'total_cost': order.total_cost,
                 'payment_status': payment.payment_status,
+                'county': payment.county,
+                'town': payment.town,
+                'phone_number': payment.phone_number,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,
                 'id': order.id,
@@ -871,11 +831,11 @@ def assign_driver_order_list(request):
             try:
                 order = Order.objects.get(pk=order_id)
                 if Shipping.objects.filter(order=order).exists():
-                    messages.error(request, f"{order} has already been assigned to a driver")
+                    messages.error(request, f"Order has already been assigned to a driver")
                 else:
                     driver = User.objects.filter(pk=driver_id, user_type=User.UserTypes.DRIVER).first()
                     shipping = Shipping.objects.create(order=order, driver=driver)
-                    messages.success(request, f"{order} has been assigned to {driver}")
+                    messages.success(request, f"Order has been assigned to {driver}")
             except (Order.DoesNotExist, User.DoesNotExist):
                 messages.error(request, "Failed to assign driver")
         else:
@@ -899,8 +859,11 @@ def assigned_order_list(request):
                 'transaction_id': payment.transaction_id,
                 'username': order.user.username,
                 'quantity': order.products.aggregate(Sum('orderitem__quantity'))['orderitem__quantity__sum'],
-                # 'total_cost': order.total_cost,
+                'order_total' : order.products.annotate(item_total=F('orderitem__quantity') * F('price')).aggregate(total_cost=Sum('item_total'))['total_cost'],
                 'payment_status': payment.payment_status,
+                'county':payment.county,
+                'town':payment.town,
+                'phone_number':order.user.phone_number,
                 'date_ordered': order.date_ordered,
                 'payment_id': payment.id,
                 'id': order.id,

@@ -43,16 +43,22 @@
 
         <li class="nav-item dropdown pe-3">
 
-          <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            
-            {% if driver_profile %}
-            <img class="rounded-circle" src="{{ driver_profile.image.url }}" alt="Profile Picture">
-           {% else %}
-            <img class="rounded-circle" src="{% static 'assets/img/avatars/1.png' %}" alt="Profile">
-            {% endif %}
+            <!-- loading profile picture -->
 
-            <span class="d-none d-md-block dropdown-toggle ps-2">{{ request.user.get_full_name|title }}</span>
-          </a><!-- End Profile Iamge Icon -->
+            {% load static %}
+            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+            {% if request.user.is_authenticated %}
+              {% if request.user.customer_profile.image %}
+                <img class="rounded-circle" src="{{ request.user.customer_profile.image.url }}" alt="Profile Picture">
+              {% else %}
+                <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Pic">
+              {% endif %}
+            {% else %}
+              <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Picture">
+            {% endif %}
+            </a>
+  
+            <!-- end of profile picture  -->
 
           <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
             <li class="dropdown-header">
