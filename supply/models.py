@@ -12,7 +12,7 @@ class SupplyTender(models.Model):
     delivery_date = models.DateField(null= True)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='needs_supply', verbose_name='supplier')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Design Price')
+    price = MoneyField(max_digits=10, decimal_places=2, default_currency='KES', verbose_name='Product Price', null=True)
     quantity = models.IntegerField()    
     status = (
         ('Pending','Pending'),
