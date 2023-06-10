@@ -3,7 +3,7 @@
 {% block content %}
  
   <div class="container-fluid my-5">
-    <h1 class="text-center mb-5" style="color: blue;">Pending Supply Tenders</h1>
+    <h1 class="text-center mb-5" style="color: blue;">Completed Supply Tenders</h1>
     <div class="row justify-content-center">
       <div class="col-12 col-lg-10">
         <div class="table-responsive">
@@ -29,7 +29,7 @@
               </tr>
             {% empty %}
               <tr>
-                <td colspan="6" class="text-center">No supply tenders to confirm yet.</td>
+                <td colspan="6" class="text-center">No supply tenders to confirmed.</td>
               </tr>
             {% endfor %}
             </tbody>
@@ -86,7 +86,7 @@
         padding-top: 0.25rem;
         padding-bottom: 0.25rem;
       }
-
+    }
 
     /* Styles for the horizontal scroll view */
     .table-responsive {
