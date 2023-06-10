@@ -313,10 +313,7 @@ class InventoryConfirmTenderListView(ListView):
     context_object_name = 'tenders'
 
     def get_queryset(self):
-        SupplyTender.objects.filter(Q(tender_status='Complete') | Q(tender_status='Confirmed'))
-
-
-
+        SupplyTender.objects.filter(Q(tender_status__in=['Complete', 'Confirmed']))
 
 class FinanceSupplierTenderListView(ListView):
     model = SupplyTender
