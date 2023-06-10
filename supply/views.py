@@ -26,7 +26,7 @@ from .models import SupplyTender
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import transaction
-
+from django.db.models import Q
 from django.urls import reverse_lazy
 
 def create_supplyTender(request):
@@ -313,7 +313,8 @@ class InventoryConfirmTenderListView(ListView):
     context_object_name = 'tenders'
 
     def get_queryset(self):
-        return SupplyTender.objects.filter(tender_status='Confirmed')
+        SupplyTender.objects.filter(Q(tender_status='Complete') | Q(tender_status='Confirmed'))
+
 
 
 
