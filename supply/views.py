@@ -75,28 +75,7 @@ def update_supply_request(request, pk):
             messages.warning(request, "Error updating request")
     context = {"form":form}
     return render(request, 'supply/update-request.html',context)
-
-def create_supply(request):
-    form = SupplyForm()
-    if request.method == 'POST':
-        form = SupplyForm(request.POST, request.FILES)
-        
-        if form.is_valid():
-            user = request.user
-            user.save()
-            form.save()
-            messages.success(request, "Supply made successfully")
-            return redirect('supply:supply_request_list')
-        else:
-            messages.warning(request, "Error making supply")
-    context = {'form': form}
-    return render(request, 'supply/create-supply.html', context)
-#supplier view supplies
-def supply_list(request):
-    supply = ProductSupply.objects.filter()
-    context = {'supply':supply}
-    return render(request, "supply/supply-list.html", context)
-    
+ 
 
 
 class SupplyTenderCreateView(CreateView):
