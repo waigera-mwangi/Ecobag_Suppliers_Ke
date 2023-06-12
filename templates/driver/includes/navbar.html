@@ -46,17 +46,17 @@
             <!-- loading profile picture -->
 
             {% load static %}
-            <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-            {% if request.user.is_authenticated %}
-              {% if request.user.driver_profile.image %}
-                <img class="rounded-circle" src="{{ request.user.driver_profile.image.url }}" alt="Profile Picture">
-              {% else %}
-                <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Pic">
-              {% endif %}
-            {% else %}
-              <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Picture">
-            {% endif %}
-            </a>
+             <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+             {% if request.user.is_authenticated %}
+               {% if request.user.driver_profile.image %}
+                 <img class="rounded-circle" src="{{ request.user.driver_profile.image.url }}" alt="Profile Picture">
+               {% else %}
+                 <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Pic">
+               {% endif %}
+             {% else %}
+               <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Picture">
+             {% endif %}
+             </a>
   
             <!-- end of profile picture  -->
 
