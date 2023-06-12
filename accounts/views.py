@@ -400,10 +400,10 @@ def dispatch_profile(request):
 def driver_profile(request):
 
     try:
-        driver_profile = DispatchProfile.objects.get(user=request.user)
+        driver_profile = DriverProfile.objects.get(user=request.user)
     except ObjectDoesNotExist:
     # handle the case where no profile exists for the user
-        driver_profile = DispatchProfile.objects.create(user=request.user)
+        driver_profile = DriverProfile.objects.create(user=request.user)
 
     p_form = DriverProfileForm(instance=driver_profile)
     form = DriverForm(instance=request.user)
