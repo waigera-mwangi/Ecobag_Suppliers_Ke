@@ -48,8 +48,8 @@
              {% load static %}
              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
              {% if request.user.is_authenticated %}
-               {% if request.user.customer_profile.image %}
-                 <img class="rounded-circle" src="{{ request.user.customer_profile.image.url }}" alt="Profile Picture">
+               {% if request.user.dispatch_profile.image %}
+                 <img class="rounded-circle" src="{{ request.user.dispatch_profile.image.url }}" alt="Profile Picture">
                {% else %}
                  <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Pic">
                {% endif %}
