@@ -409,6 +409,7 @@ def driver_profile(request):
     form = DriverForm(instance=request.user)
 
     # Retrieve profile image URL
+    profile_image_url = driver_profile.image.url if driver_profile.image else None
     
 
     if request.method == "POST":
@@ -422,6 +423,7 @@ def driver_profile(request):
         'p_form': p_form,
         'form': form,
         'driver_profile': driver_profile,
+        'profile_image_url': profile_image_url,
         
     }
     return render(request, 'accounts/profiles/driver-profile.html',  context)
