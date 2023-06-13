@@ -56,4 +56,18 @@ urlpatterns = [
     path('brander/password-change', brander_password_change, name='brander_password_change'),
     path('driver/password-change', driver_password_change, name='driver_password_change'),
     path('finance/password-change', finance_password_change, name='finance_password_change'),
+
+
+     # password reset urls
+      path('reset_password/', auth_views.PasswordResetView.as_view(template_name="accounts/password_reset.html"),
+           name="password_reset"),
+
+      path('reset_password_done/', auth_views.PasswordResetDoneView.as_view(template_name="accounts/password_reset_done.html"),
+           name="password_reset_done"),
+
+      path('reset_password_confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name="accounts/password_reset_confirm.html"),
+           name="password_reset_confirm"),
+
+      path('reset_password_complete/',auth_views.PasswordResetCompleteView.as_view(template_name="accounts/password_reset_complete.html.html"),
+           name="password_reset_complete"),
 ]

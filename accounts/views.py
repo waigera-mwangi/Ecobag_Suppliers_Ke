@@ -26,7 +26,7 @@ from . import context_processors
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    template_name = "accounts/customer-registration.html"
+    template_name = "accounts/customer-accounts.html"
     form_class = CustomerSignUpForm
     model = User
     success_message = "You've registered successfully"
@@ -581,3 +581,26 @@ def brander_password_change(request):
             messages.info(request, 'Please correct the errors below.')
     return render(request, 'accounts/password-change/brander-change-password.html', {'form': form})
 
+# password reset
+from django.contrib.auth.views import PasswordResetView
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'accounts/password_reset_form.html'
+    form_class = CustomPasswordResetForm
+    email_template_name = 'accounts/password_reset_email.html'
+    success_url = reverse_lazy('password_reset_done')
+
+from django.contrib.auth.views import PasswordResetDoneView
+
+class CustomPasswordResetDoneView(PasswordResetDoneView):
+    template_name = 'accounts/password_reset_done.html'
+
+from django.contrib.auth.views import PasswordResetConfirmView
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'accounts/password_reset_confirm.html'
+
+from django.contrib.auth.views import PasswordResetCompleteView
+
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    template_name = 'accounts/password_reset_complete.html'
