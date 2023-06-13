@@ -253,3 +253,14 @@ class BranderForm(ModelForm):
     class Meta:
         model = Brander
         fields = ['last_name', 'first_name', 'email']
+
+
+# password reset form
+from django.contrib.auth.forms import PasswordResetForm
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label='Your email',
+        max_length=254,
+        widget=forms.EmailInput(attrs={'autocomplete': 'email', 'class': 'form-control'})
+    )
