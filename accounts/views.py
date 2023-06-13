@@ -583,6 +583,9 @@ def brander_password_change(request):
 
 # password reset
 from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import PasswordResetDoneView
+from django.contrib.auth.views import PasswordResetConfirmView
+from django.contrib.auth.views import PasswordResetCompleteView
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
@@ -590,17 +593,14 @@ class CustomPasswordResetView(PasswordResetView):
     email_template_name = 'accounts/password_reset_email.html'
     success_url = reverse_lazy('accounts:password_reset_done')
 
-from django.contrib.auth.views import PasswordResetDoneView
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'
 
-from django.contrib.auth.views import PasswordResetConfirmView
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'accounts/password_reset_confirm.html'
 
-from django.contrib.auth.views import PasswordResetCompleteView
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'accounts/password_reset_complete.html'
