@@ -588,7 +588,7 @@ class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
     form_class = CustomPasswordResetForm
     email_template_name = 'accounts/password_reset_email.html'
-    success_url = reverse_lazy('password_reset_done')
+    success_url = reverse_lazy('accounts:password_reset_done')
 
 from django.contrib.auth.views import PasswordResetDoneView
 
