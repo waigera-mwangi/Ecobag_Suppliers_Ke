@@ -140,33 +140,33 @@ AUTH_USER_MODEL = 'accounts.User'
 
 
 # testing stmp
-smtp_host = 'smtp.gmail.com'
-smtp_port = 587
-sender_email = 'peterfamous418@gmail.com'
-sender_password = 'sbvnirlqfgirrixq'
-recipient_email = 'peterfamous418@gmail.com'
+# smtp_host = 'smtp.gmail.com'
+# smtp_port = 587
+# sender_email = 'peterfamous418@gmail.com'
+# sender_password = 'sbvnirlqfgirrixq'
+# recipient_email = 'peterfamous418@gmail.com'
 
 # Create a connection to the SMTP server
-server = smtplib.SMTP(smtp_host, smtp_port)
-server.starttls()
+# server = smtplib.SMTP(smtp_host, smtp_port)
+# server.starttls()
 
 # Login to the SMTP server
-server.login(sender_email, sender_password)
+# server.login(sender_email, sender_password)
 
 # Compose the email message
-message = MIMEText('This is a test email.')
-message['Subject'] = 'Test Email'
-message['From'] = sender_email
-message['To'] = recipient_email
+# message = MIMEText('This is a test email.')
+# message['Subject'] = 'Test Email'
+# message['From'] = sender_email
+# message['To'] = recipient_email
 
 # Send the email
-server.sendmail(sender_email, recipient_email, message.as_string())
+# server.sendmail(sender_email, recipient_email, message.as_string())
 
 # Close the SMTP connection
-server.quit()
+# server.quit()
 
 # SMTP configuration
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.console.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
