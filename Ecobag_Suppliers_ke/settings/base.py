@@ -142,9 +142,9 @@ AUTH_USER_MODEL = 'accounts.User'
 # testing stmp
 smtp_host = 'smtp.gmail.com'
 smtp_port = 587
-sender_email = 'waigeram019@gmail.com'
-sender_password = '###@@@###'
-recipient_email = 'waigeram019@gmail.com'
+sender_email = 'peterfamous418@gmail.com'
+sender_password = 'sbvnirlqfgirrixq'
+recipient_email = 'peterfamous418@gmail.com'
 
 # Create a connection to the SMTP server
 server = smtplib.SMTP(smtp_host, smtp_port)
@@ -170,9 +170,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'waigeram019@gmail.com'
-DEFAULT_FROM_EMAIL = 'waigeram019@gmail.com'
-EMAIL_HOST_PASSWORD = '###@@@###'
+EMAIL_HOST_USER = 'peterfamous418@gmail.com'
+DEFAULT_FROM_EMAIL = 'peterfamous418@gmail.com'
+EMAIL_HOST_PASSWORD = 'sbvnirlqfgirrixq'
 PASSWORD_RESET_EMAIL_TEMPLATE = 'accounts/password_reset_email.html'
 PASSWORD_RESET_DONE_TEMPLATE = 'accounts/password_reset_done.html'
 PASSWORD_RESET_CONFIRM_TEMPLATE = 'accounts/password_reset_confirm.html'
