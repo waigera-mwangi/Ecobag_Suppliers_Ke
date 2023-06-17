@@ -1,6 +1,9 @@
 from pathlib import Path
 from decouple import config
 
+import smtplib
+from email.mime.text import MIMEText
+
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -134,6 +137,33 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.User'
+
+
+# testing stmp
+smtp_host = 'smtp.gmail.com'
+smtp_port = 587
+sender_email = 'waigeram019@gmail.com'
+sender_password = '###@@@###'
+recipient_email = 'waigeram019@gmail.com'
+
+# Create a connection to the SMTP server
+server = smtplib.SMTP(smtp_host, smtp_port)
+server.starttls()
+
+# Login to the SMTP server
+server.login(sender_email, sender_password)
+
+# Compose the email message
+message = MIMEText('This is a test email.')
+message['Subject'] = 'Test Email'
+message['From'] = sender_email
+message['To'] = recipient_email
+
+# Send the email
+server.sendmail(sender_email, recipient_email, message.as_string())
+
+# Close the SMTP connection
+server.quit()
 
 # SMTP configuration
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
