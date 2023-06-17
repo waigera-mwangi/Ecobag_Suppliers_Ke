@@ -26,7 +26,7 @@ from . import context_processors
 
 
 class UserCreateView(SuccessMessageMixin, CreateView):
-    template_name = "accounts/customer-accounts.html"
+    template_name = "accounts/customer-registration.html"
     form_class = CustomerSignUpForm
     model = User
     success_message = "You've registered successfully"
@@ -586,13 +586,15 @@ from django.contrib.auth.views import PasswordResetView
 from django.contrib.auth.views import PasswordResetDoneView
 from django.contrib.auth.views import PasswordResetConfirmView
 from django.contrib.auth.views import PasswordResetCompleteView
+from django.urls import reverse
 
 class CustomPasswordResetView(PasswordResetView):
     template_name = 'accounts/password_reset_form.html'
     form_class = CustomPasswordResetForm
     email_template_name = 'accounts/password_reset_email.html'
-    success_url = reverse_lazy('accounts:password_reset_done')
-
+    
+    def get_success_url(self):
+            return reverse_lazy('accounts:password_reset_done')
 
 class CustomPasswordResetDoneView(PasswordResetDoneView):
     template_name = 'accounts/password_reset_done.html'

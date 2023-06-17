@@ -143,5 +143,9 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'waigeram019@gmail.com'
 DEFAULT_FROM_EMAIL = 'waigeram019@gmail.com'
 EMAIL_HOST_PASSWORD = '###@@@###'
+PASSWORD_RESET_EMAIL_TEMPLATE = 'accounts/password_reset_email.html'
+PASSWORD_RESET_DONE_TEMPLATE = 'accounts/password_reset_done.html'
+PASSWORD_RESET_CONFIRM_TEMPLATE = 'accounts/password_reset_confirm.html'
+PASSWORD_RESET_COMPLETE_TEMPLATE = 'accounts/password_reset_complete.html'
 
 STRIPE_ENDPOINT_SECRET = 'whsec_myIuLuukACB4Mo9HQH)ZyqgOeEc4yYov'
