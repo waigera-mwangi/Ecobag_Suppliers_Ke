@@ -98,10 +98,12 @@ def product_detail(request, name):
     product = get_object_or_404(Product, slug=name)
     return render(request, 'store/product-detail.html',{'product': product})
 
+#  view products in category
 def category_list(request, category_slug):
-    category = get_object_or_404(Category, slug = category_slug)
-    products = Product.objects.filter(category = category)
-    return render(request,'store/category.html',{'category':category,'product': products})
+    category = get_object_or_404(Category, slug=category_slug)
+    products = Product.objects.filter(category=category)
+    return render(request, 'store/category.html', {'category': category, 'products': products})
+
 
 def product(request):
     product = Product.objects.all()
@@ -185,11 +187,11 @@ def create_category(request):
         if form.is_valid():
             form.save()
             messages.success(request, "Category created successfully")
-            return redirect('store:category_list')
+            return redirect('store:inventory_category_list')
         else:
             messages.warning(request, "Error creating Category")
     context = {'form': form}
-    return render(request, 'inventory/includes/add-category.html', context)
+    return render(request, 'store/add-category.html', context)
 
 # update category
 def update_category(request, pk):
@@ -201,7 +203,7 @@ def update_category(request, pk):
         if form.is_valid():
             form.save()
             messages.success(request, "Category updated successfully")
-            return redirect('store:category_list')
+            return redirect('store:inventory_category_list')
         else:
             messages.warning(request, "Error updating Category")
     context = {'form': form}
@@ -209,12 +211,21 @@ def update_category(request, pk):
 
 
 
-def category_list(request):
+def inventory_category_list(request):
     category = Category.objects.filter()
     context = {"category":category}
     return render(request, "store/category-list.html", context)
 
-    
+    # view products by category
+class ProductByCategoryView(ListView):
+    model = Product
+    template_name = 'store/product_by_category.html'
+    context_object_name = 'products'
+
+    def get_queryset(self):
+        category_slug = self.kwargs['slug']
+        category = Category.objects.get(slug=category_slug)
+        return Product.objects.filter(category=category)
 
  # cart functions
 
@@ -350,8 +361,8 @@ class ProductView(View):
         return render(request, 'store/view-products.html', context)
 
 
-def product_detail(request, slug):
-    product = get_object_or_404(Product, slug=slug, in_stock=True)
+def product_detail(request, name):
+    product = get_object_or_404(Product, slug=name, in_stock=True)
     return render(request, 'store/product-detail.html', {'product': product})
 
 

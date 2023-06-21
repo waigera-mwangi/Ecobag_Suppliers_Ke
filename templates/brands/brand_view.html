@@ -1,0 +1,21 @@
+{% extends 'brander/layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+{% block styles %}
+{% block title %} {% endblock %}
+{% endblock styles %}
+
+<div class="container-fluid mt-3">
+    <h1>Brand Details</h1>
+  <p>Brand Name: {{ brand.brand_name }}</p>
+  <p>Brand Logo:</p>
+  {% if brand.brand_logo %}
+    <img src="{{ brand.brand_logo.url }}" alt="{{ brand.brand_name }} Logo">
+  {% else %}
+    <p>No brand logo available.</p>
+  {% endif %}
+</div>
+{% endblock content %}

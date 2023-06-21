@@ -194,7 +194,7 @@ class SupplierProfileForm(ModelForm):
 class SupplierForm(ModelForm):
     class Meta:
         model = Supply
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 class DispatchProfileForm(ModelForm):
     class Meta:
@@ -205,7 +205,7 @@ class DispatchProfileForm(ModelForm):
 class DispatchForm(ModelForm):
     class Meta:
         model = Dispatch
-        fields = ['last_name', 'first_name', 'email' ]
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 
 class DriverProfileForm(ModelForm):
@@ -217,7 +217,7 @@ class DriverProfileForm(ModelForm):
 class DriverForm(ModelForm):
     class Meta:
         model = Driver
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 
 class FinanceProfileForm(ModelForm):
@@ -229,7 +229,7 @@ class FinanceProfileForm(ModelForm):
 class FinanceForm(ModelForm):
     class Meta:
         model = Finance
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 
 class InventoryProfileForm(ModelForm):
@@ -241,7 +241,7 @@ class InventoryProfileForm(ModelForm):
 class InventoryForm(ModelForm):
     class Meta:
         model = Inventory
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 class BranderProfileForm(ModelForm):
     class Meta:
@@ -252,7 +252,7 @@ class BranderProfileForm(ModelForm):
 class BranderForm(ModelForm):
     class Meta:
         model = Brander
-        fields = ['last_name', 'first_name', 'email']
+        fields = ['last_name', 'first_name', 'email','phone_number']
 
 
 # password reset form

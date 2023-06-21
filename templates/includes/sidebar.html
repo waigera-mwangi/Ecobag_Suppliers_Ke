@@ -13,19 +13,20 @@
 
     <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-            <i class="bi bi-shop"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
+        <i class="bi bi-shop"></i><span>Categories</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
-
-      
-
-      <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-        {% for c in categories %}
-      <li>
-        <a class="bi bi-circle" href="{{c.get_absolute_url}}">{{c.name|title}}</a>
-      </li>
-      {% endfor %}
+    
+      <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+        {% for category in categories %}
+        <li>
+          <a class="bi bi-circle" href="{% url 'store:product_by_category' category.slug %}">{{ category.name|title }}</a>
+          
+        </li>
+        {% endfor %}
       </ul>
-    </li><!-- End Categories Nav -->
+    </li>
+    
+    <!-- End Categories Nav -->
       
     <li class="nav-item">
       <a class="nav-link " href="{% url 'store:customer-order-list' %}">

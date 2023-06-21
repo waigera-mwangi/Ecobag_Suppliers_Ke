@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect,get_object_or_404
 from .models import Brand
 from django.contrib import messages
 from .forms import *
@@ -89,3 +89,9 @@ def view_brands(request):
     brands = Brand.objects.filter(user = currentuser)
     context = {'brands':brands}
     return render(request,"brands/view-brands.html",context)
+
+def brand_view(request, brand_id):
+    if not request.user.is_authenticated:
+        return redirect('/')
+    brand = get_object_or_404( Brand, id = brand_id)
+    return render(request, 'brands/brand_view.html', {'brand': brand})

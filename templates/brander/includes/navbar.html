@@ -14,26 +14,11 @@
     </div><!-- End Logo -->
 
     
-    <div class="search-bar">
-      <form action="{% url 'store:searchproduct' %}" method="POST">
-        {% csrf_token %}
-        <div class="input-group">
-          <input type="search" required class="form-control" name="productsearch" placeholder="Search:" id="searchproducts">
-          <button type="submit" class="input-group-text"> <i class="fa fa-search"> </i> </button> 
-        </div>
-      </form> 
-    </div>
-      
+
     <!-- End Search Bar -->
 
     <nav class="header-nav ms-auto">
       <ul class="d-flex align-items-center">
-
-        <li class="nav-item d-block d-lg-none">
-          <a class="nav-link nav-icon search-bar-toggle " href="#">
-            <i class="bi bi-search"></i>
-          </a>
-        </li><!-- End Search Icon-->
                             
         <div>
         
@@ -48,8 +33,8 @@
              {% load static %}
              <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
              {% if request.user.is_authenticated %}
-               {% if request.user.customer_profile.image %}
-                 <img class="rounded-circle" src="{{ request.user.customer_profile.image.url }}" alt="Profile Picture">
+               {% if request.user.brandre_profile.image %}
+                 <img class="rounded-circle" src="{{ request.user.brander_profile.image.url }}" alt="Profile Picture">
                {% else %}
                  <img class="rounded-circle" src="{% static 'assets/img/default-profile.png' %}" alt="Default Profile Pic">
                {% endif %}

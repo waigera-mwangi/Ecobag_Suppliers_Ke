@@ -300,6 +300,7 @@ def customer_profile(request):
             p_form.save()
             form.save()
             messages.success(request, 'Profile updated successfully')
+            return redirect('accounts:customer')
     context = {
         'p_form': p_form,
         'form': form,
@@ -330,6 +331,7 @@ def finance_profile(request):
             p_form.save()
             form.save()
             messages.success(request, 'Profile updated successfully')
+            return redirect('accounts:finance-manager')
     context = {
         'p_form': p_form,
         'form': form,
@@ -360,6 +362,7 @@ def brander_profile(request):
             p_form.save()
             form.save()
             messages.success(request, 'Profile updated successfully')
+            return redirect('accounts:brander')
     context = {
         'p_form': p_form,
         'form': form,
@@ -389,6 +392,7 @@ def dispatch_profile(request):
             p_form.save()
             form.save()
             messages.success(request, 'Profile updated successfully')
+            return redirect('accounts:dispatch-manager')
     context = {
         'p_form': p_form,
         'form': form,
@@ -419,6 +423,8 @@ def driver_profile(request):
             p_form.save()
             form.save()
             messages.success(request, 'Profile has been updated successfully')
+            return redirect('accounts:driver')
+
     context = {
         'p_form': p_form,
         'form': form,
@@ -450,6 +456,7 @@ def inventory_profile(request):
             messages.success(request, 'Profile updated successfully')
             # Update profile image URL after saving
             profile_image_url = inventory_profile.image.url if inventory_profile.image else None
+            return redirect('accounts:inventory')
     context = {
         'p_form': p_form,
         'form': form,
@@ -482,6 +489,8 @@ def supplier_profile(request):
             messages.success(request, 'Profile updated successfully')
             # Update profile image URL after saving
             profile_image_url = supply_profile.image.url if supply_profile.image else None
+            return redirect('accounts:supplier')
+
     context = {
         'p_form': p_form,
         'form': form,

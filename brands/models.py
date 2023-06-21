@@ -7,7 +7,7 @@ class Brand(models.Model):
     order_tno = models.CharField(max_length=150)
     brand_tno = models.CharField(max_length=150)
     brand_name = models.CharField(max_length=20)
-    brand_logo = models.ImageField(upload_to='media/%Y/%m/%d/', blank=True)
+    brand_logo = models.ImageField(null=True)
     
     
     status = (

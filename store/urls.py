@@ -17,22 +17,19 @@ urlpatterns = [
     # path('customer-list/', CustomerListView.as_view(), name='customer-list'),
     path('product-list/', ProductListView.as_view(), name='product-list'),
     # path('order-list/', OrderListView.asdelete_c_view(), name='order-list'),
-    path('category_list/', category_list, name='category_list'),
+   
+
     path('delivery-list/', DeliveryListView.as_view(), name='delivery-list'),
     # view products by customer
     path('view-products/', ProductView.as_view(), name='view-product'),
-    path('product_detail/<slug:slug>/', product_detail, name='product_detail'),
+    path('product_detail/<slug:name>/', product_detail, name='product_detail'),
     path('update_category/<str:pk>/', views.update_category, name='update_category'),
-    
-    path('category_list/', views.category_list, name='category_list'),
+    path('inventory_category_list/', views.inventory_category_list, name='inventory_category_list'),
     path('create_category/', views.create_category, name='create_category'),
-    # path('category_view/<slug:category_slug>/', category_list, name='category_list'),
-    # path('user/', userPage, name="user-page"),
+    
     
     # view single product by customer
     path('product_detail/<slug:name>/', views.product_detail, name='product_detail'),
-    path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
-    # path('user/', views.userPage, name="user-page"),
 
     path('products/', product, name='products'),
     # search products
@@ -47,12 +44,6 @@ urlpatterns = [
     path('product/<int:pk>/update/', ProductUpdateView.as_view(), name='product-update'),
     path('product/<int:pk>/delete/', ProductDeleteView.as_view(), name='product-delete'),
     path('category/<int:pk>/', CategoryDetailView.as_view(), name='category-detail'),
-    # path('category-list/', CategoryListView.as_view(), name='category-list'),
-    # path('category/create/', CategoryCreateView.as_view(), name='category-create'),
-    # path('category/<int:pk>/update/', CategoryUpdateView.as_view(), name='category-update'),
-    # path('category/<int:pk>/delete/', CategoryDeleteView.as_view(), name='category-delete')
-    
-
      # finance
     path('approve-payment/<str:transaction_id>/', approve_payment, name='approve_payment'),
     path('order-payments/', order_payment, name='order-payment'),
@@ -73,5 +64,10 @@ urlpatterns = [
     # dispatch
     path('assign-order-list/', assign_driver_order_list, name='assign-order-list'),
     path('assigned-order-list/', assigned_order_list, name='assigned-order-list'),
+
+
+     #  view product by categories
+    path('category_view/<slug:category_slug>/', views.category_list, name='category_list'),
+     path('category/<slug:slug>/', ProductByCategoryView.as_view(), name='product_by_category'),
 
 ]
