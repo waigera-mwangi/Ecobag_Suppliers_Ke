@@ -7,7 +7,7 @@
   <div class="card">
     <div class="card-body">
       <p class="card-text"><b>Status:</b> {{ shipping.get_status_display }}</p>
-      <p class="card-text"><b>Pickup Station:</b> {{ shipping.county }}</p>
+      <p class="card-text"><b>Client:</b> {{ order.user }}</p>
       <p class="card-text"><b>Delivery Date:</b> {{ shipping.delivery_date|date:'d M Y' }}</p>
       {% if shipping.status == "DL" %}
             <form method="POST" action="{% url 'shipping:update_shipping_status' shipping.pk %}">
