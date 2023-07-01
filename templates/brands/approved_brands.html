@@ -1,0 +1,92 @@
+{% extends 'brander/layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+{% load widget_tweaks %}
+{% block content %}
+{% load static %}
+{% block styles %}
+<style>
+    /* Styles for table */
+    .table-info {
+        width: 100%;
+    }
+
+    .table-info th,
+    .table-info td {
+        padding: 0.5rem;
+    }
+
+    /* Styles for smaller screens */
+    @media (max-width: 576px) {
+        .table-info-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+
+        .table-info-responsive table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table-info-responsive th,
+        .table-info-responsive td {
+            white-space: nowrap;
+        }
+    }
+</style>
+{% endblock styles %}
+
+<!-- <div class="container"> -->
+    <p><h3 class="mb-0">Approved Brands</h3></p> 
+    <div class="card-body">
+        
+        <div class="table-info-responsive">
+            <table class="table table-info table-striped">
+                <thead>
+                    <tr style="background:  #80ff80">
+                        <th class="serial">Num</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>View</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if approved_brands %}
+                        {% for i in approved_brands %}
+                            <tr>
+                                <td class="serial">{{ forloop.counter }}</td>
+                                <td>{{ i.created }}</td>
+                                <td>{{ i.brand_name }}</td>
+                                <td>{{ i.brandstatus }}</td>
+                                <td>
+                                    {% if i.brandstatus == 'Approved' %}
+                                        <form action="{% url 'brands:change_status' i.pk 'Completed' %}" method="post">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-success">Mark as Complete</button>
+                                        </form>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{% url 'brands:brand_view' i.pk %}" class="btn btn-primary">View</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6">No brands</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<!-- </div> -->
+
+{% endblock content %}

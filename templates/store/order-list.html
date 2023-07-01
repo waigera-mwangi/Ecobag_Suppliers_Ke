@@ -43,8 +43,7 @@
                             <tr style="background: #0dcaf0">
                                 <th class="serial">#</th>
                                 <th>Product</th>
-                                <th>Design</th>
-                                <th>Color</th>
+                                
                                 <th>customer</th>
                                 <th>Date</th>
                                 <th>Status</th>
@@ -55,8 +54,6 @@
                             {% for order in order %}
                             <tr>
                                 <td class="serial">{{ forloop.counter }}</td>
-                                <td>{{ order.product }}</td>
-                                <td>{{ order.design }}</td>
                                 <td>{{ order.color }}</td>
                                 <td>{{ order.customer }}</td>
                                 <td>{{ order.created_date }}</td>

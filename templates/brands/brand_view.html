@@ -5,17 +5,66 @@
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %} {% endblock %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+    .brand-card {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+
+    .brand-name {
+        font-size: 28px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .brand-text {
+        font-size: 18px;
+        font-weight: italics;
+        margin-bottom: 10px;
+    }
+
+    .brand-logo {
+        max-width: 300px;
+        max-height: 300px;
+        margin: 0 auto;
+    }
+
+    .no-logo {
+        margin-top: 20px;
+        font-style: italic;
+        color: gray;
+    }
+
+    .download-link {
+        margin-top: 10px;
+    }
+
+    .download-icon {
+        margin-right: 5px;
+    }
+</style>
 {% endblock styles %}
 
-<div class="container-fluid mt-3">
-    <h1>Brand Details</h1>
-  <p>Brand Name: {{ brand.brand_name }}</p>
-  <p>Brand Logo:</p>
-  {% if brand.brand_logo %}
-    <img src="{{ brand.brand_logo.url }}" alt="{{ brand.brand_name }} Logo">
-  {% else %}
-    <p>No brand logo available.</p>
-  {% endif %}
+<div class="container">
+    <div class="brand-card">
+        <p class="brand-name">Brand Details</p>
+        <p class="brand-text">Brand Name: {{ brand.brand_name }}</p>
+        <p class"brand-text" >Brand Logo:</p>
+        {% if brand.brand_logo %}
+            <img class="brand-logo" src="{{ brand.brand_logo.url }}" alt="{{ brand.brand_name }} Logo">
+            <p class="download-link">
+                <a href="{{ brand.brand_logo.url }}" download>
+                    <i class="fas fa-download download-icon"></i> Download Brand Logo
+                </a>
+            </p>
+        {% else %}
+            <p class="no-logo">No brand logo available.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock content %}
