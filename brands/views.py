@@ -49,13 +49,40 @@ def view_brands(request):
     context = {'brands':brands}
     return render(request,"brands/view-brands.html",context)
 
-# staff to view brands in table
-def brand_list(request):
+# staff to view pending brands in table
+def pending_brand_list(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    list_brands = Brand.objects.filter()
-    context = {"list_brands":list_brands}
-    return render(request,"brands/brands_list.html",context)
+    pending_brands = Brand.objects.filter(brandstatus='Pending')
+    context = {"pending_brands": pending_brands}
+    return render(request, "brands/pending_brands.html", context)
+
+# staff to view approved brands in table
+def approved_brand_list(request):
+    approved_brands = Brand.objects.filter(brandstatus='Approved')
+    context = {'approved_brands': approved_brands}
+    return render(request,"brands/approved_brands.html", context)
+
+# staff to view approved brands in table
+def rejected_brand_list(request):
+    rejected_brands = Brand.objects.filter(brandstatus='Rejected')
+    context = {'rejected_brands': rejected_brands}
+    return render(request,"brands/rejected_brands.html", context)
+
+# staff to view approved brands in table
+def complete_brand_list(request):
+    complete_brands = Brand.objects.filter(brandstatus='Completed')
+    context = {'complete_brands': complete_brands}
+    return render(request,"brands/complete_brands.html", context)
+
+#changes the status of the brand
+def change_status(request, pk, status):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    brand = Brand.objects.get(pk=pk)
+    brand.brandstatus = status
+    brand.save()
+    return redirect('brands:complete_brands')
 
 # staff create brand
 def create_brand(request):
