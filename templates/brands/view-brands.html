@@ -5,45 +5,75 @@
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %} {% endblock %}
+<style>
+    /* Styles for table */
+    .table-info {
+        width: 100%;
+    }
+
+    .table-info th,
+    .table-info td {
+        padding: 0.5rem;
+    }
+
+    /* Styles for smaller screens */
+    @media (max-width: 576px) {
+        .table-info-responsive {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            -ms-overflow-style: -ms-autohiding-scrollbar;
+        }
+
+        .table-info-responsive table {
+            width: 100%;
+            margin-bottom: 0;
+        }
+
+        .table-info-responsive th,
+        .table-info-responsive td {
+            white-space: nowrap;
+        }
+    }
+</style>
 {% endblock styles %}
 
 <div class="container">
-    <p><h3 class="mb-0">My brands</h3></p> 
-
+    <p><h1 class="mb-0">My brands</h1></p>
 
     <div class="card-body">
-        <table class="table table-info table-striped">
-            <thead>
-                <tr>
-                    <th class="serial">Num</th>
-                    <th>Date</th>
-                    <th>Track No</th>
-                    <th>Name</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% if brands %}
-
-                {% for i in brands %}
+        <div class="table-info-responsive">
+            <table class="table table-info">
+                <thead>
                     <tr>
-                        <td class="serial">{{ forloop.counter }}</td>
-                        <td>{{i.created}}</td>
-                        <td>{{i.brand_tno}}</td>
-                        <td>{{i.brand_name}}</td>
-                        <td>{{i.brandstatus}}</td>
+                        <th class="serial">Num</th>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th>Transaction ID</th>
+                        <th>Status</th>
                     </tr>
-                {% endfor %}
-
-                {% else %}
-                <tr><td>No recent brands</td></tr>
-
-                {% endif %}
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    {% if brands %}
+                        {% for i in brands %}
+                            <tr>
+                                <td data-label="Num" class="serial">{{ forloop.counter }}</td>
+                                <td data-label="Date">{{ i.created }}</td>
+                                <td data-label="Name">{{ i.order_tno }}</td>
+                                <td data-label="Transaction ID">{{ i.brand_name }}</td>
+                                <td data-label="Status">{{ i.brandstatus }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="5">No recent brands</td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
 </div>
 
 {% endblock content %}

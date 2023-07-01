@@ -2,35 +2,52 @@ from django.shortcuts import render, redirect,get_object_or_404
 from .models import Brand
 from django.contrib import messages
 from .forms import *
+from finance.models import Payment
 import random
+from django.core.exceptions import ObjectDoesNotExist
 
+#  customer crete brand with the transaction id 
+def branding(request):
+    form = BrandForm()
+    if request.method == 'POST':
+        form = BrandForm(request.POST, request.FILES)
+        if form.is_valid():
+            brand = form.save(commit=False)
+            
+            transaction_id = brand.order_tno
+            user = request.user
+            
+            try:
+                payment = Payment.objects.get(order__user=user, transaction_id=transaction_id)
+                
+                if payment.payment_status != 'Approved':
+                    messages.warning(request, "No matching approved payment found for the provided transaction ID.")
+                    return redirect('brands:brand_list')
+                
+                brand.user = user
+                brand.save()
+                
+                messages.success(request, "Brand created successfully")
+                return redirect('brands:view_brands')
+            
+            except Payment.DoesNotExist:
+                messages.warning(request, "No matching payment found for the provided transaction ID.")
+                return redirect('brands:branding')
+            
+        else:
+            messages.warning(request, "Error creating brand")
+    
+    context = {"form": form}
+    return render(request, 'brands/create_brand.html', context)
 
-def custom_branding(request):
+# customer to view brands in table
+def view_brands(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    currentuser=request.user.email
-    return render(request, 'brands/custom_branding.html')
-
-
-
-def branding(request):
-    if request.method == 'POST':
-        newbrand = Brand()
-        newbrand.user = request.user
-        newbrand.brand_name  = request.POST.get('brand_name')
-        newbrand.brand_logo  = request.POST.get('brand_logo')
-        newbrand.order_tno  = request.POST.get('t_no')
-      
-        trackingno = 'brand'+str(random.randint(1111111,9999999))
-        while Brand.objects.filter(brand_tno=trackingno) is None:
-            trackingno = 'brand'+str(random.randint(1111111,9999999))
-        newbrand.brand_tno = trackingno
-
-        newbrand.save()
-
-        messages.success(request, 'Submitted successfully for branding')
-        
-    return redirect('brands:view_brands')
+    currentuser = request.user
+    brands = Brand.objects.filter(user = currentuser)
+    context = {'brands':brands}
+    return render(request,"brands/view-brands.html",context)
 
 # staff to view brands in table
 def brand_list(request):
@@ -44,13 +61,26 @@ def brand_list(request):
 def create_brand(request):
     form =  BrandForm()
     if request.method == 'POST':
-        form =  BrandForm(request.POST)
+        form =  BrandForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, "Order created successfully")
+            brand = form.save(commit=False) # Save the form data without committing to the database yet
+            
+            # Check if the transaction_id exists in the Payment model for the current user
+            transaction_id = brand.order_tno
+            user = request.user
+            payment = get_object_or_404(Payment, order__user=user, transaction_id=transaction_id)
+            
+            if payment.payment_status != 'approved':
+                messages.warning(request, "No matching approved payment found for the provided transaction ID.")
+                return redirect('brands:brand_list')
+            # Associate the brand with the current user and save it
+            brand.user = user
+            brand.save()
+            
+            messages.success(request, "Brand created successfully")
             return redirect('brands:brand_list')
         else:
-            messages.warning(request, "Error creating order")
+            messages.warning(request, "Error creating brand")
     context ={"form":form}
     return render(request, 'brands/create_brand.html',context)
 
@@ -81,14 +111,7 @@ def delete_brand(request, pk):
     context = {"brand":brand}
     return render(request, 'brands/delete_brand.html', context)
 
-# customer to view brands in table
-def view_brands(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    currentuser = request.user
-    brands = Brand.objects.filter(user = currentuser)
-    context = {'brands':brands}
-    return render(request,"brands/view-brands.html",context)
+
 
 def brand_view(request, brand_id):
     if not request.user.is_authenticated:

@@ -1,32 +1,45 @@
-{% extends 'brander/layouts/base.html' %}
+{% extends 'layouts/customer-base.html' %}
+
 {% load static %}
 {% load humanize %}
 {% load widget_tweaks %}
 {% block content %}
 {% load static %}
 {% block styles %}
-{% block title %} {% endblock %}
+{% block title %}{% endblock title %}
+
 {% endblock styles %}
 
 <div class="container-fluid mt-3">
-    <form action="" method="POST" >{% csrf_token %}
+    <h1>Custom Branding</h1>
+    <form action="" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
         <div class="row">
             <div class="col-md">
                 <div class="card shadow">
                     <div class="card-body">
                         <h4 class="card-title"></h4>
                         <hr>
-                    {{form.as_p}}
-                   
+                        <div class="form-group">
+                            <label for="{{ form.order_tno.id_for_label }}">Transaction ID:</label>
+                            {{ form.order_tno|add_class:'form-control' }}
+                            {{ form.order_tno.errors }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.brand_name.id_for_label }}">Brand Name:</label>
+                            {{ form.brand_name|add_class:'form-control' }}
+                            {{ form.brand_name.errors }}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form.brand_logo.id_for_label }}">Brand Logo:</label>
+                            {{ form.brand_logo|add_class:'form-control-file' }}
+                            {{ form.brand_logo.errors }}
+                        </div>
                     </div>
-                
                 </div>   
             </div>
-        
+        </div>
         <button type="submit" class="btn btn-primary w-100 fw-bold">Submit</button>
-    
-       </div>
     </form>
-    
 </div>
 {% endblock content %}

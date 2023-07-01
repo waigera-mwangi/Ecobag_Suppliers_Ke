@@ -21,7 +21,7 @@ class Payment(models.Model):
     ]
     order = models.OneToOneField(Order, on_delete=models.CASCADE)
     payment_date = models.DateField(auto_now_add=True)
-    transaction_id = models.CharField(max_length=100)
+    transaction_id = models.CharField(max_length=100, unique=True)
     payment_status = models.CharField(max_length=50, choices=PAYMENT_STATUS_CHOICES, default='Pending')
     county = models.CharField(max_length=100)
     town = models.CharField(max_length=100)
