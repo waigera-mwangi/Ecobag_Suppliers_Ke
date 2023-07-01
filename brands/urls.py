@@ -14,7 +14,10 @@ urlpatterns = [
     
     path('change_status/<int:pk>/<str:status>/', views.change_status, name='change_status'), #Changes the status of the brand
     path('create_brand', views.create_brand, name='create_brand'),
+    
+    # view details of single brand and download image
     path('brand_view/<str:brand_id>/', views.brand_view, name='brand_view'),
-    path('delete_brand/<str:pk>/', views.delete_brand, name='delete_brand'),
+    
+    
     path('view_brands/', views.view_brands, name='view_brands'), #CUstomer viewing brands
     ]

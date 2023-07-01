@@ -111,35 +111,7 @@ def create_brand(request):
     context ={"form":form}
     return render(request, 'brands/create_brand.html',context)
 
-# update brand
-def update_brand(request, pk):
-    print(pk)
-    brand = Brand.objects.get(id=pk)
-    form = BrandForm(instance=brand)
-    
-    if request.method == 'POST':
-        form = BrandForm(request.POST, instance=brand)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Brand updated successfully")
-            return redirect('brands:brand_list')
-        else:
-            messages.warning(request, "Error updating brand")
-    context = {"form":form}
-    return render(request, 'brands/create_brand.html',context)
-
-# staff delete brand
-def delete_brand(request, pk):
-    
-    brand = Brand.objects.get(id=pk)
-    if request.method == 'POST':
-        brand.delete()
-        return redirect('brands:brand_list')
-    context = {"brand":brand}
-    return render(request, 'brands/delete_brand.html', context)
-
-
-
+# view details of a single brand and download it
 def brand_view(request, brand_id):
     if not request.user.is_authenticated:
         return redirect('/')
