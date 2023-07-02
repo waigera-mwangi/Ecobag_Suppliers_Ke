@@ -19,7 +19,6 @@ from orders.models import Order
 from store.models import *
 from supply.models import *
 from brands.models import *
-from delivery.models import *
 from . import context_processors
 # from orders.views import user_orders
 
@@ -137,11 +136,10 @@ def finance_manager(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):
-    deliveries = Delivery.objects.all().count()
     orders = Order.objects.all()
     # approved = orders.filter(orderstatus='Approved').count()
     context = {
-               'deliveries':deliveries,
+               #context
     }
     return render(request, 'driver.html', context)
     
@@ -160,9 +158,6 @@ def supplier(request):
     return render(request, 'supplier/index.html', context=context)
 
 
-
-
-
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="MN")
 def manager(request):
     return render(request, 'manager.html')
@@ -178,9 +173,9 @@ def brander(request):
 def dispatch_manager(request):
     orders = Order.objects.all()
     
-    deliveries = Delivery.objects.all().count()
+   
     context = {
-               'deliveries':deliveries,
+              #content of the context
 
     }
     return render(request, 'dispatch-manager.html', context)
