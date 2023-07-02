@@ -236,7 +236,7 @@ class FAQ(TimeStamp):
 class Feedback(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_feedbacks')
     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_feedbacks')
-    message = models.TextField()
+    message = models.TextField(null=False)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

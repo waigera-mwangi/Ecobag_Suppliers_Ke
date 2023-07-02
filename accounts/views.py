@@ -584,7 +584,6 @@ def feedback_view(request):
 
 # feedback form submission
 def send_feedback_view(request):
-   
     if request.method == 'POST':
         form = FeedbackForm(request.POST)
         if form.is_valid():
@@ -592,7 +591,15 @@ def send_feedback_view(request):
             message = form.cleaned_data['message']
 
             Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
             return redirect('accounts:feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
     else:
         form = FeedbackForm()
+    
     return render(request, 'feedback/send_feedback/customer_send_feedback.html', {'form': form})
