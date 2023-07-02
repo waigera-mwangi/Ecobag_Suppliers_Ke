@@ -580,7 +580,7 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
 def feedback_view(request):
     # Retrieve conversations for the current user
     conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
-    return render(request, 'feedback/feedback.html', {'conversations': conversations,})
+    return render(request, 'feedback/view_feedback/customer_feedback.html', {'conversations': conversations,})
 
 # feedback form submission
 def send_feedback_view(request):
@@ -595,4 +595,4 @@ def send_feedback_view(request):
             return redirect('accounts:feedback')
     else:
         form = FeedbackForm()
-    return render(request, 'feedback/send_feedback.html', {'form': form})
+    return render(request, 'feedback/send_feedback/customer_send_feedback.html', {'form': form})
