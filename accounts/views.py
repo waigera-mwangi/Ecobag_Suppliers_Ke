@@ -195,43 +195,6 @@ def password_change(request):
     return render(request, 'accounts/change-password.html', {'form': form})
 
 
-#profile settings
-# def profile_main(request):
-#     p_form = FinanceProfileForm(instance=request.user.finance.financeprofile)
-#     form = FinanceForm(instance=request.user.finance)
-#     if request.method == "POST":
-#         p_form = FinanceProfileForm(request.POST, request.FILES, instance=request.user.finance.financeprofile)
-#         form = FinanceForm(request.POST, instance=request.user.finance)
-#         if form.is_valid() and p_form.is_valid():
-#             form.save()
-#             p_form.save()
-#             messages.success(request, "Your Profile has been updated!")
-#     context = {
-#         'p_form': p_form,
-#         'form': form,
-#     }
-#     return render(request, 'finance/forms/profile.html', context)
-
-
-# def profile(request):
-#     # profile = Profile.object.all()
-#     profile = Profile.objects.get_or_create(user=request.user)
-#     p_form = CustomerProfileForm(instance=profile)
-#     form = CustomerForm(instance=request.user)
-#     if request.method == "POST":
-#         p_form = CustomerProfileForm(request.POST, request.FILES, instance=profile)
-#         form = CustomerForm(request.POST, instance=request.user)
-#         p_form.save()
-#         form.save()
-#         messages.success(request, 'Profile updated successfully')
-#     # order = Order.objects.filter(customer=customer, is_active=True, completed=False).first()
-#     context = {+
-#         'p_form': p_form,
-#         'form': form,
-#         # 'order': order
-#     }
-#     return render(request, 'accounts/profile.html',  context)
-
 
 class FAQQuestionTypeListView(ListView):
     template_name = 'faq/customer_faq.html'
@@ -610,3 +573,26 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
 
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'accounts/password_reset_complete.html'
+
+
+# feedback views
+
+def feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/feedback.html', {'conversations': conversations,})
+
+# feedback form submission
+def send_feedback_view(request):
+   
+    if request.method == 'POST':
+        form = FeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            return redirect('accounts:feedback')
+    else:
+        form = FeedbackForm()
+    return render(request, 'feedback/send_feedback.html', {'form': form})

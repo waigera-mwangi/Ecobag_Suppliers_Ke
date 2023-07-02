@@ -1,0 +1,13 @@
+  <!-- feedback.html -->
+
+{% for feedback in conversations %}
+<div>
+  <p>From: {{ feedback.sender.get_full_name }}</p>
+  <p>To: {{ feedback.receiver.get_full_name }}</p>
+  <p>Message: {{ feedback.message }}</p>
+</div>
+{% empty %}
+<p>No feedback conversations found.</p>
+{% endfor %}
+
+<a href="{% url 'accounts:send_feedback' %} " > <span>Send feedback</span></a>

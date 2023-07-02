@@ -32,9 +32,12 @@ INSTALLED_APPS = [
     'supply.apps.SupplyConfig',
     'widget_tweaks',
     'djmoney',
+    'crispy_forms',
     'shipping',
     'finance',
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

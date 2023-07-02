@@ -1,0 +1,23 @@
+<!-- send_feedback.html -->
+<form method="post" action="{% url 'accounts:send_feedback' %}">
+    {% csrf_token %}
+    
+    <div class="form-group">
+        <label for="id_receiver">Receiver:</label>
+        <select name="receiver" id="id_receiver" class="form-control">
+          <!-- Iterate over receivers to populate the dropdown options -->
+          {% for receiver in form.receiver.field.queryset %}
+            <option value="{{ receiver.pk }}">{{ receiver.username }}</option>
+          {% endfor %}
+        </select>
+      </div>
+            
+  
+    <div class="form-group">
+      <label for="id_message">Message:</label>
+      <textarea name="message" id="id_message" class="form-control"></textarea>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Send</button>
+  </form>
+  

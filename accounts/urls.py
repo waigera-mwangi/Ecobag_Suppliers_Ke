@@ -71,4 +71,9 @@ urlpatterns = [
 
       path('reset_password_complete/', CustomPasswordResetCompleteView.as_view(), name="password_reset_complete"),
      #  path('reset_password_complete/',auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
+     
+    #  feedback urls
+    path('feedback/', feedback_view, name='feedback'),
+    path('feedback/send/', send_feedback_view, name='send_feedback'),
+
 ]
