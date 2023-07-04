@@ -18,7 +18,6 @@ urlpatterns = [
     path('', include('store.urls')),
     path('', include('brands.urls')),
     path('', include('supply.urls')),
-    path('', include('delivery.urls')),
     path('shipping/', include('shipping.urls')),
     path('finance/', include('finance.urls')),
 

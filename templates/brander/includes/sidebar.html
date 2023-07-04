@@ -1,49 +1,76 @@
 <aside id="sidebar" class="sidebar">
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-DfXdDpA7Xl7hLHIDKtMtz27MOYEWv4Jn/K4u4AI0bRGBy+PJLqLAhr+V5ZmDL9zj" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-DfXdDpA7Xl7hLHIDKtMtz27MOYEWv4Jn/K4u4AI0bRGBy+PJLqLAhr+V5ZmDL9zj" crossorigin="anonymous">
-
-  <ul class="sidebar-nav" id="sidebar-nav">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha384-DfXdDpA7Xl7hLHIDKtMtz27MOYEWv4Jn/K4u4AI0bRGBy+PJLqLAhr+V5ZmDL9zj" crossorigin="anonymous">
+  
+    <ul class="sidebar-nav" id="sidebar-nav">
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:brander' %}">
-              <i class="bi bi-grid"></i>
-              <span>Dashboard</span>
-          </a>
+        <a class="nav-link" href="{% url 'accounts:brander' %}">
+          <i class="bi bi-grid"></i>
+          <span>Dashboard</span>
+        </a>
       </li><!-- End Dashboard Nav -->
-
+  
       <li>
-          <a href="{% url 'brands:pending_brands' %}">
-            <i class="fa fa-pause"></i>
-              <span>Pending Brands</span>
-          </a>
+        <a href="{% url 'brands:pending_brands' %}">
+          <i class="fa fa-pause"></i>
+          <span>Pending Brands</span>
+        </a>
       </li>
-
+  
       <li>
-          <a href="{% url 'brands:approved_brands' %}">
-            <i class="fa fa-chevron-right"></i>
-              <span>Approved Brands</span>
-          </a>
+        <a href="{% url 'brands:approved_brands' %}">
+          <i class="fa fa-chevron-right"></i>
+          <span>Approved Brands</span>
+        </a>
       </li>
-
+  
       <li>
-          <a href="{% url 'brands:rejected_brands' %}">
-            <i class="fa fa-stop"></i>
-            <span>Rejected Brands</span>
-          </a>
+        <a href="{% url 'brands:rejected_brands' %}">
+          <i class="fa fa-stop"></i>
+          <span>Rejected Brands</span>
+        </a>
       </li>
-
+  
       <li>
-          <a href="{% url 'brands:complete_brands' %}">
-            <i class="fas fa-check-circle"></i>
-              <span>Completed Brands</span>
-          </a>
+        <a href="{% url 'brands:complete_brands' %}">
+          <i class="fas fa-check-circle"></i>
+          <span>Completed Brands</span>
+        </a>
       </li>
-
+  
       <li class="nav-item">
-          <a class="nav-link" href="{% url 'accounts:brander-faq' %}">
-              <i class="bi bi-question-circle"></i>
-              <span>F.A.Q</span>
-          </a>
+        <a class="nav-link" href="{% url 'accounts:brander-faq' %}">
+          <i class="bi bi-question-circle"></i>
+          <span>F.A.Q</span>
+        </a>
       </li><!-- End F.A.Q Page Nav -->
-  </ul>
-</aside><!-- End Sidebar -->
+    </ul>
+
+    <style>
+        /* Styles for mobile view */
+@media (max-width: 767px) {
+  .sidebar {
+    padding: 10px;
+  }
+
+  .sidebar-nav {
+    padding-left: 0;
+  }
+
+  .sidebar-nav li {
+    margin-bottom: 10px;
+  }
+
+  .sidebar-nav a {
+    display: flex;
+    align-items: center;
+  }
+
+  .sidebar-nav i {
+    margin-right: 10px;
+  }
+}
+
+    </style>
+
+  </aside><!-- End Sidebar -->
+  

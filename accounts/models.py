@@ -230,3 +230,20 @@ class FAQ(TimeStamp):
     )
     subject = models.CharField( max_length=250)
     content = models.TextField()
+
+# feedback
+      
+class Feedback(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_feedbacks')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_feedbacks')
+    message = models.TextField(null=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Feedback from {self.sender.get_full_name()} to {self.receiver.get_full_name()}"
+    
+    class Meta:
+        verbose_name = 'Feedback'
+        verbose_name_plural = 'Feedbacks'

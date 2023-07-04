@@ -264,3 +264,12 @@ class CustomPasswordResetForm(PasswordResetForm):
         max_length=254,
         widget=forms.EmailInput(attrs={'autocomplete': 'email', 'class': 'form-control'})
     )
+
+# feedback form
+class FeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, User.UserTypes.DRIVER]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, User.UserTypes.DRIVER])

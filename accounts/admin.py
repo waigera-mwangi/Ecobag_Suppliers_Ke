@@ -102,3 +102,12 @@ class FAQAdmin(ExportCsvMixin, ModelAdmin):
     search_help_text = "Search by subject"
     list_filter = ('subject', 'question_types')
  
+ 
+#  register feedback
+@admin.register(Feedback)
+class FeedbackAdmin(ExportCsvMixin, ModelAdmin):
+    search_fields = ['sender', 'receiver']
+    list_display = ['sender', 'receiver','message']
+    list_display_links = ['sender']
+    search_help_text = 'Search by Sender'
+    list_filter = ('sender','receiver')

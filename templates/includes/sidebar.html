@@ -37,7 +37,7 @@
 
       <li class="nav-item">
       <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
-         <i class="bi bi-cart"></i><span>Custom Branding</span><i class="bi bi-chevron-down ms-auto"></i>
+         <i class="fas fa-edit"></i><span>Custom Branding</span><i class="bi bi-chevron-down ms-auto"></i>
       </a>
 
       <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
@@ -63,7 +63,20 @@
     </li><!-- End Orders-->
 
     <!-- <li class="nav-heading">Pages</li> -->
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:send_feedback' %}">
+        <i class="fas fa-paper-plane"></i>
+        <span>Send Feedback</span>
+      </a>
+    </li>  
 
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:feedback' %}">
+        <i class="fas fa-comments"></i>
+        <span>Feedback</span>
+      </a>
+    </li>
+  
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="{% url 'accounts:faq_question_types' %}">
@@ -71,7 +84,6 @@
         <span>F.A.Q</span>
       </a>
     </li>
-
 
   </ul>
 
