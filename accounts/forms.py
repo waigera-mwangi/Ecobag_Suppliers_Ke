@@ -265,11 +265,107 @@ class CustomPasswordResetForm(PasswordResetForm):
         widget=forms.EmailInput(attrs={'autocomplete': 'email', 'class': 'form-control'})
     )
 
-# feedback form
-class FeedbackForm(forms.Form):
-    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, User.UserTypes.DRIVER]))
+# customer feedback form
+class CustomerFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.DRIVER, 
+                                                                                  User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.BRANDER]))
     message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, User.UserTypes.DRIVER])
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.DRIVER, 
+                                                                                  User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.BRANDER])
+
+# finance feedback form
+class FinanceFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, 
+                                                                                  User.UserTypes.INVENTORY_MANAGER,
+                                                                                  User.UserTypes.BRANDER,
+                                                                                  User.UserTypes.SUPPLIER,
+                                                                                  ]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER, 
+                                                                                  User.UserTypes.INVENTORY_MANAGER,
+                                                                                  User.UserTypes.BRANDER,
+                                                                                  User.UserTypes.SUPPLIER,
+                                                                                  ])
+
+# inventory feedback form
+class InventoryFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.BRANDER,
+                                                                                  User.UserTypes.SUPPLIER,
+                                                                                  ]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.BRANDER,
+                                                                                  User.UserTypes.SUPPLIER,
+                                                                                  ])
+
+
+# brander feedback form
+class BranderFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.INVENTORY_MANAGER,
+                                                                                  ]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.DISPATCH_MANAGER, 
+                                                                                  User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.INVENTORY_MANAGER,
+                                                                                  ])
+
+# supplier feedback form
+class SupplierFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.INVENTORY_MANAGER]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.FINANCE_MANAGER,
+                                                                                  User.UserTypes.INVENTORY_MANAGER])
+
+
+# dispatch feedback form
+class DispatchFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.FINANCE_MANAGER, 
+                                                                                  User.UserTypes.BRANDER, 
+                                                                                  User.UserTypes.DRIVER]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.FINANCE_MANAGER, 
+                                                                                  User.UserTypes.BRANDER, 
+                                                                                  User.UserTypes.DRIVER])
+
+# driver feedback form
+class DriverFeedbackForm(forms.Form):
+    receiver = forms.ModelChoiceField(queryset=User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.DISPATCH_MANAGER]))
+    message = forms.CharField(widget=forms.Textarea(attrs={'rows': 4, 'cols': 50}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['receiver'].queryset = User.objects.filter(user_type__in=[User.UserTypes.CUSTOMER,
+                                                                                  User.UserTypes.DISPATCH_MANAGER])

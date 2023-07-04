@@ -4,7 +4,7 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">Send Feedback</h5>
-      <form method="post" action="{% url 'accounts:send_feedback' %}">
+      <form method="post" action="{% url 'accounts:customer_send_feedback' %}">
         {% csrf_token %}
         
         <div class="form-group">

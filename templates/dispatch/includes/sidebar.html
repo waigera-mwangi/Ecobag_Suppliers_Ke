@@ -35,6 +35,20 @@
     </li><!-- End Deliveries Nav -->
 
     <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:dispatch_send_feedback' %}">
+        <i class="fas fa-paper-plane"></i>
+        <span>Send Feedback</span>
+      </a>
+    </li>  
+  
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:dispatch_feedback' %}">
+        <i class="fas fa-comments"></i>
+        <span>Feedback</span>
+      </a>
+    </li>
+
+    <li class="nav-item">
       <a class="nav-link" href="{% url 'accounts:dispatch-faq' %}">
         <i class="bi bi-question-circle"></i>
         <span>F.A.Q</span>

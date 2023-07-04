@@ -36,6 +36,20 @@
           <span>Completed Brands</span>
         </a>
       </li>
+
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'accounts:brander_send_feedback' %}">
+          <i class="fas fa-paper-plane"></i>
+          <span>Send Feedback</span>
+        </a>
+      </li>  
+    
+      <li class="nav-item">
+        <a class="nav-link collapsed" href="{% url 'accounts:brander_feedback' %}">
+          <i class="fas fa-comments"></i>
+          <span>Feedback</span>
+        </a>
+      </li>
   
       <li class="nav-item">
         <a class="nav-link" href="{% url 'accounts:brander-faq' %}">

@@ -45,7 +45,19 @@
       </a>
     </li><br>
 
-    <li class="nav-heading">Pages</li>
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:supplier_send_feedback' %}">
+        <i class="fas fa-paper-plane"></i>
+        <span>Send Feedback</span>
+      </a>
+    </li>  
+  
+    <li class="nav-item">
+      <a class="nav-link collapsed" href="{% url 'accounts:supplier_feedback' %}">
+        <i class="fas fa-comments"></i>
+        <span>Feedback</span>
+      </a>
+    </li>
 
     <li class="nav-item">
       <a class="nav-link collapsed" href="{% url 'accounts:supplier-faq' %}">

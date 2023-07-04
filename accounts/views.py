@@ -575,17 +575,52 @@ class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     template_name = 'accounts/password_reset_complete.html'
 
 
-# feedback views
-
-def feedback_view(request):
+# customer feedback view
+def customer_feedback_view(request):
     # Retrieve conversations for the current user
     conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
     return render(request, 'feedback/view_feedback/customer_feedback.html', {'conversations': conversations,})
 
-# feedback form submission
-def send_feedback_view(request):
+# finance feedback views
+def finance_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/finance_feedback.html', {'conversations': conversations,})
+
+# inventory feedback views
+def inventory_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/inventory_feedback.html', {'conversations': conversations,})
+
+# brander feedback views
+def brander_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/brander_feedback.html', {'conversations': conversations,})
+
+# dispatch feedback views
+def dispatch_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/dispatch_feedback.html', {'conversations': conversations,})
+
+# supplier feedback views
+def supplier_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/supplier_feedback.html', {'conversations': conversations,})
+
+#driver customer feedback views
+def driver_feedback_view(request):
+    # Retrieve conversations for the current user
+    conversations = Feedback.objects.filter(sender=request.user) | Feedback.objects.filter(receiver=request.user)
+    return render(request, 'feedback/view_feedback/driver_feedback.html', {'conversations': conversations,})
+
+# customer feedback submission
+def customer_send_feedback_view(request):
     if request.method == 'POST':
-        form = FeedbackForm(request.POST)
+        form = CustomerFeedbackForm(request.POST)
         if form.is_valid():
             receiver = form.cleaned_data['receiver']
             message = form.cleaned_data['message']
@@ -595,11 +630,144 @@ def send_feedback_view(request):
             # Add success message
             messages.success(request, 'Feedback sent successfully!')
             
-            return redirect('accounts:feedback')
+            return redirect('accounts:customer_feedback')
         else:
             # Add warning message for form errors or empty fields
             messages.warning(request, 'Please correct the form errors and fill in all fields.')
     else:
-        form = FeedbackForm()
+        form = CustomerFeedbackForm()
     
     return render(request, 'feedback/send_feedback/customer_send_feedback.html', {'form': form})
+
+# finance feedback submission
+def finance_send_feedback_view(request):
+    if request.method == 'POST':
+        form = FinanceFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:finance_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = FinanceFeedbackForm()
+    
+    return render(request, 'feedback/send_feedback/finance_send_feedback.html', {'form': form})
+
+# inventory feedback submission
+def inventory_send_feedback_view(request):
+    if request.method == 'POST':
+        form = InventoryFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:inventory_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = InventoryFeedbackForm()
+    
+    return render(request, 'feedback/send_feedback/inventory_send_feedback.html', {'form': form})
+
+# brander feedback submission
+def brander_send_feedback_view(request):
+    if request.method == 'POST':
+        form = BranderFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:brander_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = BranderFeedbackForm()
+    
+    
+    return render(request, 'feedback/send_feedback/brander_send_feedback.html', {'form': form})
+
+# supplier feedback submission
+def supplier_send_feedback_view(request):
+    if request.method == 'POST':
+        form = SupplierFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:supplier_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = SupplierFeedbackForm()
+    
+    return render(request, 'feedback/send_feedback/supplier_send_feedback.html', {'form': form})
+
+# dispatch feedback submission
+def dispatch_send_feedback_view(request):
+    if request.method == 'POST':
+        form = DispatchFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:dispatch_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = DispatchFeedbackForm()
+    
+    return render(request, 'feedback/send_feedback/dispatch_send_feedback.html', {'form': form})
+
+# driver feedback submission
+def driver_send_feedback_view(request):
+    if request.method == 'POST':
+        form = DriverFeedbackForm(request.POST)
+        if form.is_valid():
+            receiver = form.cleaned_data['receiver']
+            message = form.cleaned_data['message']
+
+            Feedback.objects.create(sender=request.user, receiver=receiver, message=message)
+            
+            # Add success message
+            messages.success(request, 'Feedback sent successfully!')
+            
+            return redirect('accounts:driver_feedback')
+        else:
+            # Add warning message for form errors or empty fields
+            messages.warning(request, 'Please correct the form errors and fill in all fields.')
+    else:
+        form = DriverFeedbackForm()
+    
+    return render(request, 'feedback/send_feedback/driver_send_feedback.html', {'form': form})

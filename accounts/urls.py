@@ -73,7 +73,21 @@ urlpatterns = [
      #  path('reset_password_complete/',auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
      
     #  feedback urls
-    path('feedback/', feedback_view, name='feedback'),
-    path('feedback/send/', send_feedback_view, name='send_feedback'),
+    path('customer/view/feedback/', customer_feedback_view, name='customer_feedback'),
+    path('finance/view/feedback/', finance_feedback_view, name='finance_feedback'),
+    path('inventory/view/feedback/', inventory_feedback_view, name='inventory_feedback'),
+    path('brander/view/feedback/', brander_feedback_view, name='brander_feedback'),
+    path('supplier/view/feedback/', supplier_feedback_view, name='supplier_feedback'),
+    path('dispatch/view/feedback/', dispatch_feedback_view, name='dispatch_feedback'),
+    path('driver/view/feedback/', driver_feedback_view, name='driver_feedback'),
+    
+    # send feedback urls
+    path('feedback/customer/send/', customer_send_feedback_view, name='customer_send_feedback'),
+    path('feedback/finance/send/', finance_send_feedback_view, name='finance_send_feedback'),
+    path('feedback/inventory/send/', inventory_send_feedback_view, name='inventory_send_feedback'),
+    path('feedback/brander/send/', brander_send_feedback_view, name='brander_send_feedback'),
+    path('feedback/supplier/send/', supplier_send_feedback_view, name='supplier_send_feedback'),
+    path('feedback/dispatch/send/', dispatch_send_feedback_view, name='dispatch_send_feedback'),
+    path('feedback/driver/send/', driver_send_feedback_view, name='driver_send_feedback'),
 
 ]
