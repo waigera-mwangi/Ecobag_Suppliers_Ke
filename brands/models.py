@@ -19,4 +19,4 @@ class Brand(models.Model):
     brandstatus = models.CharField(max_length=50, choices=status, default='Pending')
 
     def __str__(self):
-        return '{}'.format(self.brand_tno)
+        return '{}'.format(self.user)
