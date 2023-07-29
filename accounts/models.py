@@ -24,7 +24,6 @@ class User(AbstractUser, PermissionsMixin):
         INVENTORY_MANAGER = 'SM', _('Inventory Manager')
         SUPPLIER = 'RD', _('Supplier')
         CUSTOMER = 'CM', _('Customer')
-        MANAGER = 'MN', _('Manager')
         BRANDER = 'BR', _('Brander')
         DISPATCH_MANAGER = 'DM', _('Dispatch Manager')
         ADMIN = 'AD', _('Admin')
@@ -218,7 +217,6 @@ class FAQ(TimeStamp):
         INVENTORY_MANAGER = 'SM', _('Inventory Manager')
         SUPPLIER = 'RD', _('Supplier')
         CUSTOMER = 'CM', _('Customer')
-        MANAGER = 'MN', _('Manager')
         BRANDER = 'BR', _('Brander')
         DISPATCH_MANAGER = 'DM', _('Dispatch Manager')
         
