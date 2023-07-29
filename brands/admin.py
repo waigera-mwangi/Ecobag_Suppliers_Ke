@@ -13,7 +13,9 @@ class BrandAdmin(admin.ModelAdmin):
     
     def preview_logo(self, obj):
         if obj.brand_logo:
-            return format_html('<img src="{}" style="max-height: 50px; max-width: 100px;" />', obj.brand_logo.url)
+            image_tag = format_html('<img src="{}" style="max-height: 50px; max-width: 100px;" />', obj.brand_logo.url)
+            download_link = format_html('<a href="{}" download>{}</a>', obj.brand_logo.url, image_tag)
+            return download_link
         return 'No logo available'
 
     preview_logo.allow_tags = True
