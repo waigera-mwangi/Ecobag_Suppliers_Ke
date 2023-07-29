@@ -1,16 +1,14 @@
 from django.contrib import admin
-
 from .models import Brand
 
-
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('order_tno','user','brand_name','brand_logo', 'created',)
-    list_filter = ('created','user','brandstatus')
-    search_fields = ('id','user_username')
-    # readonly_fields = ('created', 'brand_logo')
+    list_display = ('order_tno', 'user', 'brand_name', 'created', 'download_logo')  # Correct method name
+
+    list_filter = ('created', 'user', 'brandstatus')
+    search_fields = ('id', 'user_username')
     
     def order_tno(self, obj):
-        return obj.brand.order_tno
+        return obj.order_tno  # Correct the method to access the order_tno field
     
     def download_logo(self, obj):
         if obj.brand_logo:
