@@ -4,7 +4,7 @@ from .models import Brand
 
 
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('order_tno','user','brand_name', 'created',)
+    list_display = ('order_tno','user','brand_name','brand_logo', 'created',)
     list_filter = ('created','user','brandstatus')
     search_fields = ('id','user_username')
     # readonly_fields = ('created', 'brand_logo')
