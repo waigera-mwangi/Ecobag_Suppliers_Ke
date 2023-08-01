@@ -18,6 +18,11 @@ from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
 from xhtml2pdf import pisa
 
+from django.db.models import Sum
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle
+
+
 
 def checkout(request):
     user = User.objects.get(pk=1)
@@ -154,3 +159,66 @@ def receipt(request, tender_id):
         response = HttpResponse(pdf_buffer.getvalue(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename=Receipt_{tender.id}.pdf'
         return response
+
+# reports
+from django.db.models import F, Sum
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle,Paragraph
+from .models import Payment
+from reportlab.lib.styles import getSampleStyleSheet
+from .models import Payment
+
+# reports
+def sales_report(request):
+    # Fetch the data with additional details
+    sales_data = Payment.objects.values(
+        'payment_status', 'order__user__username', 'payment_date', 'transaction_id'
+    ).annotate(
+        order_total_amount=Sum(F('order__orderitem__quantity') * F('order__orderitem__product__price')),
+        total_sales=Sum('order__id')
+    )
+
+    # Calculate the total amount of money made
+    total_amount = sum(item['order_total_amount'] for item in sales_data)
+
+    # Generate the PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="sales_report.pdf"'
+
+    doc = SimpleDocTemplate(response, pagesize=letter)
+    elements = []
+
+    # Add a title to the PDF
+    title_style = getSampleStyleSheet()['Title']
+    title = Paragraph("Order Reports", title_style)
+    elements.append(title)
+
+    # Create the table with the sales report data
+    data = [['No.','User', 'Payment Status', 'Date', 'Transaction ID', 'Order Total Amount']]
+    for index, item in enumerate(sales_data, start=1):
+        data.append([
+            index,
+            item['order__user__username'],
+            item['payment_status'].title(),
+            item['payment_date'],
+            item['transaction_id'],
+            item['order_total_amount'],  # Display the order total amount in the table
+        ])
+
+    # Add the final row with the total amount
+    data.append(['', '', '','', 'Total Amount:', total_amount])
+
+    table = Table(data)
+    table.setStyle(TableStyle([('BACKGROUND', (0, 0), (-1, 0), '#c0c0c0'),
+                               ('TEXTCOLOR', (0, 0), (-1, 0), '#FFFFFF'),
+                               ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+                               ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+                               ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+                               ('BACKGROUND', (0, 1), (-1, -1), '#F0F0F0'),
+                               ('GRID', (0, 0), (-1, -1), 1, '#888888')]))
+
+    elements.append(table)
+
+    # Build the PDF
+    doc.build(elements)
+    return response

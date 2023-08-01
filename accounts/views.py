@@ -771,3 +771,6 @@ def driver_send_feedback_view(request):
         form = DriverFeedbackForm()
     
     return render(request, 'feedback/send_feedback/driver_send_feedback.html', {'form': form})
+
+def about_us(request):
+    return render(request, 'includes/about-us.html')
