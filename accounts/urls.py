@@ -38,6 +38,7 @@ urlpatterns = [
     path('inventory-faq/', I_FAQ.as_view(), name='inventory-faq'),
     path('dispatch-faq/', DP_FAQ.as_view(), name='dispatch-faq'),
     path('finance-faq/', F_FAQ.as_view(), name='finance-faq'),
+    path('about-us/', about_us, name='about-us'),
     
 
     # profile
