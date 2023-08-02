@@ -167,9 +167,17 @@ def manager(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="BR")
 def brander(request):
-    brands = Brand.objects.all()
-    total_brands = brands.count()
-    context = {'total_brands':total_brands}
+    pending_brands = Brand.objects.filter(brandstatus='Pending').count()
+    approved_brands = Brand.objects.filter(brandstatus='Approved').count()
+    rejected_brands = Brand.objects.filter(brandstatus='Rejected').count()
+    completed_brands = Brand.objects.filter(brandstatus='Completed').count()
+    
+    context = {
+               'pending_brands': pending_brands,
+        'approved_brands': approved_brands,
+        'rejected_brands': rejected_brands,
+        'completed_brands': completed_brands,
+               }
     return render(request, 'brander.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DM")
