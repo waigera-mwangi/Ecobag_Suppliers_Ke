@@ -101,23 +101,19 @@ def customer(request):
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="SM")
 def inventory(request):
-    pending_cart_count = Order.objects.filter(payment__payment_status='Pending').count()
-    completed_cart_count = Order.objects.filter(payment__payment_status='Approved').count()
-    products = Product.objects.all()
-    total_products = products.count()
-    inStock = products.filter(in_stock=True)
-    total_inStock = inStock.count()
-    category  = Category.objects.all()
-    total_categories = category.count()
+    
+    pending_tenders = SupplyTender.objects.filter(tender_status='Pending').count()
+    accepted_tenders = SupplyTender.objects.filter(tender_status='Accepted').count()
+    approved_tenders = SupplyTender.objects.filter(tender_status='Approved').count()
+    supplied_tenders = SupplyTender.objects.filter(tender_status='Supplied').count()
+
     context = {
-        'pending_cart_count': pending_cart_count,
-        'completed_cart_count': completed_cart_count,
-        'products':products,
-        'total_products':total_products,
-        'total_categories':total_categories,
-        'total_inStock':total_inStock,
-        
+        'pending_tenders': pending_tenders,
+        'accepted_tenders': accepted_tenders,
+        'approved_tenders': approved_tenders,
+        'supplied_tenders': supplied_tenders,
     }
+    
     return render(request, 'inventory/index.html', context)
 
 
@@ -126,13 +122,20 @@ def inventory(request):
 def finance_manager(request):
     orders = Order.objects.all()
     total_orders = orders.count()
+    pending_orders = Order.objects.filter(payment__payment_status='pending').count()
+    approved_orders = Order.objects.filter(payment__payment_status='approved').count()
+    rejected_orders = Order.objects.filter(payment__payment_status='rejected').count()
+    
    
     
     context = {'orders':orders,
               'total_orders':total_orders,
+             'pending_orders': pending_orders,
+             'approved_orders': approved_orders,
+            'rejected_orders': rejected_orders,
     }
 
-    return render(request, 'finance-manager.html')
+    return render(request, 'finance-manager.html', context)
 
 @required_access(login_url=reverse_lazy('accounts:login'), user_type="DR")
 def driver(request):

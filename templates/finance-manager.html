@@ -19,7 +19,30 @@
           <div class="row">
 
 
+            
 
+
+
+            <!-- Pending Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Total Orders</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-pause"></i>
+                    </div>
+                    <div class="ps-3">
+                      <a href="#">
+                      <h6>{{total_orders}}</h6>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Pending Card -->
             <!-- Pending Card -->
             <div class="col-xxl-4 col-md-6">
               <div class="card info-card sales-card">
@@ -32,7 +55,7 @@
                     </div>
                     <div class="ps-3">
                       <a href="#">
-                      <h6>{{pending_payment_count}}</h6>
+                      <h6>{{pending_orders}}</h6>
                     </a>
                     </div>
                   </div>
@@ -53,7 +76,28 @@
                     </div>
                     <div class="ps-3">
                       <a href="#">
-                      <h6>{{approved_payment_count}}</h6>
+                      <h6>{{approved_orders}}</h6>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Approved Card -->
+
+            <!-- Rejected Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+                <div class="card-body">
+                  <h5 class="card-title">Rejected Orders</h5>
+
+                  <div class="d-flex align-items-center">
+                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                      <i class="fa fa-times"></i>
+                    </div>
+                    <div class="ps-3">
+                      <a href="#">
+                      <h6>{{rejected_orders}}</h6>
                     </a>
                     </div>
                   </div>
