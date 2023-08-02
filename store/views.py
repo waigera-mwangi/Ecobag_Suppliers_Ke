@@ -130,7 +130,7 @@ def searchproduct(request):
             product = Product.objects.filter(name__contains=searchedterm).first()
 
             if product:
-                return redirect('product_detail')
+                return redirect('product_detail/'+product.slug)
             else:
                 messages.info(request,"No matched product")
                 return redirect(request.META.get('HTTP_REFRER'))
@@ -387,7 +387,7 @@ def searchproduct(request):
             product = Product.objects.filter(name__contains=searchedterm).first()
 
             if product:
-                return redirect('product_detail/' + product.slug)
+                return redirect('product_detail')
             else:
                 messages.info(request, "No matched product")
                 return redirect(request.META.get('HTTP_REFERER'))
